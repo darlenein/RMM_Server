@@ -15,27 +15,18 @@ namespace ProfileManager.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly ILogger _logger; 
+        private readonly ILogger _logger;
         // GET: api/<StudentController>
-        [HttpGet]
-        public Student Get()
+        [HttpGet("{id}")]
+        public Student GetStudentById(string id)
         {
-            try
-            {
-                StudentDomain sd = new StudentDomain();
-                Student s = sd.GetStudent();
-                return s;
-            }
-            catch (Exception ex){
-                _logger.LogError(new EventId(1), ex, ex.Message, null);
-                return null;
-            }
-
-
+            StudentDomain fd = new StudentDomain();
+            Student result = fd.getStudent(id);
+            return result;
         }
 
-            // POST api/<StudentController>
-            [HttpPost]
+        // POST api/<StudentController>
+        [HttpPost]
         public void Post([FromBody] string value)
         {
         }

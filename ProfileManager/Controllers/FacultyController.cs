@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProfileManager.Domains;
+using ProfileManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +14,14 @@ namespace ProfileManager.Controllers
     [ApiController]
     public class FacultyController : ControllerBase
     {
-        // GET: api/<FacultyController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET api/<FacultyController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Faculty GetFacultyById(string id)
         {
-            return "value";
+            FacultyDomain fd = new FacultyDomain();
+            Faculty result = fd.getFaculty(id);
+            return result;
         }
 
         // POST api/<FacultyController>
