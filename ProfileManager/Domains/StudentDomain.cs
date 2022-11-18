@@ -42,6 +42,11 @@ namespace ProfileManager.Domains
             return s;
         }
 
+        public int ReturnOne()
+        {
+            return 1;
+        }
+
         public static T ConvertFromDBVal<T>(object obj)
         {
             if (obj == null || obj == DBNull.Value)
