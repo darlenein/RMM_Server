@@ -23,6 +23,8 @@ namespace ProfileManager.Models
         public string ResearchInterest { get; set; }
         public string ResearchProject { get; set; }
         public string Email { get; set; }
+        public int Progression { get; set; }
+        public string Research_name { get; set; }
 
     }
 }

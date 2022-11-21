@@ -17,11 +17,27 @@ namespace ProfileManager.Controllers
     {
         private readonly ILogger _logger;
         // GET: api/<StudentController>
-        [HttpGet("{id}")]
+        [HttpGet("getStudentById/{id}")]
         public Student GetStudentById(string id)
         {
-            StudentDomain fd = new StudentDomain();
-            Student result = fd.getStudent(id);
+            StudentDomain sd = new StudentDomain();
+            Student result = sd.getStudent(id);
+            return result;
+        }
+
+        [HttpGet("getAllStudents")]
+        public List<Student> GetAllStudents()
+        {
+            StudentDomain sd = new StudentDomain();
+            List<Student> result = sd.getAllStudent();
+            return result;
+        }
+
+        [HttpGet("getAllStudentsByResearch/{research_id}")]
+        public List<Student> GetAllStudentsByResearch(int research_id)
+        {
+            StudentDomain sd = new StudentDomain();
+            List<Student> result = sd.getAllStudentsByResearch(research_id);
             return result;
         }
 
