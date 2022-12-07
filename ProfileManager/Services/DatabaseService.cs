@@ -8,7 +8,7 @@ namespace ProfileManager.Services
 {
     public class DatabaseService
     {
-        public MySqlConnection connect()
+        public MySqlConnection Connect()
         {
             string myConnectionString;
             myConnectionString = "server=127.0.0.1;uid=root;" + "pwd=hello;database=sys";
@@ -16,12 +16,12 @@ namespace ProfileManager.Services
             try
             {
                 MySqlConnection conn = new MySqlConnection();
-                conn = new MySql.Data.MySqlClient.MySqlConnection(myConnectionString);
+                conn = new MySqlConnection(myConnectionString);
                 conn.Open();
                 
                 return conn;
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
+            catch (MySqlException ex)
             {
                 Console.WriteLine(ex.Message);
                 return null;

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using ProfileManager.Domains;
 using ProfileManager.Models;
+using ProfileManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace ProfileManager.Controllers
         public Student GetStudentById(string id)
         {
             StudentDomain sd = new StudentDomain();
-            Student result = sd.getStudent(id);
+            Student result = sd.GetStudent(id);
             return result;
         }
 
@@ -29,7 +30,7 @@ namespace ProfileManager.Controllers
         public List<Student> GetAllStudents()
         {
             StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.getAllStudent();
+            List<Student> result = sd.GetAllStudent();
             return result;
         }
 
@@ -37,7 +38,7 @@ namespace ProfileManager.Controllers
         public List<Student> GetAllStudentsByResearch(int research_id)
         {
             StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.getAllStudentsByResearch(research_id);
+            List<Student> result = sd.GetAllStudentsByResearch(research_id);
             return result;
         }
 
@@ -45,6 +46,14 @@ namespace ProfileManager.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+        }
+
+        [HttpPost("createStudent")]
+        public Student CreateStudentProfile(Student s)
+        {
+            StudentDomain sd = new StudentDomain();
+            sd.CreateStudent(s);
+            return s;
         }
 
         // PUT api/<StudentController>/5

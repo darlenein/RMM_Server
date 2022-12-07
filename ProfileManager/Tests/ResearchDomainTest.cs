@@ -1,0 +1,40 @@
+﻿using NUnit.Framework;
+using ProfileManager.Domains;
+using ProfileManager.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ProfileManager.Tests
+{
+    public class ResearchDomainTest
+    {
+        private ResearchDomain rd;
+
+        [SetUp]
+        public void SetUp()
+        {
+            rd = new ResearchDomain();
+        }
+
+        [Test]
+        public void TestUpdateAppProgress()
+        {
+            Progress p = new Progress() { 
+                progress = 2,
+                research_id = 999999,
+                student_id = "testid123"
+            };
+
+            rd.UpdateApplicantProgress(p.progress, p.research_id, p.student_id);
+            var result = rd.GetAppProgression(p.research_id, p.student_id);
+            Assert.AreEqual(result.progress, p.progress);
+
+            p.progress = 3;
+            rd.UpdateApplicantProgress(p.progress, p.research_id, p.student_id);
+            result = rd.GetAppProgression(p.research_id, p.student_id);
+            Assert.AreEqual(result.progress, p.progress);
+        }
+    }
+}

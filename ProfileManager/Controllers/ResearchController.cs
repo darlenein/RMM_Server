@@ -18,7 +18,7 @@ namespace ProfileManager.Controllers
         public List<Research> GetResearchByFaculty(string faculty_id)
         {
             ResearchDomain rd = new ResearchDomain();
-            List<Research> result = rd.getResearchByFacultyId(faculty_id);
+            List<Research> result = rd.GetResearchByFacultyId(faculty_id);
             return result;
         }
 
@@ -26,7 +26,7 @@ namespace ProfileManager.Controllers
         public List<Research> GetAllResearch()
         {
             ResearchDomain rd = new ResearchDomain();
-            List<Research> result = rd.getAllResearch();
+            List<Research> result = rd.GetAllResearch();
             return result;
         }
 
@@ -34,9 +34,10 @@ namespace ProfileManager.Controllers
         public List<Research> GetAllResearchByStudentId(string student_id)
         {
             ResearchDomain rd = new ResearchDomain();
-            List<Research> result = rd.getAllResearchByStudentId(student_id);
+            List<Research> result = rd.GetAllResearchByStudentId(student_id);
             return result;
         }
+
 
         // POST api/<ResearchController>
         [HttpPost]
@@ -45,10 +46,13 @@ namespace ProfileManager.Controllers
         }
 
         // PUT api/<ResearchController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("updateAppProgress")]
+        public void Put(Progress p)
         {
+            ResearchDomain r = new ResearchDomain();
+            r.UpdateApplicantProgress(p.progress, p.research_id, p.student_id);
         }
+
 
         // DELETE api/<ResearchController>/5
         [HttpDelete("{id}")]

@@ -20,7 +20,15 @@ namespace ProfileManager.Controllers
         public Faculty GetFacultyById(string id)
         {
             FacultyDomain fd = new FacultyDomain();
-            Faculty result = fd.getFaculty(id);
+            Faculty result = fd.GetFaculty(id);
+            return result;
+        }
+
+        [HttpGet("getAllFaculty")]
+        public List<Faculty> GetAllFaculty()
+        {
+            FacultyDomain fd = new FacultyDomain();
+            List<Faculty> result = fd.GetAllFaculty();
             return result;
         }
 

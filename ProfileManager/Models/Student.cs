@@ -8,8 +8,6 @@ namespace ProfileManager.Models
     public class Student
     { 
         public string Id { get; set; }
-        public string FacultyId { get; set; }
-        public int ResearchId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public double GPA { get; set; }
@@ -23,8 +21,12 @@ namespace ProfileManager.Models
         public string ResearchInterest { get; set; }
         public string ResearchProject { get; set; }
         public string Email { get; set; }
+        public bool PreferPaid { get; set; }
+        public bool PreferNonpaid { get; set; }
+        public bool PreferCredit { get; set; }
         public int Progression { get; set; }
         public string Research_name { get; set; }
+        public int PreferLocation { get; set; }
 
     }
 }
