@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ProfileManager.Domains;
-using ProfileManager.Models;
-using ProfileManager.Services;
+using RMM_Server.Domains;
+using RMM_Server.Models;
+using RMM_Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ProfileManager.Controllers
+namespace RMM_Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using ProfileManager.Domains;
-using ProfileManager.Models;
-using ProfileManager.Services;
+using RMM_Server.Domains;
+using RMM_Server.Models;
+using RMM_Server.Services;
 
-namespace ProfileManager.Tests
+namespace RMM_Server.Tests
 {
     // mark class as a test
     [TestFixture] 

@@ -1,11 +1,11 @@
 ﻿using NUnit.Framework;
-using ProfileManager.Domains;
+using RMM_Server.Domains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProfileManager.Tests
+namespace RMM_Server.Tests
 {
     public class FacultyDomainTest
     {

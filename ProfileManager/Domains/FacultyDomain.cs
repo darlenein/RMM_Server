@@ -4,10 +4,10 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using ProfileManager.Models;
-using ProfileManager.Services;
+using RMM_Server.Models;
+using RMM_Server.Services;
 
-namespace ProfileManager.Domains
+namespace RMM_Server.Domains
 {
     public class FacultyDomain
     {

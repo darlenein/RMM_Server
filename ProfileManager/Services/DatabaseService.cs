@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProfileManager.Services
+namespace RMM_Server.Services
 {
     public class DatabaseService
     {

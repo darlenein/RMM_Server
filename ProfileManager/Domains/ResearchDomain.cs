@@ -1,12 +1,12 @@
 ﻿using MySql.Data.MySqlClient;
-using ProfileManager.Models;
-using ProfileManager.Services;
+using RMM_Server.Models;
+using RMM_Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProfileManager.Domains
+namespace RMM_Server.Domains
 {
     public class ResearchDomain
     {

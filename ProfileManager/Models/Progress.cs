@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProfileManager.Models
+namespace RMM_Server.Models
 {
     public class Progress
     {

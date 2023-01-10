@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ProfileManager": {
+    "RMM_Server": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

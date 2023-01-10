@@ -7,13 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using ProfileManager.Services;
+using RMM_Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProfileManager
+namespace RMM_Server
 {
     public class Startup
     {
@@ -32,7 +32,7 @@ namespace ProfileManager
             // add swagger api documenter 1/2
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProfileManager", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RMM_Server", Version = "v1" });
             });
 
             
@@ -47,7 +47,7 @@ namespace ProfileManager
 
                 // add swagger api documenter 2/2
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProfileManager v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RMM_Server v1"));
             }
 
             app.UseHttpsRedirection();
