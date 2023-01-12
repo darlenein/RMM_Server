@@ -28,5 +28,7 @@ namespace RMM_Server.Models
         public string Research_name { get; set; }
         public int PreferLocation { get; set; }
 
+        public string Minor { get; set; }
+
     }
 }

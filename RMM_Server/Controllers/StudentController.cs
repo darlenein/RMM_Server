@@ -42,12 +42,6 @@ namespace RMM_Server.Controllers
             return result;
         }
 
-        // POST api/<StudentController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
         [HttpPost("createStudent")]
         public Student CreateStudentProfile(Student s)
         {

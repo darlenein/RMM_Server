@@ -58,6 +58,8 @@ namespace RMM_Server.Domains
                 {
                     s.PreferCredit = false;
                 }
+                s.PreferLocation = ConvertFromDBVal<int>(reader[17]);
+                s.Minor = ConvertFromDBVal<string>(reader[18]);
             }
             reader.Close();
 
@@ -114,7 +116,7 @@ namespace RMM_Server.Domains
                     s.PreferCredit = false;
                 }
                 s.PreferLocation = ConvertFromDBVal<int>(reader[17]);
-
+                s.Minor = ConvertFromDBVal<string>(reader[18]);
                 sl.Add(s);
             }
             reader.Close();
@@ -175,8 +177,9 @@ namespace RMM_Server.Domains
                     s.PreferCredit = false;
                 }
                 s.PreferLocation = ConvertFromDBVal<int>(reader[17]);
-                s.Progression = ConvertFromDBVal<int>(reader[18]);
-                s.Research_name = ConvertFromDBVal<string>(reader[19]);
+                s.Minor = ConvertFromDBVal<string>(reader[18]);
+                s.Progression = ConvertFromDBVal<int>(reader[19]);
+                s.Research_name = ConvertFromDBVal<string>(reader[20]);
 
                 sl.Add(s);
             }
@@ -196,7 +199,7 @@ namespace RMM_Server.Domains
             string query = $"INSERT into student VALUES (" +
                 $" '{s.Id}', '{s.FirstName}', '{s.LastName}', '{s.GPA}', '{s.GraduationMonth}', '{s.GraduationYear}'," +
                 $" '{s.Major}', '{s.Skills}', '{s.Link1}', '{s.Link2}', '{s.Link3}', '{s.ResearchInterest}'," +
-                $" '{s.ResearchProject}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}')";
+                $" '{s.ResearchProject}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}', '{s.Minor}')";
             MySqlCommand com = new MySqlCommand(query, conn);
             MySqlDataReader reader = com.ExecuteReader();
             reader.Close();
