@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace RMM_Server.Models
 {
+    // This is the model for participant table in dB
     public class Progress
     {
         public int progress { get; set; }
