@@ -77,6 +77,21 @@ namespace RMM_Server.Domains
             return fl;
         }
 
+        public Faculty CreateFaculty(Faculty f)
+        {
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+           // string query = $"INSERT into student VALUES (" +
+           //     $" '{f.Id}', '{f.FirstName}', '{f.LastName}', '{s.GPA}', '{s.GraduationMonth}', '{s.GraduationYear}'," +
+           //     $" '{s.Major}', '{s.Skills}', '{s.Link1}', '{s.Link2}', '{s.Link3}', '{s.ResearchInterest}'," +
+           //     $" '{s.ResearchProject}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}')";
+           // MySqlCommand com = new MySqlCommand(query, conn);
+           // MySqlDataReader reader = com.ExecuteReader();
+           // reader.Close();
+
+            return f;
+        }
+
         public static T ConvertFromDBVal<T>(object obj)
         {
             if (obj == null || obj == DBNull.Value)
