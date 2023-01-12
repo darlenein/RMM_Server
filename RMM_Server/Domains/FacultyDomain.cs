@@ -31,16 +31,12 @@ namespace RMM_Server.Domains
                 f.Link1 = ConvertFromDBVal<string>(reader[7]);
                 f.Link2 = ConvertFromDBVal<string>(reader[8]);
                 f.Link3 = ConvertFromDBVal<string>(reader[9]);
-                f.ResearchId = ConvertFromDBVal<int>(reader[10]);
-                f.StudentId = ConvertFromDBVal<string>(reader[11]);
-                f.AboutMe = ConvertFromDBVal<string>(reader[12]);
-                f.ResearchInterest = ConvertFromDBVal<string>(reader[13]);
-                f.ProfileUrl = ConvertFromDBVal<string>(reader[14]);
+                f.AboutMe = ConvertFromDBVal<string>(reader[10]);
+                f.ResearchInterest = ConvertFromDBVal<string>(reader[11]);
+                f.ProfileUrl = ConvertFromDBVal<string>(reader[12]);
             }
             reader.Close();
-
             return f;
-
         }
 
         public List<Faculty> GetAllFaculty()
@@ -64,11 +60,9 @@ namespace RMM_Server.Domains
                 f.Link1 = ConvertFromDBVal<string>(reader[7]);
                 f.Link2 = ConvertFromDBVal<string>(reader[8]);
                 f.Link3 = ConvertFromDBVal<string>(reader[9]);
-                f.ResearchId = ConvertFromDBVal<int>(reader[10]);
-                f.StudentId = ConvertFromDBVal<string>(reader[11]);
-                f.AboutMe = ConvertFromDBVal<string>(reader[12]);
-                f.ResearchInterest = ConvertFromDBVal<string>(reader[13]);
-                f.ProfileUrl = ConvertFromDBVal<string>(reader[14]);
+                f.AboutMe = ConvertFromDBVal<string>(reader[10]);
+                f.ResearchInterest = ConvertFromDBVal<string>(reader[11]);
+                f.ProfileUrl = ConvertFromDBVal<string>(reader[12]);
 
                 fl.Add(f);
             }
@@ -81,15 +75,25 @@ namespace RMM_Server.Domains
         {
             DatabaseService ds = new DatabaseService();
             MySqlConnection conn = ds.Connect();
-           // string query = $"INSERT into student VALUES (" +
-           //     $" '{f.Id}', '{f.FirstName}', '{f.LastName}', '{s.GPA}', '{s.GraduationMonth}', '{s.GraduationYear}'," +
-           //     $" '{s.Major}', '{s.Skills}', '{s.Link1}', '{s.Link2}', '{s.Link3}', '{s.ResearchInterest}'," +
-           //     $" '{s.ResearchProject}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}')";
-           // MySqlCommand com = new MySqlCommand(query, conn);
-           // MySqlDataReader reader = com.ExecuteReader();
-           // reader.Close();
+            string query = $"INSERT into faculty VALUES (" +
+                $" '{f.Id}', '{f.FirstName}', '{f.LastName}', '{f.Title}', '{f.Email}', '{f.Office}'," +
+                $" '{f.Phone}', '{f.Link1}', '{f.Link2}', '{f.Link3}', '{f.AboutMe}'," +
+                $" '{f.ResearchInterest}', '{f.ProfileUrl}')";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
 
             return f;
+        }
+
+        public void DeleteFacultyByID(string id)
+        {
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"DELETE from faculty WHERE faculty_id = '{id}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
         }
 
         public static T ConvertFromDBVal<T>(object obj)

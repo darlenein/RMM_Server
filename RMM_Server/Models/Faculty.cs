@@ -17,8 +17,6 @@ namespace RMM_Server.Models
         public string Link1 { get; set; }
         public string Link2 { get; set; }
         public string Link3 { get; set; }
-        public int ResearchId { get; set; }
-        public string StudentId { get; set; }
         public string AboutMe { get; set; }
         public string ResearchInterest { get; set; }
         public string ProfileUrl { get; set; }

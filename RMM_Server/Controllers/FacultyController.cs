@@ -32,10 +32,12 @@ namespace RMM_Server.Controllers
             return result;
         }
 
-        // POST api/<FacultyController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("createFaculty")]
+        public Faculty CreateFacultyProfile(Faculty f)
         {
+            FacultyDomain fd = new FacultyDomain();
+            fd.CreateFaculty(f);
+            return f;
         }
 
         // PUT api/<FacultyController>/5
