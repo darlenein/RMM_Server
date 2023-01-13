@@ -36,5 +36,37 @@ namespace RMM_Server.Tests
             result = rd.GetAppProgression(p.research_id, p.student_id);
             Assert.AreEqual(result.progress, p.progress);
         }
+
+        [Test]
+        public void TestCreateResearchCreatesResearch()
+        {
+            //arrange
+            string[] s = { "Computer", "English" };
+            Research r = new Research()
+            {
+                Id = 999998,
+                Faculty_Id = "dxi1017",
+                Name = "research",
+                Description = "description",
+                Location = 1,
+                Required_skills = "required",
+                Encouraged_Skills = "encouraged",
+                Start_Date = "2022-11-19",
+                End_Date = "2023-11-19",
+                Active = true,
+                Address = "123 fake st",
+                IsPaid = 1,
+                IsNonpaid = 0,
+                IsCredit = 1,
+                ResearchDepts = s
+            };
+
+            //act
+            var result = rd.AddResearch(r);
+
+            //assert
+            Assert.NotNull(result);
+            rd.DeleteResearchByID(999998);
+        }
     }
 }

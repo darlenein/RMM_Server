@@ -19,7 +19,7 @@ namespace RMM_Server.Tests
         }
 
         [Test]
-        public void TestCreateStudentCreatesStudent()
+        public void TestCreateFacultyCreatesFaculty()
         {
             //arrange
             Faculty f = new Faculty()

@@ -38,11 +38,12 @@ namespace RMM_Server.Controllers
             return result;
         }
 
-
-        // POST api/<ResearchController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("createResearch")]
+        public Research CreateResearch(Research r)
         {
+            ResearchDomain rd = new ResearchDomain();
+            rd.AddResearch(r);
+            return r;
         }
 
         // PUT api/<ResearchController>/5
