@@ -27,7 +27,7 @@ namespace RMM_Server.Domains
                 r.Faculty_Id = ConvertFromDBVal<string>(reader[1]);
                 r.Name = ConvertFromDBVal<string>(reader[2]);
                 r.Description = ConvertFromDBVal<string>(reader[3]);
-                r.Location = ConvertFromDBVal<int>(reader[4]);
+                r.Location = ConvertFromDBVal<string>(reader[4]);
                 r.Required_skills = ConvertFromDBVal<string>(reader[5]);
                 r.Encouraged_Skills = ConvertFromDBVal<string>(reader[6]);
                 r.Start_Date = ConvertFromDBVal<DateTime>(reader[7]).ToShortDateString();
@@ -41,9 +41,9 @@ namespace RMM_Server.Domains
                     r.Active = false;
                 }
                 r.Address = ConvertFromDBVal<string>(reader[10]);
-                r.IsPaid = ConvertFromDBVal<int>(reader[11]);
-                r.IsNonpaid = ConvertFromDBVal<int>(reader[12]);
-                r.IsCredit = ConvertFromDBVal<int>(reader[13]);
+                r.IsPaid = ConvertFromDBVal<sbyte>(reader[11]);
+                r.IsNonpaid = ConvertFromDBVal<sbyte>(reader[12]);
+                r.IsCredit = ConvertFromDBVal<sbyte>(reader[13]);
                 r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
                 r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
 
@@ -70,7 +70,7 @@ namespace RMM_Server.Domains
                 r.Faculty_Id = ConvertFromDBVal<string>(reader[1]);
                 r.Name = ConvertFromDBVal<string>(reader[2]);
                 r.Description = ConvertFromDBVal<string>(reader[3]);
-                r.Location = ConvertFromDBVal<int>(reader[4]);
+                r.Location = ConvertFromDBVal<string>(reader[4]);
                 r.Required_skills = ConvertFromDBVal<string>(reader[5]);
                 r.Encouraged_Skills = ConvertFromDBVal<string>(reader[6]);
                 r.Start_Date = ConvertFromDBVal<DateTime>(reader[7]).ToShortDateString();
@@ -84,9 +84,9 @@ namespace RMM_Server.Domains
                     r.Active = false;
                 }
                 r.Address = ConvertFromDBVal<string>(reader[10]);
-                r.IsPaid = ConvertFromDBVal<int>(reader[11]);
-                r.IsNonpaid = ConvertFromDBVal<int>(reader[12]);
-                r.IsCredit = ConvertFromDBVal<int>(reader[13]);
+                r.IsPaid = ConvertFromDBVal<sbyte>(reader[11]);
+                r.IsNonpaid = ConvertFromDBVal<sbyte>(reader[12]);
+                r.IsCredit = ConvertFromDBVal<sbyte>(reader[13]);
                 r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
                 r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
 
@@ -115,7 +115,7 @@ namespace RMM_Server.Domains
                 r.Faculty_Id = ConvertFromDBVal<string>(reader[1]);
                 r.Name = ConvertFromDBVal<string>(reader[2]);
                 r.Description = ConvertFromDBVal<string>(reader[3]);
-                r.Location = ConvertFromDBVal<int>(reader[4]);
+                r.Location = ConvertFromDBVal<string>(reader[4]);
                 r.Required_skills = ConvertFromDBVal<string>(reader[5]);
                 r.Encouraged_Skills = ConvertFromDBVal<string>(reader[6]);
                 r.Start_Date = ConvertFromDBVal<DateTime>(reader[7]).ToShortDateString();
@@ -129,9 +129,9 @@ namespace RMM_Server.Domains
                     r.Active = false;
                 }
                 r.Address = ConvertFromDBVal<string>(reader[10]);
-                r.IsPaid = ConvertFromDBVal<int>(reader[11]);
-                r.IsNonpaid = ConvertFromDBVal<int>(reader[12]);
-                r.IsCredit = ConvertFromDBVal<int>(reader[13]);
+                r.IsPaid = ConvertFromDBVal<sbyte>(reader[11]);
+                r.IsNonpaid = ConvertFromDBVal<sbyte>(reader[12]);
+                r.IsCredit = ConvertFromDBVal<sbyte>(reader[13]);
                 r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
                 r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
                 r.Progression = ConvertFromDBVal<int>(reader[16]);

@@ -11,7 +11,7 @@ namespace RMM_Server.Models
         public string Faculty_Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Location { get; set; }
+        public string Location { get; set; }
         public string Required_skills { get; set; }
         public string Encouraged_Skills { get; set; }
         public string Start_Date { get; set; }

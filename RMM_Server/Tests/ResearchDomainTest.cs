@@ -48,7 +48,7 @@ namespace RMM_Server.Tests
                 Faculty_Id = "dxi1017",
                 Name = "research",
                 Description = "description",
-                Location = 1,
+                Location = "location",
                 Required_skills = "required",
                 Encouraged_Skills = "encouraged",
                 Start_Date = "2022-11-19",
