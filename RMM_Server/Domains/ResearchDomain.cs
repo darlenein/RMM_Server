@@ -58,7 +58,7 @@ namespace RMM_Server.Domains
         {
             DatabaseService ds = new DatabaseService();
             MySqlConnection conn = ds.Connect();
-            string query = $"SELECT a.*, b.first_name, b.last_name FROM research AS a " +
+            string query = $"SELECT a.*, b.first_name, b.last_name, b.faculty_id FROM research AS a " +
                 $"JOIN faculty as B ON a.faculty_id = b.faculty_id;";
             MySqlCommand com = new MySqlCommand(query, conn);
             MySqlDataReader reader = com.ExecuteReader();
@@ -89,6 +89,7 @@ namespace RMM_Server.Domains
                 r.IsCredit = ConvertFromDBVal<sbyte>(reader[13]);
                 r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
                 r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
+                r.Faculty_Id = ConvertFromDBVal<string>(reader[16]);
 
                 research_list.Add(r);
             }
