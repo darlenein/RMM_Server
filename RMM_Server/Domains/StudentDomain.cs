@@ -34,7 +34,7 @@ namespace RMM_Server.Domains
                 s.ResearchInterest = ConvertFromDBVal<string>(reader[11]);
                 s.ResearchProject = ConvertFromDBVal<string>(reader[12]);
                 s.Email = ConvertFromDBVal<string>(reader[13]);
-                if (ConvertFromDBVal<int>(reader[14]) == 1)
+                if (ConvertFromDBVal<int>(reader[14]) == Convert.ToSByte(1))
                 {
                     s.PreferPaid = true;
                 }
@@ -42,7 +42,7 @@ namespace RMM_Server.Domains
                 {
                     s.PreferPaid = false;
                 }
-                if (ConvertFromDBVal<sbyte>(reader[15]) == 1)
+                if (ConvertFromDBVal<int>(reader[15]) == Convert.ToSByte(1))
                 {
                     s.PreferNonpaid = true;
                 }
@@ -50,7 +50,7 @@ namespace RMM_Server.Domains
                 {
                     s.PreferNonpaid = false;
                 }
-                if (ConvertFromDBVal<sbyte>(reader[16]) == 1)
+                if (ConvertFromDBVal<int>(reader[16]) == Convert.ToSByte(1))
                 {
                     s.PreferCredit = true;
                 }
