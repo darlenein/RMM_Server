@@ -144,7 +144,27 @@ namespace RMM_Server.Domains
             return research_list;
         }
 
+        public Progress AddResearchApplicant(Progress p)
+        {
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"INSERT into participant VALUES ({p.research_id}, '{p.student_id}', 0)";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
 
+            return p;
+        }
+        public void DeleteResearchApplicant(int rID, string sID)
+        {
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"DELETE from participant " +
+                $"WHERE research_id = {rID} AND student_id = '{sID}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
+        }
         public void UpdateApplicantProgress(int p, int rID, string sID)
         {
             DatabaseService ds = new DatabaseService();

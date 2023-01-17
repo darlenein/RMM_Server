@@ -68,5 +68,24 @@ namespace RMM_Server.Tests
             Assert.NotNull(result);
             rd.DeleteResearchByID(999998);
         }
+
+        [Test]
+        public void TestAddResearchApplicant()
+        {
+            //arrange
+            Progress p = new Progress()
+            {
+                progress = 0,
+                research_id = 999998,
+                student_id = "dxi1017"
+            };
+
+            //act
+            var result = rd.AddResearchApplicant(p);
+
+            //assert
+            Assert.NotNull(result);
+            rd.DeleteResearchApplicant(999998, "dxi1017");
+        }
     }
 }
