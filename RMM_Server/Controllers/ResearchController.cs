@@ -14,6 +14,7 @@ namespace RMM_Server.Controllers
     [ApiController]
     public class ResearchController : ControllerBase
     {
+        // gets
         [HttpGet("getResearchByFaculty/{faculty_id}")]
         public List<Research> GetResearchByFaculty(string faculty_id)
         {
@@ -38,12 +39,21 @@ namespace RMM_Server.Controllers
             return result;
         }
 
+        // post
         [HttpPost("createResearch")]
         public Research CreateResearch(Research r)
         {
             ResearchDomain rd = new ResearchDomain();
             rd.AddResearch(r);
             return r;
+        }
+
+        [HttpPost("addResearchApplicant")]
+        public Progress CreateResearchApplicant(Progress p)
+        {
+            ResearchDomain rd = new ResearchDomain();
+            rd.AddResearchApplicant(p);
+            return p;
         }
 
         // PUT api/<ResearchController>/5
@@ -56,9 +66,11 @@ namespace RMM_Server.Controllers
 
 
         // DELETE api/<ResearchController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("deleteResearchApplicant")]
+        public void DeleteResearchApp(Progress p)
         {
+            ResearchDomain r = new ResearchDomain();
+            r.DeleteResearchApplicant(p.research_id, p.student_id);
         }
     }
 }
