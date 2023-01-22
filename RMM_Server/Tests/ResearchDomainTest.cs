@@ -55,9 +55,9 @@ namespace RMM_Server.Tests
                 End_Date = "2023-11-19",
                 Active = true,
                 Address = "123 fake st",
-                IsPaid = 1,
-                IsNonpaid = 0,
-                IsCredit = 1,
+                IsPaid = true,
+                IsNonpaid = false,
+                IsCredit = true,
                 ResearchDepts = s
             };
 

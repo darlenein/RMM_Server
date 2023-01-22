@@ -26,7 +26,7 @@ namespace RMM_Server.Models
         public bool PreferCredit { get; set; }
         public int Progression { get; set; }
         public string Research_name { get; set; }
-        public int PreferLocation { get; set; }
+        public string PreferLocation { get; set; }
 
         public string Minor { get; set; }
 

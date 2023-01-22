@@ -16,7 +16,6 @@ namespace RMM_Server.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly ILogger _logger;
         // GET: api/<StudentController>
         [HttpGet("getStudentById/{id}")]
         public Student GetStudentById(string id)

@@ -46,7 +46,7 @@ namespace RMM_Server.Tests
                 PreferPaid = true,
                 PreferNonpaid = false,
                 PreferCredit = true,
-                PreferLocation = 2,
+                PreferLocation = "Online",
                 Minor = "Psychology"
             };
 

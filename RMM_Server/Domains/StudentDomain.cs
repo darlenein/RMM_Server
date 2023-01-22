@@ -58,7 +58,7 @@ namespace RMM_Server.Domains
                 {
                     s.PreferCredit = false;
                 }
-                s.PreferLocation = ConvertFromDBVal<int>(reader[17]);
+                s.PreferLocation = ConvertFromDBVal<string>(reader[17]);
                 s.Minor = ConvertFromDBVal<string>(reader[18]);
             }
             reader.Close();
@@ -115,7 +115,7 @@ namespace RMM_Server.Domains
                 {
                     s.PreferCredit = false;
                 }
-                s.PreferLocation = ConvertFromDBVal<int>(reader[17]);
+                s.PreferLocation = ConvertFromDBVal<string>(reader[17]);
                 s.Minor = ConvertFromDBVal<string>(reader[18]);
                 sl.Add(s);
             }
@@ -176,7 +176,7 @@ namespace RMM_Server.Domains
                 {
                     s.PreferCredit = false;
                 }
-                s.PreferLocation = ConvertFromDBVal<int>(reader[17]);
+                s.PreferLocation = ConvertFromDBVal<string>(reader[17]);
                 s.Minor = ConvertFromDBVal<string>(reader[18]);
                 s.Progression = ConvertFromDBVal<int>(reader[19]);
                 s.Research_name = ConvertFromDBVal<string>(reader[20]);

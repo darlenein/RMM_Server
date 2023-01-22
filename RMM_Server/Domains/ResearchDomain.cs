@@ -41,9 +41,30 @@ namespace RMM_Server.Domains
                     r.Active = false;
                 }
                 r.Address = ConvertFromDBVal<string>(reader[10]);
-                r.IsPaid = ConvertFromDBVal<sbyte>(reader[11]);
-                r.IsNonpaid = ConvertFromDBVal<sbyte>(reader[12]);
-                r.IsCredit = ConvertFromDBVal<sbyte>(reader[13]);
+                if (ConvertFromDBVal<sbyte>(reader[11]) == Convert.ToSByte(1))
+                {
+                    r.IsPaid = true;
+                }
+                else
+                {
+                    r.IsPaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[12]) == Convert.ToSByte(1))
+                {
+                    r.IsNonpaid = true;
+                }
+                else
+                {
+                    r.IsNonpaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[13]) == Convert.ToSByte(1))
+                {
+                    r.IsCredit = true;
+                }
+                else
+                {
+                    r.IsCredit = false;
+                }
                 r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
                 r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
 
@@ -87,9 +108,30 @@ namespace RMM_Server.Domains
                     r.Active = false;
                 }
                 r.Address = ConvertFromDBVal<string>(reader[10]);
-                r.IsPaid = ConvertFromDBVal<sbyte>(reader[11]);
-                r.IsNonpaid = ConvertFromDBVal<sbyte>(reader[12]);
-                r.IsCredit = ConvertFromDBVal<sbyte>(reader[13]);
+                if (ConvertFromDBVal<sbyte>(reader[11]) == Convert.ToSByte(1))
+                {
+                    r.IsPaid = true;
+                }
+                else
+                {
+                    r.IsPaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[12]) == Convert.ToSByte(1))
+                {
+                    r.IsNonpaid = true;
+                }
+                else
+                {
+                    r.IsNonpaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[13]) == Convert.ToSByte(1))
+                {
+                    r.IsCredit = true;
+                }
+                else
+                {
+                    r.IsCredit = false;
+                }
                 r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
                 r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
                 r.Faculty_Id = ConvertFromDBVal<string>(reader[16]);
@@ -133,9 +175,30 @@ namespace RMM_Server.Domains
                     r.Active = false;
                 }
                 r.Address = ConvertFromDBVal<string>(reader[10]);
-                r.IsPaid = ConvertFromDBVal<sbyte>(reader[11]);
-                r.IsNonpaid = ConvertFromDBVal<sbyte>(reader[12]);
-                r.IsCredit = ConvertFromDBVal<sbyte>(reader[13]);
+                if (ConvertFromDBVal<sbyte>(reader[11]) == Convert.ToSByte(1))
+                {
+                    r.IsPaid = true;
+                }
+                else
+                {
+                    r.IsPaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[12]) == Convert.ToSByte(1))
+                {
+                    r.IsNonpaid = true;
+                }
+                else
+                {
+                    r.IsNonpaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[13]) == Convert.ToSByte(1))
+                {
+                    r.IsCredit = true;
+                }
+                else
+                {
+                    r.IsCredit = false;
+                }
                 r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
                 r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
                 r.Progression = ConvertFromDBVal<int>(reader[16]);
@@ -272,7 +335,7 @@ namespace RMM_Server.Domains
             StudentDomain sd = new StudentDomain();
             DepartmentDomain dd = new DepartmentDomain();
             List<Research> result = GetAllResearch();
-
+            List<Research> activeResearch = result.Where(x => x.Active == true).ToList();
             Student student = sd.GetStudent(s);
 
             //Have to get each researches list
@@ -280,12 +343,10 @@ namespace RMM_Server.Domains
             {
                 r.ResearchDepts = dd.GetSubDeptByResearchId(r.Id);
             }
+            var sortedByMinor = activeResearch.OrderByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
+            var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
 
-            var sortedMinor = result.OrderByDescending(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
-            var sortedMajor = sortedMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major).ThenBy(x => x.ResearchDepts[2] == student.Major).ToList();
-            
-
-            return sortedMajor;
+            return sortedByMajor;
         }
 
         public static T ConvertFromDBVal<T>(object obj)

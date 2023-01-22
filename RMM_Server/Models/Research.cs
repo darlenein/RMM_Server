@@ -22,9 +22,9 @@ namespace RMM_Server.Models
         public string Faculty_LastName { get; set; }
         public int Research_id { get; set; }
         public int Progression { get; set; }
-        public int IsPaid { get; set; }
-        public int IsNonpaid { get; set; }
-        public int IsCredit { get; set; }
+        public bool IsPaid { get; set; }
+        public bool IsNonpaid { get; set; }
+        public bool IsCredit { get; set; }
         public string[] ResearchDepts { get; set; }
         public float SearchScore { get; set; }
 
