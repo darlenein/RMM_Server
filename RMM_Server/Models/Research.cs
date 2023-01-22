@@ -26,6 +26,7 @@ namespace RMM_Server.Models
         public int IsNonpaid { get; set; }
         public int IsCredit { get; set; }
         public string[] ResearchDepts { get; set; }
+        public float SearchScore { get; set; }
 
     }
 }

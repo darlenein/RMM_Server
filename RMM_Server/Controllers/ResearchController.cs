@@ -31,6 +31,14 @@ namespace RMM_Server.Controllers
             return result;
         }
 
+        [HttpGet("getAllResearchSorted/{student_id}")]
+        public List<Research> GetAllResearchSorted(string student_id)
+        {
+            ResearchDomain rd = new ResearchDomain();
+            List<Research> result = rd.GetSortedResearchesByStudentId(student_id);
+            return result;
+        }
+
         [HttpGet("getAllResearchByStudent/{student_id}")]
         public List<Research> GetAllResearchByStudentId(string student_id)
         {

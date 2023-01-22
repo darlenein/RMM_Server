@@ -51,6 +51,30 @@ namespace RMM_Server.Domains
             return sdl;
         }
 
+        public string[] GetSubDeptByResearchId(int rID)
+        {
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"SELECT a.*, b.name FROM researchdept AS a JOIN subdepartment as b " +
+                $"ON a.subdepartment_id = b.subdepartment_id WHERE research_id = '{rID}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            string[] sdl = new string[3];
+            int counter = 0;
+            while (reader.Read())
+            {
+                //SubDepartment sd = new SubDepartment();
+                //sd.research_id = ConvertFromDBVal<int>(reader[0]);
+                //sd.Id = ConvertFromDBVal<int>(reader[1]);
+                //sd.Name = ConvertFromDBVal<string>(reader[2]);
+                sdl[counter] = (ConvertFromDBVal<string>(reader[2]));
+                counter++;
+            }
+            reader.Close();
+
+            return sdl;
+        }
+
         public static T ConvertFromDBVal<T>(object obj)
         {
             if (obj == null || obj == DBNull.Value)

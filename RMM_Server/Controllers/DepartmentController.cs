@@ -31,6 +31,14 @@ namespace RMM_Server.Controllers
             return result;
         }
 
+        //[HttpGet("getAllSubDeptByResearchId/{id}")]
+        //public List<SubDepartment> GetAllSubDeptByResearchId(int id)
+        //{
+        //    DepartmentDomain sd = new DepartmentDomain();
+        //    List<SubDepartment> result = sd.GetSubDeptByResearchId(id);
+        //    return result;
+        //}
+
         // POST api/<DepartmentController>
         [HttpPost]
         public void Post([FromBody] string value)

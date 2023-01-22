@@ -56,6 +56,9 @@ namespace RMM_Server.Domains
 
         public List<Research> GetAllResearch()
         {
+            SearchService ss = new SearchService();
+            ss.Search();
+
             DatabaseService ds = new DatabaseService();
             MySqlConnection conn = ds.Connect();
             string query = $"SELECT a.*, b.first_name, b.last_name, b.faculty_id FROM research AS a " +
@@ -262,6 +265,27 @@ namespace RMM_Server.Domains
             MySqlCommand com = new MySqlCommand(query, conn);
             MySqlDataReader reader = com.ExecuteReader();
             reader.Close();
+        }
+
+        public List<Research> GetSortedResearchesByStudentId(string s)
+        {
+            StudentDomain sd = new StudentDomain();
+            DepartmentDomain dd = new DepartmentDomain();
+            List<Research> result = GetAllResearch();
+
+            Student student = sd.GetStudent(s);
+
+            //Have to get each researches list
+            foreach (Research r in result)
+            {
+                r.ResearchDepts = dd.GetSubDeptByResearchId(r.Id);
+            }
+
+            var sortedMinor = result.OrderByDescending(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
+            var sortedMajor = sortedMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major).ThenBy(x => x.ResearchDepts[2] == student.Major).ToList();
+            
+
+            return sortedMajor;
         }
 
         public static T ConvertFromDBVal<T>(object obj)

@@ -10,5 +10,6 @@ namespace RMM_Server.Models
         public int Id { get; set; }
         public int Dept_Id { get; set; }
         public string Name { get; set; }
+        public int research_id { get; set; }
     }
 }
