@@ -47,6 +47,14 @@ namespace RMM_Server.Controllers
             return result;
         }
 
+        [HttpGet("getSearchedResearchList/{keyword}")]
+        public List<Research> GetSearchedResearchList(string keyword)
+        {
+            ResearchDomain rd = new ResearchDomain();
+            List<Research> result = rd.GetSearchedResearchByKeyword(keyword);
+            return result;
+        }
+
         // post
         [HttpPost("createResearch")]
         public Research CreateResearch(Research r)

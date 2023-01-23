@@ -49,7 +49,7 @@ namespace RMM_Server.Tests
                 Name = "research",
                 Description = "description",
                 Location = "location",
-                Required_skills = "required",
+                Required_Skills = "required",
                 Encouraged_Skills = "encouraged",
                 Start_Date = "2022-11-19",
                 End_Date = "2023-11-19",

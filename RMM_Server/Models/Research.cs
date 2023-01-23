@@ -12,7 +12,7 @@ namespace RMM_Server.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
-        public string Required_skills { get; set; }
+        public string Required_Skills { get; set; }
         public string Encouraged_Skills { get; set; }
         public string Start_Date { get; set; }
         public string End_Date { get; set; }
@@ -27,6 +27,7 @@ namespace RMM_Server.Models
         public bool IsCredit { get; set; }
         public string[] ResearchDepts { get; set; }
         public float SearchScore { get; set; }
+        public string GUID { get; set; }
 
     }
 }

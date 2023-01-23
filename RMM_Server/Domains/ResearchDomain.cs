@@ -28,7 +28,7 @@ namespace RMM_Server.Domains
                 r.Name = ConvertFromDBVal<string>(reader[2]);
                 r.Description = ConvertFromDBVal<string>(reader[3]);
                 r.Location = ConvertFromDBVal<string>(reader[4]);
-                r.Required_skills = ConvertFromDBVal<string>(reader[5]);
+                r.Required_Skills = ConvertFromDBVal<string>(reader[5]);
                 r.Encouraged_Skills = ConvertFromDBVal<string>(reader[6]);
                 r.Start_Date = ConvertFromDBVal<DateTime>(reader[7]).ToShortDateString();
                 r.End_Date = ConvertFromDBVal<DateTime>(reader[8]).ToShortDateString();
@@ -77,9 +77,6 @@ namespace RMM_Server.Domains
 
         public List<Research> GetAllResearch()
         {
-            SearchService ss = new SearchService();
-            ss.Search();
-
             DatabaseService ds = new DatabaseService();
             MySqlConnection conn = ds.Connect();
             string query = $"SELECT a.*, b.first_name, b.last_name, b.faculty_id FROM research AS a " +
@@ -95,7 +92,7 @@ namespace RMM_Server.Domains
                 r.Name = ConvertFromDBVal<string>(reader[2]);
                 r.Description = ConvertFromDBVal<string>(reader[3]);
                 r.Location = ConvertFromDBVal<string>(reader[4]);
-                r.Required_skills = ConvertFromDBVal<string>(reader[5]);
+                r.Required_Skills = ConvertFromDBVal<string>(reader[5]);
                 r.Encouraged_Skills = ConvertFromDBVal<string>(reader[6]);
                 r.Start_Date = ConvertFromDBVal<DateTime>(reader[7]).ToShortDateString();
                 r.End_Date = ConvertFromDBVal<DateTime>(reader[8]).ToShortDateString();
@@ -162,7 +159,7 @@ namespace RMM_Server.Domains
                 r.Name = ConvertFromDBVal<string>(reader[2]);
                 r.Description = ConvertFromDBVal<string>(reader[3]);
                 r.Location = ConvertFromDBVal<string>(reader[4]);
-                r.Required_skills = ConvertFromDBVal<string>(reader[5]);
+                r.Required_Skills = ConvertFromDBVal<string>(reader[5]);
                 r.Encouraged_Skills = ConvertFromDBVal<string>(reader[6]);
                 r.Start_Date = ConvertFromDBVal<DateTime>(reader[7]).ToShortDateString();
                 r.End_Date = ConvertFromDBVal<DateTime>(reader[8]).ToShortDateString();
@@ -272,7 +269,7 @@ namespace RMM_Server.Domains
 
             // add research to db
             string query = $"INSERT into research VALUES (" +
-                $" null, '{r.Faculty_Id}', '{r.Name}', '{r.Description}', '{r.Location}', '{r.Required_skills}'," +
+                $" null, '{r.Faculty_Id}', '{r.Name}', '{r.Description}', '{r.Location}', '{r.Required_Skills}'," +
                 $" '{r.Encouraged_Skills}', '{r.Start_Date}', '{r.End_Date}', '{active}', '{r.Address}', '{r.IsPaid}'," +
                 $" '{r.IsNonpaid}', '{r.IsCredit}')";
             MySqlCommand com = new MySqlCommand(query, conn);
@@ -335,7 +332,7 @@ namespace RMM_Server.Domains
             StudentDomain sd = new StudentDomain();
             DepartmentDomain dd = new DepartmentDomain();
             List<Research> result = GetAllResearch();
-            List<Research> activeResearch = result.Where(x => x.Active == true).ToList();
+            //List<Research> activeResearch = result.Where(x => x.Active == true).ToList();
             Student student = sd.GetStudent(s);
 
             //Have to get each researches list
@@ -343,10 +340,20 @@ namespace RMM_Server.Domains
             {
                 r.ResearchDepts = dd.GetSubDeptByResearchId(r.Id);
             }
-            var sortedByMinor = activeResearch.OrderByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
+            var sortedByMinor = result.OrderByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
             var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
+            var sortedByStatus = sortedByMajor.OrderByDescending(x => x.Active == true).ToList();
 
-            return sortedByMajor;
+            return sortedByStatus;
+        }
+
+        public List<Research> GetSearchedResearchByKeyword(string keyword)
+        {
+            SearchService ss = new SearchService();
+            List<Research> result = GetAllResearch();
+            List<Research> temp = ss.Search(keyword, result);
+            var searchedResults = temp.OrderByDescending(x => x.SearchScore).ToList();
+            return searchedResults;
         }
 
         public static T ConvertFromDBVal<T>(object obj)

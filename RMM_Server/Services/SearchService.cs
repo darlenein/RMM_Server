@@ -5,6 +5,7 @@ using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
+using RMM_Server.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,16 +16,14 @@ namespace RMM_Server.Services
 {
     public class SearchService
     {
-        public void Search()
+        public List<Research> Search(string keyword, List<Research> rList)
         {
             // Ensures index backward compatibility
             const LuceneVersion AppLuceneVersion = LuceneVersion.LUCENE_48;
 
             // Construct a machine-independent path for the index
-            var basePath = Environment.GetFolderPath(
-                Environment.SpecialFolder.CommonApplicationData);
+            var basePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             var indexPath = Path.Combine(basePath, "index");
-
             using var dir = FSDirectory.Open(indexPath);
 
             // Create an analyzer to process the text
@@ -34,50 +33,58 @@ namespace RMM_Server.Services
             var indexConfig = new IndexWriterConfig(AppLuceneVersion, analyzer);
             using var writer = new IndexWriter(dir, indexConfig);
 
-            var source = new
+            foreach (Research r in rList)
             {
-                Name = "fox",
-                FavoritePhrase = "fox"
-            };
+                var source = new
+                {
+                    GUID = Guid.NewGuid().ToString(),
+                    Faculty_FirstName = r.Faculty_FirstName.Trim().ToLower(),
+                    Faculty_LastName = r.Faculty_LastName.Trim().ToLower(),
+                    Description = r.Description.Trim().ToLower(),
+                    Research_Name = r.Name.Trim().ToLower(),
 
-            var doc = new Document
-            {
-                // StringField indexes but doesn't tokenize
-                new StringField("name",
-                    source.Name,
-                    Field.Store.YES),
-                new TextField("favoritePhrase",
-                    source.FavoritePhrase,
-                    Field.Store.YES)
-            };
+                    // condition ? consequent : alt
+                    Encouraged_Skills = r.Encouraged_Skills == null ? "" : r.Encouraged_Skills.Trim().ToLower(),
+                    Required_Skills = r.Required_Skills == null ? "" : r.Required_Skills.Trim().ToLower(),
+                };
 
-            writer.AddDocument(doc);
-            writer.Flush(triggerMerge: false, applyAllDeletes: false);
+                r.GUID = source.GUID;
+                var doc = new Document
+                {
+                    // StringField indexes but doesn't tokenize
+                    new StringField("GUID", source.GUID, Field.Store.YES),
+                    new TextField("Faculty_FirstName", source.Faculty_FirstName, Field.Store.YES),
+                    new TextField("Faculty_LastName", source.Faculty_LastName, Field.Store.YES),
+                    new TextField("Description", source.Description, Field.Store.YES),
+                    new TextField("Research_Name", source.Research_Name, Field.Store.YES),
+                    new TextField("Encouraged_Skills", source.Encouraged_Skills, Field.Store.YES),
+                    new TextField("Required_Skills", source.Required_Skills, Field.Store.YES)
+                                        
+                };
+                writer.AddDocument(doc);
+            }
 
-            // Search with a phrase
-            /*            var phrase = new MultiPhraseQuery
-                        {
-                            new Term("favoritePhrase", "brown"),
-                            new Term("favoritePhrase", "fox")
-                        };*/
-            Term t = new Term("favoritePhrase", "fox");
-            TermQuery tq = new TermQuery(t);
+            writer.Commit();
+
+            string[] fieldNames = { "GUID", "Faculty_FirstName", "Faculty_LastName", "Description", "Research_Name", "Encouraged_Skills", "Required_Skills" };
+            var multiFieldQP = new MultiFieldQueryParser(AppLuceneVersion, fieldNames, analyzer);
+            Query query = multiFieldQP.Parse(keyword.Trim().ToLower());
+
             // Re-use the writer to get real-time updates
             using var reader = writer.GetReader(applyAllDeletes: true);
             var searcher = new IndexSearcher(reader);
-            var hits = searcher.Search(tq, 1).ScoreDocs;
+            var hits = searcher.Search(query, rList.Count).ScoreDocs;
 
-            // Display the output in a table
-            Console.WriteLine($"{"Score",10}" +
-                $" {"Name",-15}" +
-                $" {"Favorite Phrase",-40}");
             foreach (var hit in hits)
             {
-                var foundDoc = searcher.Doc(hit.Doc);
-                Console.WriteLine($"{hit.Score:f8}" +
-                    $" {foundDoc.Get("name"),-15}" +
-                    $" {foundDoc.Get("favoritePhrase"),-40}");
+                rList.ElementAt(hit.Doc).SearchScore = hit.Score;
             }
+
+            writer.DeleteAll();
+            writer.Commit();
+            writer.Dispose();
+            dir.Dispose();
+            return rList;
         }
     }
 }
