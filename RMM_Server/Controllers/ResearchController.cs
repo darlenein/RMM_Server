@@ -47,15 +47,32 @@ namespace RMM_Server.Controllers
             return result;
         }
 
-        [HttpGet("getSearchedResearchList/{keyword}")]
-        public List<Research> GetSearchedResearchList(string keyword)
+        // post
+        [HttpPost("getSearchedResearchList/{keyword}")]
+        public List<Research> GetSearchedResearchList(string keyword, List<Research> research)
         {
             ResearchDomain rd = new ResearchDomain();
-            List<Research> result = rd.GetSearchedResearchByKeyword(keyword);
+            List<Research> result = rd.GetSearchedResearchByKeyword(keyword, research);
             return result;
         }
 
-        // post
+        [HttpPost("getFilteredAndSearchedResearchList")]
+        public List<Research> GetFilteredAndSearchedResearchList(Filter f)
+        {
+            ResearchDomain rd = new ResearchDomain();
+            List<Research> result = rd.GetFilteredAndSearchedResearch(f);
+            return result;
+        }
+
+        [HttpPost("getFilteredResearchList")]
+        public List<Research> GetFilteredResearchList(Filter f)
+        {
+            ResearchDomain rd = new ResearchDomain();
+            List<Research> result = rd.GetFilteredResearch(f);
+            return result;
+        }
+
+
         [HttpPost("createResearch")]
         public Research CreateResearch(Research r)
         {

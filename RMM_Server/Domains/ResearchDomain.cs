@@ -340,20 +340,72 @@ namespace RMM_Server.Domains
             {
                 r.ResearchDepts = dd.GetSubDeptByResearchId(r.Id);
             }
-            var sortedByMinor = result.OrderByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
+            var sortedByMinor = result.OrderByDescending(x => x.Id).ThenByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
             var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
             var sortedByStatus = sortedByMajor.OrderByDescending(x => x.Active == true).ToList();
 
             return sortedByStatus;
         }
 
-        public List<Research> GetSearchedResearchByKeyword(string keyword)
+        public List<Research> GetFilteredAndSearchedResearch(Filter f)
+        {
+            List<Research> result;
+            if(f.keyword == "" && f.filterValue.Count > 0)
+            {
+                result = GetFilteredResearch(f);
+            }
+            else if(f.keyword == "" && f.filterValue.Count == 0)
+            {
+                ResearchDomain rd = new ResearchDomain();
+                result = rd.GetSortedResearchesByStudentId(f.psuID);
+            }
+            else
+            {
+                f.research = GetSearchedResearchByKeyword(f.keyword, f.research);
+                result = f.research;
+                if (f.filterValue.Count > 0) result = GetFilteredResearch(f);
+            }
+            result = result.Distinct().ToList();
+            return result;
+        }
+
+        public List<Research> GetSearchedResearchByKeyword(string keyword, List<Research> research)
         {
             SearchService ss = new SearchService();
-            List<Research> result = GetAllResearch();
-            List<Research> temp = ss.Search(keyword, result);
-            var searchedResults = temp.OrderByDescending(x => x.SearchScore).ToList();
+            List<Research> temp = ss.Search(keyword, research);
+            var searchedResults = temp.Where(x => x.SearchScore > 0).OrderByDescending(x => x.SearchScore).ToList();
             return searchedResults;
+        }
+
+        public List<Research> GetFilteredResearch(Filter f)
+        {
+            List<Research> filteredResults = new List<Research>();
+            List<Research> temp = new List<Research>();
+            
+            foreach(FilterValue fv in f.filterValue)
+            {
+                if(fv.categoryValue == "Department")
+                {
+                    temp = f.research.Where(x => x.ResearchDepts[0] == fv.checkedValue || x.ResearchDepts[1] == fv.checkedValue || x.ResearchDepts[2] == fv.checkedValue).ToList();
+                }
+                if(fv.categoryValue == "Status")
+                {
+                    bool value = Convert.ToBoolean(fv.checkedValue);
+                    temp = f.research.Where(x => x.Active == value).ToList();
+                }
+                if (fv.categoryValue == "Location")
+                {
+                    temp = f.research.Where(x => x.Location == fv.checkedValue).ToList();
+                }
+                if (fv.categoryValue == "Incentive")
+                {
+                    if (fv.checkedValue == "Paid") temp = f.research.Where(x => x.IsPaid == true).ToList();
+                    if (fv.checkedValue == "Nonpaid") temp = f.research.Where(x => x.IsNonpaid == true).ToList();
+                    if (fv.checkedValue == "Credit") temp = f.research.Where(x => x.IsCredit == true).ToList();
+                }
+                filteredResults.AddRange(temp);
+            }
+            return filteredResults;
         }
 
         public static T ConvertFromDBVal<T>(object obj)
