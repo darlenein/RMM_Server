@@ -198,6 +198,14 @@ namespace RMM_Server.Domains
             }
             reader.Close();
 
+            DepartmentDomain dd = new DepartmentDomain();
+            foreach (Research r in research_list)
+            {
+                r.ResearchDepts = dd.GetSubDeptByResearchId(r.Id);
+            }
+
+            research_list = research_list.OrderByDescending(x => x.Id).ToList();
+
             return research_list;
         }
 
@@ -418,7 +426,8 @@ namespace RMM_Server.Domains
             else if(f.keyword == "" && f.filterValue.Count == 0)
             {
                 ResearchDomain rd = new ResearchDomain();
-                result = rd.GetSortedResearchesByStudentId(f.psuID);
+                if (f.psuID == "") result = rd.GetAllResearch();
+                else result = rd.GetSortedResearchesByStudentId(f.psuID);
             }
             else
             {
