@@ -47,6 +47,14 @@ namespace RMM_Server.Controllers
             return result;
         }
 
+        [HttpGet("getResearchByID/{id}")]
+        public Research GetResearchById(int id)
+        {
+            ResearchDomain rd = new ResearchDomain();
+            Research result = rd.GetResearchByID(id);
+            return result;
+        }
+
         // post
         [HttpPost("getSearchedResearchList/{keyword}")]
         public List<Research> GetSearchedResearchList(string keyword, List<Research> research)
@@ -71,7 +79,6 @@ namespace RMM_Server.Controllers
             List<Research> result = rd.GetFilteredResearch(f);
             return result;
         }
-
 
         [HttpPost("createResearch")]
         public Research CreateResearch(Research r)

@@ -12,7 +12,6 @@ namespace RMM_Server.Models
         public string psuID { get; set; }
         public string keyword { get; set; }
     }
-
     public class FilterValue
     {
         public string checkedValue { get; set; }

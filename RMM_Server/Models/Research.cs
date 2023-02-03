@@ -29,5 +29,7 @@ namespace RMM_Server.Models
         public float SearchScore { get; set; }
         public string GUID { get; set; }
 
+        public int Counter { get; set; }
+
     }
 }

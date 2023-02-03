@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json;
+using NUnit.Framework;
 using RMM_Server.Domains;
 using RMM_Server.Models;
 using System;
@@ -86,6 +87,38 @@ namespace RMM_Server.Tests
             //assert
             Assert.NotNull(result);
             rd.DeleteResearchApplicant(999998, "dxi1017");
+        }
+
+        [Test]
+        public void TestGetResearchByID()
+        {
+            Research r = new Research()
+            {
+                Id = 18,
+                Faculty_Id = "oxe2",
+                Name = "test",
+                Description = "test",
+                Location = "test",
+                Required_Skills = "test",
+                Encouraged_Skills = "test",
+                Start_Date = "11/19/2023",
+                End_Date = "11/19/2023",
+                Active = false,
+                Address = "test",
+                IsPaid = false,
+                IsNonpaid = false,
+                IsCredit = false,
+                Faculty_FirstName = "Ola",
+                Faculty_LastName = "El-Rashiedy"
+            };
+
+            //act
+            Research result = rd.GetResearchByID(18);
+            var object1Json = JsonConvert.SerializeObject(r);
+            var object2Json = JsonConvert.SerializeObject(result);
+
+            //assert
+            Assert.AreEqual(object1Json, object2Json);
         }
     }
 }

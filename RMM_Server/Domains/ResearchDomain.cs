@@ -75,6 +75,67 @@ namespace RMM_Server.Domains
             return research_list;
         }
 
+        public Research GetResearchByID(int id)
+        {
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"SELECT a.*, b.first_name, b.last_name FROM research AS a " +
+                $"JOIN faculty as B ON a.faculty_id = b.faculty_id WHERE research_id = '{id}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            Research r = new Research();
+            while (reader.Read())
+            {
+                r.Id = ConvertFromDBVal<int>(reader[0]);
+                r.Faculty_Id = ConvertFromDBVal<string>(reader[1]);
+                r.Name = ConvertFromDBVal<string>(reader[2]);
+                r.Description = ConvertFromDBVal<string>(reader[3]);
+                r.Location = ConvertFromDBVal<string>(reader[4]);
+                r.Required_Skills = ConvertFromDBVal<string>(reader[5]);
+                r.Encouraged_Skills = ConvertFromDBVal<string>(reader[6]);
+                r.Start_Date = ConvertFromDBVal<DateTime>(reader[7]).ToShortDateString();
+                r.End_Date = ConvertFromDBVal<DateTime>(reader[8]).ToShortDateString();
+                if (ConvertFromDBVal<sbyte>(reader[9]) == 1)
+                {
+                    r.Active = true;
+                }
+                else
+                {
+                    r.Active = false;
+                }
+                r.Address = ConvertFromDBVal<string>(reader[10]);
+                if (ConvertFromDBVal<sbyte>(reader[11]) == Convert.ToSByte(1))
+                {
+                    r.IsPaid = true;
+                }
+                else
+                {
+                    r.IsPaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[12]) == Convert.ToSByte(1))
+                {
+                    r.IsNonpaid = true;
+                }
+                else
+                {
+                    r.IsNonpaid = false;
+                }
+                if (ConvertFromDBVal<sbyte>(reader[13]) == Convert.ToSByte(1))
+                {
+                    r.IsCredit = true;
+                }
+                else
+                {
+                    r.IsCredit = false;
+                }
+                r.Faculty_FirstName = ConvertFromDBVal<string>(reader[14]);
+                r.Faculty_LastName = ConvertFromDBVal<string>(reader[15]);
+            }
+            reader.Close();
+
+            return r;
+        }
+
         public List<Research> GetAllResearch()
         {
             DatabaseService ds = new DatabaseService();
@@ -361,11 +422,12 @@ namespace RMM_Server.Domains
             }
             else
             {
-                f.research = GetSearchedResearchByKeyword(f.keyword, f.research);
-                result = f.research;
+                result = GetSearchedResearchByKeyword(f.keyword, f.research);
+                f.research = result;
                 if (f.filterValue.Count > 0) result = GetFilteredResearch(f);
             }
-            result = result.Distinct().ToList();
+            
+            result = result.GroupBy(x => x.Id).OrderByDescending(c => c.Count()).SelectMany(c => c.Select(x => x)).Distinct().ToList();
             return result;
         }
 
@@ -405,7 +467,8 @@ namespace RMM_Server.Domains
                 }
                 filteredResults.AddRange(temp);
             }
-            return filteredResults;
+
+                return filteredResults;
         }
 
         public static T ConvertFromDBVal<T>(object obj)
