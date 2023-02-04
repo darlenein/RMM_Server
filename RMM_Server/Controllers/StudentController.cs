@@ -49,6 +49,14 @@ namespace RMM_Server.Controllers
             return s;
         }
 
+        [HttpPut("editStudent")]
+        public Student EditStudentProfile(Student s)
+        {
+            StudentDomain sd = new StudentDomain();
+            sd.EditStudent(s);
+            return s;
+        }
+
         // PUT api/<StudentController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

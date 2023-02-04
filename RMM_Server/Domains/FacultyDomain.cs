@@ -86,6 +86,23 @@ namespace RMM_Server.Domains
             return f;
         }
 
+        public Faculty EditFaculty(Faculty f)
+        { 
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"UPDATE faculty " +
+                $"SET first_name = {f.FirstName}, SET last_name = {f.LastName}, " +
+                $"SET title = {f.Title}, SET email = {f.Email}, SET office = {f.Office}, " +
+                $"SET phone = {f.Phone}, SET link1 = {f.Link1}, SET link2 = {f.Link2}, " +
+                $"SET link3 = {f.Link3}, SET about_me = {f.AboutMe}, SET research_interest = {f.ResearchInterest}" +
+                $"WHERE faculty_id = '{f.Id}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
+
+            return f;
+        }
+
         public void DeleteFacultyByID(string id)
         {
             DatabaseService ds = new DatabaseService();

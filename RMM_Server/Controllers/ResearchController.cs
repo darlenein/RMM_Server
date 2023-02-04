@@ -88,6 +88,14 @@ namespace RMM_Server.Controllers
             return r;
         }
 
+        [HttpPut("editResearch")]
+        public Research EditResearchPage(Research r)
+        {
+            ResearchDomain rd = new ResearchDomain();
+            rd.EditResearch(r);
+            return r;
+        }
+
         [HttpPost("addResearchApplicant")]
         public Progress CreateResearchApplicant(Progress p)
         {

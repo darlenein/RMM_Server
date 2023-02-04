@@ -331,6 +331,9 @@ namespace RMM_Server.Domains
 
         public Research AddResearch(Research r)
         {
+            int paid = ConvertBoolToInt(r.IsPaid);
+            int nonpaid = ConvertBoolToInt(r.IsNonpaid);
+            int credit = ConvertBoolToInt(r.IsCredit);
             int active = ConvertBoolToInt(r.Active);
 
             DatabaseService ds = new DatabaseService();
@@ -339,13 +342,13 @@ namespace RMM_Server.Domains
             // add research to db
             string query = $"INSERT into research VALUES (" +
                 $" null, '{r.Faculty_Id}', '{r.Name}', '{r.Description}', '{r.Location}', '{r.Required_Skills}'," +
-                $" '{r.Encouraged_Skills}', '{r.Start_Date}', '{r.End_Date}', '{active}', '{r.Address}', '{r.IsPaid}'," +
-                $" '{r.IsNonpaid}', '{r.IsCredit}')";
+                $" '{r.Encouraged_Skills}', '{r.Start_Date}', '{r.End_Date}', '{active}', '{r.Address}', '{paid}'," +
+                $" '{nonpaid}', '{credit}')";
             MySqlCommand com = new MySqlCommand(query, conn);
             MySqlDataReader reader = com.ExecuteReader();
             reader.Close();
 
-            int count = GetCountOfResearchTable();
+            int R_Id = GetLastIDFromResearch();
 
             // add associated depts to research
             foreach (string dept in r.ResearchDepts)
@@ -360,7 +363,7 @@ namespace RMM_Server.Domains
                 }
                 reader.Close();
 
-                query = $"INSERT into researchdept VALUES ('{count}', '{d_id}')";
+                query = $"INSERT into researchdept VALUES ('{R_Id}', '{d_id}')";
                 com = new MySqlCommand(query, conn);
                 reader = com.ExecuteReader();
                 reader.Close();
@@ -369,21 +372,73 @@ namespace RMM_Server.Domains
             return r;
         }
 
-        public int GetCountOfResearchTable()
+        public Research EditResearch(Research r)
         {
-            int count = 0; 
+            int paid = ConvertBoolToInt(r.IsPaid);
+            int nonpaid = ConvertBoolToInt(r.IsNonpaid);
+            int credit = ConvertBoolToInt(r.IsCredit);
+            int active = ConvertBoolToInt(r.Active);
+
             DatabaseService ds = new DatabaseService();
             MySqlConnection conn = ds.Connect();
-            string query = $"SELECT count(*) FROM research";
+            string query = $"UPDATE research " +
+                $"SET name = '{r.Name}', description = '{r.Description}', location = '{r.Location}, required_skills = '{r.Required_Skills}', " +
+                $"encouraged_skills = '{r.Encouraged_Skills}', start_date = '{r.Start_Date}', end_date = '{r.End_Date}', " +
+                $"active = {active}, address = '{r.Address}', isPaid = {paid}, isNonpaid = {nonpaid}, isCredit = {credit}" +
+                $"WHERE faculty_id = '{r.Id}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
+
+            
+            DeleteResearchDeptByResearchID(r.Id);
+            // add associated depts to research
+            foreach (string dept in r.ResearchDepts)
+            {
+                int d_id = 0;
+                query = $"SELECT subdepartment_id from subdepartment WHERE name = '{dept}'";
+                com = new MySqlCommand(query, conn);
+                reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    d_id = ConvertFromDBVal<int>(reader[0]);
+                }
+                reader.Close();
+
+                query = $"INSERT into researchdept VALUES ('{r.Id}', '{d_id}')";
+
+                com = new MySqlCommand(query, conn);
+                reader = com.ExecuteReader();
+                reader.Close();
+            }
+
+            return r;
+        }
+
+        public void DeleteResearchDeptByResearchID(int ID)
+        {
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"DELETE from researchdept WHERE research_id = '{ID}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
+        }
+        public int GetLastIDFromResearch()
+        {
+            int ID = 0; 
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"SELECT * FROM research ORDER BY research_id desc LIMIT 1";
             MySqlCommand com = new MySqlCommand(query, conn);
             MySqlDataReader reader = com.ExecuteReader();
             while (reader.Read())
             {
-                count = ConvertFromDBVal<int>(Convert.ToInt32(reader[0]));
+                ID = ConvertFromDBVal<int>(Convert.ToInt32(reader[0]));
             }
             reader.Close();
 
-            return count;
+            return ID;
         }
 
         public void DeleteResearchByID(int id)
