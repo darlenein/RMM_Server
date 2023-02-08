@@ -63,10 +63,6 @@ namespace RMM_Server.Domains
             int counter = 0;
             while (reader.Read())
             {
-                //SubDepartment sd = new SubDepartment();
-                //sd.research_id = ConvertFromDBVal<int>(reader[0]);
-                //sd.Id = ConvertFromDBVal<int>(reader[1]);
-                //sd.Name = ConvertFromDBVal<string>(reader[2]);
                 sdl[counter] = (ConvertFromDBVal<string>(reader[2]));
                 counter++;
             }

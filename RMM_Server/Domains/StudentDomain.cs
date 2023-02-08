@@ -5,11 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using Affinda.API;
+using Affinda.API.Models;
 
 namespace RMM_Server.Domains
 {
     public class StudentDomain
     {
+
+        
         public Student GetStudent(string id)
         {
             DatabaseService ds = new DatabaseService();
@@ -207,6 +212,30 @@ namespace RMM_Server.Domains
             return s;
         }
 
+        public Student EditStudent(Student s)
+        {
+            int paid = ConvertBoolToInt(s.PreferPaid);
+            int nonpaid = ConvertBoolToInt(s.PreferNonpaid);
+            int credit = ConvertBoolToInt(s.PreferCredit);
+
+            DatabaseService ds = new DatabaseService();
+            MySqlConnection conn = ds.Connect();
+            string query = $"UPDATE student " +
+                $"SET first_name = '{s.FirstName}',  last_name = '{s.LastName}'," +
+                $" GPA = {s.GPA}, graduation_month = '{s.GraduationMonth}'," +
+                $" graduation_year = '{s.GraduationYear}', major = '{s.Major}', skills = '{s.Skills}'," +
+                $" link1 = '{s.Link1}', link2 = '{s.Link2}', link3 = '{s.Link3}', " +
+                $"research_interest = '{s.ResearchInterest}', research_project = '{s.ResearchProject}', " +
+                $"email = '{s.Email}', preferPaid = {paid}, preferNonPaid = {nonpaid}," + 
+                $"preferCredit = {credit}, minor = '{s.Minor}'" +
+                $"WHERE student_id = '{s.Id}'";
+            MySqlCommand com = new MySqlCommand(query, conn);
+            MySqlDataReader reader = com.ExecuteReader();
+            reader.Close();
+
+            return s;
+        }
+
         public void DeleteStudentByID(string id)
         {
             DatabaseService ds = new DatabaseService();
@@ -215,6 +244,13 @@ namespace RMM_Server.Domains
             MySqlCommand com = new MySqlCommand(query, conn);
             MySqlDataReader reader = com.ExecuteReader();
             reader.Close();
+        }
+
+        public void getParsedResume()
+        {
+            string resumePath = "path_to_file.pdf";
+            var service = new ParseService("REPLACE_TOKEN");
+            var resume = service.CreateResume(resumePath);
         }
 
         public static T ConvertFromDBVal<T>(object obj)
@@ -235,6 +271,7 @@ namespace RMM_Server.Domains
             else return 0;
         }
     }
+
 
 
 }

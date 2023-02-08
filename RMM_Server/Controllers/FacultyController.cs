@@ -40,6 +40,13 @@ namespace RMM_Server.Controllers
             return f;
         }
 
+        [HttpPut("editFaculty")]
+        public Faculty EditFacultyProfile(Faculty f)
+        {
+            FacultyDomain fd = new FacultyDomain();
+            fd.EditFaculty(f);
+            return f;
+        }
         // PUT api/<FacultyController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
