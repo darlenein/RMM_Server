@@ -38,8 +38,8 @@ namespace RMM_Server.Services
                 var source = new
                 {
                     GUID = Guid.NewGuid().ToString(),
-                    Faculty_FirstName = r.Faculty_FirstName.Trim().ToLower(),
-                    Faculty_LastName = r.Faculty_LastName.Trim().ToLower(),
+                    Faculty_FirstName = r.First_Name.Trim().ToLower(),
+                    Faculty_LastName = r.Last_Name.Trim().ToLower(),
                     Description = r.Description.Trim().ToLower(),
                     Research_Name = r.Name.Trim().ToLower(),
 

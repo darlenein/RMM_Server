@@ -7,7 +7,7 @@ namespace RMM_Server.Models
 {
     public class Department
     {
-        public int Id { get; set; }
+        public int Department_id { get; set; }
         public string Name { get; set; }
     }
 }

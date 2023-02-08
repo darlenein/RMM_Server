@@ -1,269 +1,58 @@
-﻿using MySql.Data.MySqlClient;
-using RMM_Server.Models;
-using RMM_Server.Services;
-using System;
+﻿using RMM_Server.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using Affinda.API;
-using Affinda.API.Models;
+using RMM_Server.Contracts;
 
 namespace RMM_Server.Domains
 {
-    public class StudentDomain
+    public class StudentDomain : IStudentDomain
     {
+        private readonly IStudentRepository isr;
 
-        
+        public StudentDomain(IStudentRepository isr)
+        {
+            this.isr = isr;
+        }
+
         public Student GetStudent(string id)
         {
-            DatabaseService ds = new DatabaseService();
-            MySqlConnection conn = ds.Connect();
-            string query = $"SELECT * from student WHERE student_id = '{id}'";
-            MySqlCommand com = new MySqlCommand(query, conn);
-            MySqlDataReader reader = com.ExecuteReader();
-            Student s = new Student();
-            while (reader.Read())
-            {
-                s.Id = ConvertFromDBVal<string>(reader[0]);
-                s.FirstName = ConvertFromDBVal<string>(reader[1]);
-                s.LastName = ConvertFromDBVal<string>(reader[2]);
-                s.GPA = ConvertFromDBVal<double>(reader[3]);
-                s.GraduationMonth = ConvertFromDBVal<string>(reader[4]);
-                s.GraduationYear = ConvertFromDBVal<string>(reader[5]);
-                s.Major = ConvertFromDBVal<string>(reader[6]);
-                s.Skills = ConvertFromDBVal<string>(reader[7]);
-                s.Link1 = ConvertFromDBVal<string>(reader[8]);
-                s.Link2 = ConvertFromDBVal<string>(reader[9]);
-                s.Link3 = ConvertFromDBVal<string>(reader[10]);
-                s.ResearchInterest = ConvertFromDBVal<string>(reader[11]);
-                s.ResearchProject = ConvertFromDBVal<string>(reader[12]);
-                s.Email = ConvertFromDBVal<string>(reader[13]);
-                if (ConvertFromDBVal<int>(reader[14]) == Convert.ToSByte(1))
-                {
-                    s.PreferPaid = true;
-                }
-                else
-                {
-                    s.PreferPaid = false;
-                }
-                if (ConvertFromDBVal<int>(reader[15]) == Convert.ToSByte(1))
-                {
-                    s.PreferNonpaid = true;
-                }
-                else
-                {
-                    s.PreferNonpaid = false;
-                }
-                if (ConvertFromDBVal<int>(reader[16]) == Convert.ToSByte(1))
-                {
-                    s.PreferCredit = true;
-                }
-                else
-                {
-                    s.PreferCredit = false;
-                }
-                s.PreferLocation = ConvertFromDBVal<string>(reader[17]);
-                s.Minor = ConvertFromDBVal<string>(reader[18]);
-            }
-            reader.Close();
-
-            return s;
+            Student result = isr.GetStudent(id);
+            return result;
         }
 
         public List<Student> GetAllStudent()
         {
-            DatabaseService ds = new DatabaseService();
-            MySqlConnection conn = ds.Connect();
-            string query = $"SELECT * FROM student";
-            MySqlCommand com = new MySqlCommand(query, conn);
-            MySqlDataReader reader = com.ExecuteReader();
-            List<Student> sl = new List<Student>();
-            while (reader.Read())
-            {
-                Student s = new Student();
-                s.Id = ConvertFromDBVal<string>(reader[0]);
-                s.FirstName = ConvertFromDBVal<string>(reader[1]);
-                s.LastName = ConvertFromDBVal<string>(reader[2]);
-                s.GPA = ConvertFromDBVal<double>(reader[3]);
-                s.GraduationMonth = ConvertFromDBVal<string>(reader[4]);
-                s.GraduationYear = ConvertFromDBVal<string>(reader[5]);
-                s.Major = ConvertFromDBVal<string>(reader[6]);
-                s.Skills = ConvertFromDBVal<string>(reader[7]);
-                s.Link1 = ConvertFromDBVal<string>(reader[8]);
-                s.Link2 = ConvertFromDBVal<string>(reader[9]);
-                s.Link3 = ConvertFromDBVal<string>(reader[10]);
-                s.ResearchInterest = ConvertFromDBVal<string>(reader[11]);
-                s.ResearchProject = ConvertFromDBVal<string>(reader[12]);
-                s.Email = ConvertFromDBVal<string>(reader[13]);
-                if (ConvertFromDBVal<int>(reader[14]) == 1)
-                {
-                    s.PreferPaid = true;
-                }
-                else
-                {
-                    s.PreferPaid = false;
-                }
-                if (ConvertFromDBVal<int>(reader[15]) == 1)
-                {
-                    s.PreferNonpaid = true;
-                }
-                else
-                {
-                    s.PreferNonpaid = false;
-                }
-                if (ConvertFromDBVal<int>(reader[16]) == 1)
-                {
-                    s.PreferCredit = true;
-                }
-                else
-                {
-                    s.PreferCredit = false;
-                }
-                s.PreferLocation = ConvertFromDBVal<string>(reader[17]);
-                s.Minor = ConvertFromDBVal<string>(reader[18]);
-                sl.Add(s);
-            }
-            reader.Close();
-
-            return sl;
+            List<Student> result = isr.GetAllStudent();
+            return result;
         }
 
         public List<Student> GetAllStudentsByResearch(int research_id)
         {
-            DatabaseService ds = new DatabaseService();
-            MySqlConnection conn = ds.Connect();
-            string query = $"SELECT a.*, b.progress_bar, c.name FROM student AS a " +
-                $"JOIN participant AS b ON a.student_id = b.student_id " +
-                $"JOIN research AS c ON b.research_id = c.research_id " +
-                $"WHERE b.research_id = '{research_id}'";
-            MySqlCommand com = new MySqlCommand(query, conn);
-            MySqlDataReader reader = com.ExecuteReader();
-            List<Student> sl = new List<Student>();
-            while (reader.Read())
-            {
-                Student s = new Student();
-                s.Id = ConvertFromDBVal<string>(reader[0]);
-                s.FirstName = ConvertFromDBVal<string>(reader[1]);
-                s.LastName = ConvertFromDBVal<string>(reader[2]);
-                s.GPA = ConvertFromDBVal<double>(reader[3]);
-                s.GraduationMonth = ConvertFromDBVal<string>(reader[4]);
-                s.GraduationYear = ConvertFromDBVal<string>(reader[5]);
-                s.Major = ConvertFromDBVal<string>(reader[6]);
-                s.Skills = ConvertFromDBVal<string>(reader[7]);
-                s.Link1 = ConvertFromDBVal<string>(reader[8]);
-                s.Link2 = ConvertFromDBVal<string>(reader[9]);
-                s.Link3 = ConvertFromDBVal<string>(reader[10]);
-                s.ResearchInterest = ConvertFromDBVal<string>(reader[11]);
-                s.ResearchProject = ConvertFromDBVal<string>(reader[12]);
-                s.Email = ConvertFromDBVal<string>(reader[13]);
-                if (ConvertFromDBVal<int>(reader[14]) == 1)
-                {
-                    s.PreferPaid = true;
-                }
-                else
-                {
-                    s.PreferPaid = false;
-                }
-                if (ConvertFromDBVal<int>(reader[15]) == 1)
-                {
-                    s.PreferNonpaid = true;
-                }
-                else
-                {
-                    s.PreferNonpaid = false;
-                }
-                if (ConvertFromDBVal<int>(reader[16]) == 1)
-                {
-                    s.PreferCredit = true;
-                }
-                else
-                {
-                    s.PreferCredit = false;
-                }
-                s.PreferLocation = ConvertFromDBVal<string>(reader[17]);
-                s.Minor = ConvertFromDBVal<string>(reader[18]);
-                s.Progression = ConvertFromDBVal<int>(reader[19]);
-                s.Research_name = ConvertFromDBVal<string>(reader[20]);
-
-                sl.Add(s);
-            }
-            reader.Close();
-
-            return sl;
+            List<Student> result = isr.GetAllStudentsByResearch(research_id);
+            return result;
         }
 
         public Student CreateStudent(Student s)
         {
-            int paid = ConvertBoolToInt(s.PreferPaid);
-            int nonpaid = ConvertBoolToInt(s.PreferNonpaid);
-            int credit = ConvertBoolToInt(s.PreferCredit);
-
-            DatabaseService ds = new DatabaseService();
-            MySqlConnection conn = ds.Connect();
-            string query = $"INSERT into student VALUES (" +
-                $" '{s.Id}', '{s.FirstName}', '{s.LastName}', '{s.GPA}', '{s.GraduationMonth}', '{s.GraduationYear}'," +
-                $" '{s.Major}', '{s.Skills}', '{s.Link1}', '{s.Link2}', '{s.Link3}', '{s.ResearchInterest}'," +
-                $" '{s.ResearchProject}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}', '{s.Minor}')";
-            MySqlCommand com = new MySqlCommand(query, conn);
-            MySqlDataReader reader = com.ExecuteReader();
-            reader.Close();
-
-            return s;
+            Student result = isr.CreateStudent(s);
+            return result;
         }
 
         public Student EditStudent(Student s)
         {
-            int paid = ConvertBoolToInt(s.PreferPaid);
-            int nonpaid = ConvertBoolToInt(s.PreferNonpaid);
-            int credit = ConvertBoolToInt(s.PreferCredit);
-
-            DatabaseService ds = new DatabaseService();
-            MySqlConnection conn = ds.Connect();
-            string query = $"UPDATE student " +
-                $"SET first_name = '{s.FirstName}',  last_name = '{s.LastName}'," +
-                $" GPA = {s.GPA}, graduation_month = '{s.GraduationMonth}'," +
-                $" graduation_year = '{s.GraduationYear}', major = '{s.Major}', skills = '{s.Skills}'," +
-                $" link1 = '{s.Link1}', link2 = '{s.Link2}', link3 = '{s.Link3}', " +
-                $"research_interest = '{s.ResearchInterest}', research_project = '{s.ResearchProject}', " +
-                $"email = '{s.Email}', preferPaid = {paid}, preferNonPaid = {nonpaid}," + 
-                $"preferCredit = {credit}, minor = '{s.Minor}'" +
-                $"WHERE student_id = '{s.Id}'";
-            MySqlCommand com = new MySqlCommand(query, conn);
-            MySqlDataReader reader = com.ExecuteReader();
-            reader.Close();
-
-            return s;
+            Student result = isr.EditStudent(s);
+            return result;
         }
 
         public void DeleteStudentByID(string id)
         {
-            DatabaseService ds = new DatabaseService();
-            MySqlConnection conn = ds.Connect();
-            string query = $"DELETE from student WHERE student_id = '{id}'";
-            MySqlCommand com = new MySqlCommand(query, conn);
-            MySqlDataReader reader = com.ExecuteReader();
-            reader.Close();
+            isr.DeleteStudentByID(id);
         }
 
         public void getParsedResume()
         {
-            string resumePath = "path_to_file.pdf";
-            var service = new ParseService("REPLACE_TOKEN");
-            var resume = service.CreateResume(resumePath);
+            isr.getParsedResume();
         }
 
-        public static T ConvertFromDBVal<T>(object obj)
-        {
-            if (obj == null || obj == DBNull.Value)
-            {
-                return default(T); // returns the default value for the type
-            }
-            else
-            {
-                return (T)obj;
-            }
-        }
 
         public int ConvertBoolToInt(bool b)
         {
@@ -271,7 +60,4 @@ namespace RMM_Server.Domains
             else return 0;
         }
     }
-
-
-
 }

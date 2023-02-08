@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 namespace RMM_Server.Models
 {
     // This is the model for participant table in dB
-    public class Progress
+    public class Participant
     {
-        public int progress { get; set; }
-        public int research_id { get; set; }
-        public string student_id { get; set; }
+        public int Progress_Bar { get; set; }
+        public int Research_id { get; set; }
+        public string Student_id { get; set; }
     }
 }
