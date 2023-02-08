@@ -44,7 +44,7 @@ namespace RMM_Server.Controllers
         {
             List<Student> result = isd.GetAllStudentsByResearch(research_id);
             return result;
-        }g
+        }
 
         [HttpPost("createStudent")]
         public Student CreateStudentProfile(Student s)
