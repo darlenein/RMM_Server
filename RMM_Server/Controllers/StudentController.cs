@@ -39,7 +39,7 @@ namespace RMM_Server.Controllers
             StudentDomain sd = new StudentDomain();
             List<Student> result = sd.GetAllStudentsByResearch(research_id);
             return result;
-        }
+        }g
 
         [HttpPost("createStudent")]
         public Student CreateStudentProfile(Student s)
