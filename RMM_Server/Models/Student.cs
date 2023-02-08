@@ -27,6 +27,10 @@ namespace RMM_Server.Models
         public int Progression { get; set; }
         public string Research_name { get; set; }
         public string PreferLocation { get; set; }
+        //added
+        public float SearchScore { get; set; }
+        public string GUID { get; set; }
+        public string[] StudentNames { get; set; }
 
         public string Minor { get; set; }
 

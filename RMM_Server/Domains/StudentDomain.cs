@@ -270,6 +270,109 @@ namespace RMM_Server.Domains
             if (b == true) return 1;
             else return 0;
         }
+
+        //Bottom Methods Added by Jiawen and Amit
+
+        //Student Filter Method
+        public List<Student> GetFilteredAndSearchedStudents(StudentFilter sf)
+        {
+            List<Student> result;
+            if (sf.keyword == "" && sf.studentFilterValue.Count > 0)
+            {
+                result = GetFilteredStudents(sf);
+            }
+            else if (sf.keyword == "" && sf.studentFilterValue.Count == 0)
+            {
+                StudentDomain sd = new StudentDomain();
+                if (sf.psuID == "") result = sd.GetAllStudent();
+                else result = sd.GetSortedStudentsByFacultyID(sf.psuID);
+            }
+            else
+            {
+                result = GetSearchedStudentByKeyword(sf.keyword, sf.student);
+                sf.student = result;
+                if (sf.studentFilterValue.Count > 0) result = GetFilteredStudents(sf);
+            }
+
+            result = result.GroupBy(x => x.Id).OrderByDescending(c => c.Count()).SelectMany(c => c.Select(x => x)).Distinct().ToList();
+            return result;
+        }
+
+        //Filtered Students Method
+        public List<Student> GetFilteredStudents(StudentFilter sf)
+        {
+            List<Student> filteredResults = new List<Student>();
+            List<Student> temp = new List<Student>();
+
+            foreach (StudentFilterValue sfv in sf.studentFilterValue)
+            {
+                if (sfv.categoryValue == "Major")
+                {
+                    //temp = sf.research.Where(x => x.ResearchDepts[0] == sfv.checkedValue || x.ResearchDepts[1] == fv.checkedValue || x.ResearchDepts[2] == fv.checkedValue).ToList();
+                }
+                if (sfv.categoryValue == "Status")
+                {
+                    //bool value = Convert.ToBoolean(fv.checkedValue);
+                    //temp = f.research.Where(x => x.Active == value).ToList();
+                }
+                if (sfv.categoryValue == "Location")
+                {
+                    //temp = f.research.Where(x => x.Location == fv.checkedValue).ToList();
+                }
+                if (sfv.categoryValue == "Incentive")
+                {
+                    //if (fv.checkedValue == "Paid") temp = f.research.Where(x => x.IsPaid == true).ToList();
+                    //if (fv.checkedValue == "Nonpaid") temp = f.research.Where(x => x.IsNonpaid == true).ToList();
+                    //if (fv.checkedValue == "Credit") temp = f.research.Where(x => x.IsCredit == true).ToList();
+                }
+                filteredResults.AddRange(temp);
+            }
+
+            return filteredResults;
+        }
+
+        //keyword student = DONE
+        public List<Student> GetSearchedStudentByKeyword(string keyword, List<Student> student)
+        {
+            StudentSearchService ss = new StudentSearchService();
+            List<Student> temp = ss.Search(keyword, student);
+            var searchedResults = temp.Where(x => x.SearchScore > 0).OrderByDescending(x => x.SearchScore).ToList();
+            return searchedResults;
+        }
+
+        //sort by faculty id
+        
+        public List<Student> GetSortedStudentsByFacultyID(string s)
+        {
+            FacultyDomain fd = new FacultyDomain();
+            //DepartmentDomain dd = new DepartmentDomain();
+            StudentDomain sd = new StudentDomain();
+            List<Student> result = GetAllStudent();
+            //List<Research> activeResearch = result.Where(x => x.Active == true).ToList();
+            Faculty faculty = fd.GetFaculty(s);
+
+            //Have to get each student list
+            
+            /*
+            foreach (Student s in result)
+            {
+                //not sure about this one
+                //r.Major = dd.GetSubDeptByResearchId(r.Id
+                s.StudentNames = sd.GetStudent(s.Id);
+                
+              
+            }*/
+
+            //var sortedByMinor = result.OrderByDescending(x => x.Id).ThenByDescending(x => x.PreferLocation == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
+            //var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
+            //var sortedByStatus = sortedByMajor.OrderByDescending(x => x.Active == true).ToList();
+
+            var sortedByName = result.OrderByDescending(x => x.FirstName);
+
+            return (List<Student>)sortedByName;
+            
+        }
+        
     }
 
 
