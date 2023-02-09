@@ -117,6 +117,7 @@ namespace RMM_Server.Domains
 
             return sortedByStatus;
         }
+        
 
         public List<Research> GetFilteredAndSearchedResearch(Filter f)
         {

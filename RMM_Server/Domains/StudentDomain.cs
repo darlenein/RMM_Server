@@ -76,8 +76,9 @@ namespace RMM_Server.Domains
             }
             else if (sf.keyword == "" && sf.studentFilterValue.Count == 0)
             {
-                if (sf.psuID == "") result = isr.GetAllStudent();
-                else result = GetSortedStudentsByFacultyID(sf.psuID);
+                result = isr.GetAllStudent();
+                //if (sf.psuID == "") result = isr.GetAllStudent();
+                //else result = GetSortedStudentsByFacultyID(sf.psuID);
             }
             else
             {
@@ -129,36 +130,28 @@ namespace RMM_Server.Domains
         }
 
         //sort by faculty id
-        
+        /*
         public List<Student> GetSortedStudentsByFacultyID(string s)
         {
             
-            //DepartmentDomain dd = new DepartmentDomain();
             List<Student> result = GetAllStudent();
-            //List<Research> activeResearch = result.Where(x => x.Active == true).ToList();
             Faculty faculty = ifr.GetFaculty(s);
 
             //Have to get each student list
-            
-            /*
-            foreach (Student s in result)
+            /*foreach (Student s in result)
             {
-                //not sure about this one
-                //r.Major = dd.GetSubDeptByResearchId(r.Id
-                s.StudentNames = sd.GetStudent(s.Id);
-                
-              
-            }*/
+                s.StudentIDs = ids.GetStudentByID(s.Student_Id);
+            }
 
-            //var sortedByMinor = result.OrderByDescending(x => x.Id).ThenByDescending(x => x.PreferLocation == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
+            //var sortedByMinor = result.OrderByDescending(x => x.Student_Id).ThenByDescending(x => x.PreferLocation == faculty.).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
             //var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
             //var sortedByStatus = sortedByMajor.OrderByDescending(x => x.Active == true).ToList();
 
-            var sortedByName = result.OrderByDescending(x => x.First_Name);
+            var sortedByName = result.OrderByDescending(x => x.Student_Id).ToList();
 
-            return (List<Student>)sortedByName;
+            return sortedByName;
             
-        }
-        
+        }*/
+
     }
 }

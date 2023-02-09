@@ -95,11 +95,11 @@ namespace RMM_Server.Controllers
             return result;
         }
 
-        [HttpGet("getAllStudentSorted/{faculty_id}")]
+        /*[HttpGet("getAllStudentSorted/{faculty_id}")]
         public List<Student> GetAllStudentSorted(string faculty_id)
         {
             List<Student> result = isd.GetSortedStudentsByFacultyID(faculty_id);
             return result;
-        }
+        }*/
     }
 }
