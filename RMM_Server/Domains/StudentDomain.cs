@@ -1,16 +1,20 @@
 ﻿using RMM_Server.Models;
 using System.Collections.Generic;
 using RMM_Server.Contracts;
+using System.Linq;
+using RMM_Server.Services;
 
 namespace RMM_Server.Domains
 {
     public class StudentDomain : IStudentDomain
     {
         private readonly IStudentRepository isr;
+        private readonly IFacultyDomain ifr;
 
-        public StudentDomain(IStudentRepository isr)
+        public StudentDomain(IStudentRepository isr, IFacultyDomain ifr)
         {
             this.isr = isr;
+            this.ifr = ifr;
         }
 
         public Student GetStudent(string id)
@@ -72,9 +76,8 @@ namespace RMM_Server.Domains
             }
             else if (sf.keyword == "" && sf.studentFilterValue.Count == 0)
             {
-                StudentDomain sd = new StudentDomain();
-                if (sf.psuID == "") result = sd.GetAllStudent();
-                else result = sd.GetSortedStudentsByFacultyID(sf.psuID);
+                if (sf.psuID == "") result = isr.GetAllStudent();
+                else result = GetSortedStudentsByFacultyID(sf.psuID);
             }
             else
             {
@@ -83,7 +86,7 @@ namespace RMM_Server.Domains
                 if (sf.studentFilterValue.Count > 0) result = GetFilteredStudents(sf);
             }
 
-            result = result.GroupBy(x => x.Id).OrderByDescending(c => c.Count()).SelectMany(c => c.Select(x => x)).Distinct().ToList();
+            result = result.GroupBy(x => x.Student_Id).OrderByDescending(c => c.Count()).SelectMany(c => c.Select(x => x)).Distinct().ToList();
             return result;
         }
 
@@ -99,11 +102,6 @@ namespace RMM_Server.Domains
                 {
                     temp = sf.student.Where(x => x.Major == sfv.checkedValue).ToList();
 
-                }
-                if (sfv.categoryValue == "Status")
-                {
-                    //bool value = Convert.ToBoolean(fv.checkedValue);
-                    //temp = f.research.Where(x => x.Active == value).ToList();
                 }
                 if (sfv.categoryValue == "Location")
                 {
@@ -134,12 +132,11 @@ namespace RMM_Server.Domains
         
         public List<Student> GetSortedStudentsByFacultyID(string s)
         {
-            FacultyDomain fd = new FacultyDomain();
+            
             //DepartmentDomain dd = new DepartmentDomain();
-            StudentDomain sd = new StudentDomain();
             List<Student> result = GetAllStudent();
             //List<Research> activeResearch = result.Where(x => x.Active == true).ToList();
-            Faculty faculty = fd.GetFaculty(s);
+            Faculty faculty = ifr.GetFaculty(s);
 
             //Have to get each student list
             
@@ -157,7 +154,7 @@ namespace RMM_Server.Domains
             //var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
             //var sortedByStatus = sortedByMajor.OrderByDescending(x => x.Active == true).ToList();
 
-            var sortedByName = result.OrderByDescending(x => x.FirstName);
+            var sortedByName = result.OrderByDescending(x => x.First_Name);
 
             return (List<Student>)sortedByName;
             

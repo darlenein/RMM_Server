@@ -77,32 +77,28 @@ namespace RMM_Server.Controllers
         [HttpPost("GetFilteredAndSearchStudentList")]
         public List<Student> GetFilteredAndSearchStudentList(StudentFilter sf)
         {
-            StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
+            List<Student> result = isd.GetFilteredAndSearchedStudents(sf);
             return result;
         }
 
         [HttpPost("getFilteredStudentList")]
         public List<Student> getFilteredStudentList(StudentFilter sf)
         {
-            StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.GetFilteredStudents(sf);
+            List<Student> result = isd.GetFilteredStudents(sf);
             return result;
         }
 
         [HttpPost("getSearchedStudentList/{keyword}")]
         public List<Student> GetSearchedResearchList(string keyword, List<Student> student)
         {
-            StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.GetSearchedStudentByKeyword(keyword, student);
+            List<Student> result = isd.GetSearchedStudentByKeyword(keyword, student);
             return result;
         }
 
         [HttpGet("getAllStudentSorted/{faculty_id}")]
         public List<Student> GetAllStudentSorted(string faculty_id)
         {
-            StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.GetSortedStudentsByFacultyID(faculty_id);
+            List<Student> result = isd.GetSortedStudentsByFacultyID(faculty_id);
             return result;
         }
     }

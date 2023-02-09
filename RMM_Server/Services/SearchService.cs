@@ -113,8 +113,8 @@ namespace RMM_Server.Services
                 var source = new
                 {
                     GUID = Guid.NewGuid().ToString(),
-                    Student_FirstName = s.FirstName.Trim().ToLower(),
-                    Student_LastName = s.LastName.Trim().ToLower(),
+                    Student_FirstName = s.First_Name.Trim().ToLower(),
+                    Student_LastName = s.Last_Name.Trim().ToLower(),
                     Major = s.Major.Trim().ToLower(),
                     Location = s.PreferLocation.Trim().ToLower(),
 
