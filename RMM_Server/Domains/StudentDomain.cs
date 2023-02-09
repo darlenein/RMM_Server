@@ -273,7 +273,7 @@ namespace RMM_Server.Domains
 
         //Bottom Methods Added by Jiawen and Amit
 
-        //Student Filter Method
+        //Student Filter Method = DONE
         public List<Student> GetFilteredAndSearchedStudents(StudentFilter sf)
         {
             List<Student> result;
@@ -308,7 +308,8 @@ namespace RMM_Server.Domains
             {
                 if (sfv.categoryValue == "Major")
                 {
-                    //temp = sf.research.Where(x => x.ResearchDepts[0] == sfv.checkedValue || x.ResearchDepts[1] == fv.checkedValue || x.ResearchDepts[2] == fv.checkedValue).ToList();
+                    temp = sf.student.Where(x => x.Major == sfv.checkedValue).ToList();
+
                 }
                 if (sfv.categoryValue == "Status")
                 {
@@ -317,13 +318,13 @@ namespace RMM_Server.Domains
                 }
                 if (sfv.categoryValue == "Location")
                 {
-                    //temp = f.research.Where(x => x.Location == fv.checkedValue).ToList();
+                    temp = sf.student.Where(x => x.PreferLocation == sfv.checkedValue).ToList();
                 }
                 if (sfv.categoryValue == "Incentive")
                 {
-                    //if (fv.checkedValue == "Paid") temp = f.research.Where(x => x.IsPaid == true).ToList();
-                    //if (fv.checkedValue == "Nonpaid") temp = f.research.Where(x => x.IsNonpaid == true).ToList();
-                    //if (fv.checkedValue == "Credit") temp = f.research.Where(x => x.IsCredit == true).ToList();
+                    if (sfv.checkedValue == "Paid") temp = sf.student.Where(x => x.PreferPaid == true).ToList();
+                    if (sfv.checkedValue == "Nonpaid") temp = sf.student.Where(x => x.PreferNonpaid == true).ToList();
+                    if (sfv.checkedValue == "Credit") temp = sf.student.Where(x => x.PreferCredit == true).ToList();
                 }
                 filteredResults.AddRange(temp);
             }

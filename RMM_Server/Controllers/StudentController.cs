@@ -68,5 +68,39 @@ namespace RMM_Server.Controllers
         public void Delete(int id)
         {
         }
+
+        //Added by Jiawen
+
+        [HttpPost("GetFilteredAndSearchStudentList")]
+        public List<Student> GetFilteredAndSearchStudentList(StudentFilter sf)
+        {
+            StudentDomain sd = new StudentDomain();
+            List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
+            return result;
+        }
+
+        [HttpPost("getFilteredStudentList")]
+        public List<Student> getFilteredStudentList(StudentFilter sf)
+        {
+            StudentDomain sd = new StudentDomain();
+            List<Student> result = sd.GetFilteredStudents(sf);
+            return result;
+        }
+
+        [HttpPost("getSearchedStudentList/{keyword}")]
+        public List<Student> GetSearchedResearchList(string keyword, List<Student> student)
+        {
+            StudentDomain sd = new StudentDomain();
+            List<Student> result = sd.GetSearchedStudentByKeyword(keyword, student);
+            return result;
+        }
+
+        [HttpGet("getAllStudentSorted/{faculty_id}")]
+        public List<Student> GetAllStudentSorted(string faculty_id)
+        {
+            StudentDomain sd = new StudentDomain();
+            List<Student> result = sd.GetSortedStudentsByFacultyID(faculty_id);
+            return result;
+        }
     }
 }
