@@ -20,5 +20,8 @@ namespace RMM_Server.Models
         public string About_Me { get; set; }
         public string Research_Interest { get; set; }
         public string Profile_Url { get; set; }
+        public string GUID { get; set; }
+        public float SearchScore { get; set; }
+        public string[] FacultyNames { get; set; }
     }
 }

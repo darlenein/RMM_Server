@@ -51,5 +51,27 @@ namespace RMM_Server.Controllers
             return result;
         }
 
+        [HttpPost("GetFilteredAndSearchFacultyList")]
+        public List<Faculty> GetFilteredAndSearchFacultyList(FacultyFilter ff)
+        {
+            List<Faculty> result = ifd.GetFilteredAndSearchedFaculty(ff);
+            return result;
+        }
+
+    /*    [HttpPost("getFilteredFacultyList")]
+        public List<Faculty> getFilteredFacultyList(FacultyFilter ff)
+        {
+            List<Faculty> result = isd.GetFilteredFaculty(ff);
+            return result;
+        }
+    */
+
+        [HttpPost("getSearchedFacultyList/{keyword}")]
+        public List<Faculty> GetSearchedFacultyList(string keyword, List<Faculty> faculty)
+        {
+            List<Faculty> result = ifd.GetSearchedFacultyByKeyword(keyword, faculty);
+            return result;
+        }
+
     }
 }
