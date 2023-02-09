@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RMM_Server.Contracts;
 using RMM_Server.Domains;
 using RMM_Server.Models;
 using System;
@@ -14,49 +15,41 @@ namespace RMM_Server.Controllers
     [ApiController]
     public class FacultyController : ControllerBase
     {
+        // dependecy injection
+        private readonly IFacultyDomain ifd;
+        public FacultyController(IFacultyDomain ifd)
+        {
+            this.ifd = ifd;
+        }
 
         // GET api/<FacultyController>/5
         [HttpGet("{id}")]
         public Faculty GetFacultyById(string id)
         {
-            FacultyDomain fd = new FacultyDomain();
-            Faculty result = fd.GetFaculty(id);
+            Faculty result = ifd.GetFaculty(id);
             return result;
         }
 
         [HttpGet("getAllFaculty")]
         public List<Faculty> GetAllFaculty()
         {
-            FacultyDomain fd = new FacultyDomain();
-            List<Faculty> result = fd.GetAllFaculty();
+            List<Faculty> result = ifd.GetAllFaculty();
             return result;
         }
 
         [HttpPost("createFaculty")]
         public Faculty CreateFacultyProfile(Faculty f)
         {
-            FacultyDomain fd = new FacultyDomain();
-            fd.CreateFaculty(f);
-            return f;
+            Faculty result = ifd.CreateFaculty(f);
+            return result;
         }
 
         [HttpPut("editFaculty")]
         public Faculty EditFacultyProfile(Faculty f)
         {
-            FacultyDomain fd = new FacultyDomain();
-            fd.EditFaculty(f);
-            return f;
-        }
-        // PUT api/<FacultyController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            Faculty result = ifd.EditFaculty(f);
+            return result;
         }
 
-        // DELETE api/<FacultyController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

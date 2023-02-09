@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RMM_Server.Contracts;
 using RMM_Server.Domains;
 using RMM_Server.Models;
 using RMM_Server.Services;
@@ -16,45 +17,47 @@ namespace RMM_Server.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        private readonly IStudentDomain isd;
+
+        public StudentController(IStudentDomain isd)
+        {
+            this.isd = isd;
+        }
+
         // GET: api/<StudentController>
         [HttpGet("getStudentById/{id}")]
         public Student GetStudentById(string id)
         {
-            StudentDomain sd = new StudentDomain();
-            Student result = sd.GetStudent(id);
+            Student result = isd.GetStudent(id);
             return result;
         }
 
         [HttpGet("getAllStudents")]
         public List<Student> GetAllStudents()
         {
-            StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.GetAllStudent();
+            List<Student> result = isd.GetAllStudent();
             return result;
         }
 
         [HttpGet("getAllStudentsByResearch/{research_id}")]
         public List<Student> GetAllStudentsByResearch(int research_id)
         {
-            StudentDomain sd = new StudentDomain();
-            List<Student> result = sd.GetAllStudentsByResearch(research_id);
+            List<Student> result = isd.GetAllStudentsByResearch(research_id);
             return result;
         }
 
         [HttpPost("createStudent")]
         public Student CreateStudentProfile(Student s)
         {
-            StudentDomain sd = new StudentDomain();
-            sd.CreateStudent(s);
-            return s;
+            Student result = isd.CreateStudent(s);
+            return result;
         }
 
         [HttpPut("editStudent")]
         public Student EditStudentProfile(Student s)
         {
-            StudentDomain sd = new StudentDomain();
-            sd.EditStudent(s);
-            return s;
+            Student result = isd.EditStudent(s);
+            return result;
         }
 
         // PUT api/<StudentController>/5

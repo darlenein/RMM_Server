@@ -7,9 +7,9 @@ namespace RMM_Server.Models
 {
     public class SubDepartment
     {
-        public int Id { get; set; }
-        public int Dept_Id { get; set; }
+        public int Subdepartment_id { get; set; }
+        public int Department_id { get; set; }
         public string Name { get; set; }
-        public int research_id { get; set; }
+        public int Research_id { get; set; }
     }
 }

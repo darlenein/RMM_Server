@@ -7,9 +7,9 @@ namespace RMM_Server.Models
 {
     public class Faculty
     {
-        public string Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Faculty_Id { get; set; }
+        public string First_Name { get; set; }
+        public string Last_Name { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
         public string Office { get; set; }
@@ -17,8 +17,8 @@ namespace RMM_Server.Models
         public string Link1 { get; set; }
         public string Link2 { get; set; }
         public string Link3 { get; set; }
-        public string AboutMe { get; set; }
-        public string ResearchInterest { get; set; }
-        public string ProfileUrl { get; set; }
+        public string About_Me { get; set; }
+        public string Research_Interest { get; set; }
+        public string Profile_Url { get; set; }
     }
 }

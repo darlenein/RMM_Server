@@ -7,7 +7,7 @@ namespace RMM_Server.Models
 {
     public class Research
     {
-        public int Id { get; set; }
+        public int Research_Id { get; set; }
         public string Faculty_Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,10 +18,9 @@ namespace RMM_Server.Models
         public string End_Date { get; set; }
         public bool Active { get; set; }
         public string Address { get; set; }
-        public string Faculty_FirstName { get; set; }
-        public string Faculty_LastName { get; set; }
-        public int Research_id { get; set; }
-        public int Progression { get; set; }
+        public string First_Name { get; set; }
+        public string Last_Name { get; set; }
+        public int Progress_Bar { get; set; }
         public bool IsPaid { get; set; }
         public bool IsNonpaid { get; set; }
         public bool IsCredit { get; set; }

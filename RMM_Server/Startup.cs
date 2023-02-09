@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RMM_Server.Contracts;
+using RMM_Server.DataAccess;
+using RMM_Server.Domains;
 using RMM_Server.Services;
 using System;
 using System.Collections.Generic;
@@ -28,6 +31,17 @@ namespace RMM_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // tells program, any time it sees a IDeptRepo, make it a DeptRepo 
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IDepartmentDomain, DepartmentDomain>();
+            services.AddScoped<IFacultyRepository, FacultyRepository>();
+            services.AddScoped<IFacultyDomain, FacultyDomain>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IStudentDomain, StudentDomain>();
+            services.AddScoped<IResearchRepository, ResearchRepository>();
+            services.AddScoped<IResearchDomain, ResearchDomain>();
+            services.Configure<IConfigurationRoot>(Configuration);
 
             // add swagger api documenter 1/2
             services.AddSwaggerGen(c =>

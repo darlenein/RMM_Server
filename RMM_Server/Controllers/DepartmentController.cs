@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RMM_Server.Contracts;
 using RMM_Server.Domains;
 using RMM_Server.Models;
 using System;
@@ -14,30 +15,27 @@ namespace RMM_Server.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
+        // dependecy injection
+        private readonly IDepartmentDomain idd;
+        public DepartmentController(IDepartmentDomain idd)
+        {
+            this.idd = idd;
+        }
+
         // GET: api/<DepartmentController>
         [HttpGet("getAllDepartments")]
         public List<Department> GetAllDepartments()
         {
-            DepartmentDomain dd = new DepartmentDomain();
-            List<Department> result = dd.GetAllDepartments();
+            List<Department> result = idd.GetAllDepartments();
             return result;
         }
 
         [HttpGet("getAllSubDeptByDeptId/{id}")]
         public List<SubDepartment> GetAllSubDeptByDeptId(int id)
         {
-            DepartmentDomain sd = new DepartmentDomain();
-            List<SubDepartment> result = sd.GetSubDeptByDeptId(id);
+            List<SubDepartment> result = idd.GetSubDeptByDeptId(id);
             return result;
         }
-
-        //[HttpGet("getAllSubDeptByResearchId/{id}")]
-        //public List<SubDepartment> GetAllSubDeptByResearchId(int id)
-        //{
-        //    DepartmentDomain sd = new DepartmentDomain();
-        //    List<SubDepartment> result = sd.GetSubDeptByResearchId(id);
-        //    return result;
-        //}
 
         // POST api/<DepartmentController>
         [HttpPost]
