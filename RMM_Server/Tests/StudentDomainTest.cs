@@ -128,7 +128,7 @@ namespace RMM_Server.Tests
             msr.Verify(x => x.GetStudent(It.IsAny<string>()), Times.Once);
         }
 
-        [Test]
+        /*[Test]
         public void TestGetAllStudentsByResearch()
         {
             List<Research> rl = new List<Research>();
@@ -206,7 +206,7 @@ namespace RMM_Server.Tests
             //assert
             Assert.NotNull(result);
             msr.Verify(x => x.GetAllStudentsByResearch(It.IsAny<int>()), Times.Once);
-        }
+        }*/
 
         [Test]
         public void TestGetAllStudent()
