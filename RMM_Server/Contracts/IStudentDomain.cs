@@ -13,7 +13,6 @@ namespace RMM_Server.Contracts
         public List<Student> GetAllStudentsByResearch(int research_id);
         public Student CreateStudent(Student s);
         public Student EditStudent(Student s);
-        public void DeleteStudentByID(string id);
         public void getParsedResume();
 
         //new

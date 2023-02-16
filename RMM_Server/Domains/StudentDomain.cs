@@ -47,11 +47,6 @@ namespace RMM_Server.Domains
             return result;
         }
 
-        public void DeleteStudentByID(string id)
-        {
-            isr.DeleteStudentByID(id);
-        }
-
         public void getParsedResume()
         {
             isr.getParsedResume();
@@ -65,7 +60,6 @@ namespace RMM_Server.Domains
         }
 
         //Bottom Methods Added by Jiawen and Amit
-
         //Student Filter Method = DONE
         public List<Student> GetFilteredAndSearchedStudents(StudentFilter sf)
         {

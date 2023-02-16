@@ -110,15 +110,6 @@ namespace RMM_Server.DataAccess
             return sl;  
         }
 
-        public void DeleteStudentByID(string id)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                string query = $"DELETE from student WHERE student_id = '{id}'";
-                connection.Execute(query, null);
-            };
-        }
-
         public void getParsedResume()
         {
             string resumePath = "path_to_file.pdf";
