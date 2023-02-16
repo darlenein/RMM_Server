@@ -76,9 +76,8 @@ namespace RMM_Server.Domains
             }
             else if (sf.keyword == "" && sf.studentFilterValue.Count == 0)
             {
+
                 result = isr.GetAllStudent();
-                //if (sf.psuID == "") result = isr.GetAllStudent();
-                //else result = GetSortedStudentsByFacultyID(sf.psuID);
             }
             else
             {
