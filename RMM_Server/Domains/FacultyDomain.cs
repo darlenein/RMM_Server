@@ -43,11 +43,6 @@ namespace RMM_Server.Domains
             return result;
         }
 
-        public void DeleteFacultyByID(string id)
-        {
-            ifr.DeleteFacultyByID(id);
-        }
-
         public List<Faculty> GetFilteredAndSearchedFaculty(FacultyFilter ff)
         {
             List<Faculty> result;

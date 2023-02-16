@@ -78,14 +78,5 @@ namespace RMM_Server.DataAccess
             };
             return fl;
         }
-
-        public void DeleteFacultyByID(string id)
-        { 
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                string query = $"DELETE from faculty WHERE faculty_id = '{id}'";
-                connection.Execute(query, null);
-            };
-        }
     }
 }
