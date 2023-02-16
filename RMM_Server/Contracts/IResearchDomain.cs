@@ -25,5 +25,7 @@ namespace RMM_Server.Contracts
         public List<Research> GetFilteredAndSearchedResearch(Filter f);
         public List<Research> GetSearchedResearchByKeyword(string keyword, List<Research> research);
         public List<Research> GetFilteredResearch(Filter f);
+
+        public List<Research> MatchResearchToStudent(string student_id);
     }
 }

@@ -161,4 +161,79 @@ namespace RMM_Server.Services
             return sList;
         }
     }
+
+    public class FacultySearchService
+    {
+        public List<Faculty> Search(string keyword, List<Faculty> fList)
+        {
+            // Ensures index backward compatibility
+            const LuceneVersion AppLuceneVersion = LuceneVersion.LUCENE_48;
+
+            // Construct a machine-independent path for the index
+            var basePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var indexPath = Path.Combine(basePath, "index");
+            using var dir = FSDirectory.Open(indexPath);
+
+            // Create an analyzer to process the text
+            var analyzer = new StandardAnalyzer(AppLuceneVersion);
+
+            // Create an index writer
+            var indexConfig = new IndexWriterConfig(AppLuceneVersion, analyzer);
+            using var writer = new IndexWriter(dir, indexConfig);
+
+            foreach (Faculty f in fList)
+            {
+                var source = new
+                {
+                    GUID = Guid.NewGuid().ToString(),
+                    Faculty_FirstName = f.First_Name.Trim().ToLower(),
+                    Faculty_LastName = f.Last_Name.Trim().ToLower(),
+                    
+
+
+
+                    // condition ? consequent : alt
+                    Title = f.Title == null ? "" : f.Title.Trim().ToLower(),
+                    About_Me = f.About_Me == null ? "" : f.About_Me.Trim().ToLower(),
+                    Research_Interest  = f.Research_Interest == null ? "" : f.Research_Interest.Trim().ToLower(),
+                };
+
+                f.GUID = source.GUID;
+                var doc = new Document
+                {
+                    // StringField indexes but doesn't tokenize
+                    new StringField("GUID", source.GUID, Field.Store.YES),
+                    new TextField("Faculty_FirstName", source.Faculty_FirstName, Field.Store.YES),
+                    new TextField("Faculty_LastName", source.Faculty_LastName, Field.Store.YES),
+                    new TextField("Title", source.Title, Field.Store.YES),
+                    new TextField("About_Me", source.About_Me, Field.Store.YES),
+                    new TextField("Research_Interest", source.Research_Interest, Field.Store.YES)
+
+                };
+                writer.AddDocument(doc);
+            }
+
+            writer.Commit();
+
+            string[] fieldNames = { "GUID", "Faculty_FirstName", "Faculty_LastName", "Title", "About_Me", "Research_Interest" };
+            var multiFieldQP = new MultiFieldQueryParser(AppLuceneVersion, fieldNames, analyzer);
+            Query query = multiFieldQP.Parse(keyword.Trim().ToLower());
+
+            // Re-use the writer to get real-time updates
+            using var reader = writer.GetReader(applyAllDeletes: true);
+            var searcher = new IndexSearcher(reader);
+            var hits = searcher.Search(query, fList.Count).ScoreDocs;
+
+            foreach (var hit in hits)
+            {
+                fList.ElementAt(hit.Doc).SearchScore = hit.Score;
+            }
+
+            writer.DeleteAll();
+            writer.Commit();
+            writer.Dispose();
+            dir.Dispose();
+            return fList;
+        }
+    }
 }

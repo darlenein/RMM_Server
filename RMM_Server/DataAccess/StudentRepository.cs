@@ -77,7 +77,8 @@ namespace RMM_Server.DataAccess
                 string query = $"INSERT into student VALUES (" +
                     $" '{s.Student_Id}', '{s.First_Name}', '{s.Last_Name}', '{s.GPA}', '{s.Graduation_Month}', '{s.Graduation_Year}'," +
                     $" '{s.Major}', '{s.Skills}', '{s.Link1}', '{s.Link2}', '{s.Link3}', '{s.Research_Interest}'," +
-                    $" '{s.Research_Project}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}', '{s.Minor}')";
+                    $" '{s.Research_Project}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}'," +
+                    $" '{s.Minor}', '{s.SkillLevel}', '{s.Major2}')";
                 sl = connection.Query<Student>(query, null).FirstOrDefault();
             };
 
@@ -99,23 +100,14 @@ namespace RMM_Server.DataAccess
                     $" graduation_year = '{s.Graduation_Year}', major = '{s.Major}', skills = '{s.Skills}'," +
                     $" link1 = '{s.Link1}', link2 = '{s.Link2}', link3 = '{s.Link3}', " +
                     $"research_interest = '{s.Research_Interest}', research_project = '{s.Research_Project}', " +
-                    $"email = '{s.Email}', preferPaid = {paid}, preferNonPaid = {nonpaid}," +
-                    $"preferCredit = {credit}, minor = '{s.Minor}'" +
+                    $"email = '{s.Email}', preferPaid = {paid}, preferNonPaid = {nonpaid}, " +
+                    $"preferCredit = {credit}, minor = '{s.Minor}', skillLevel = '{s.SkillLevel}', major2 = '{s.Major2}' " +
                     $"WHERE student_id = '{s.Student_Id}'";
 
                 sl = connection.Query<Student>(query, null).FirstOrDefault();
             };
 
             return sl;  
-        }
-
-        public void DeleteStudentByID(string id)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                string query = $"DELETE from student WHERE student_id = '{id}'";
-                connection.Execute(query, null);
-            };
         }
 
         public void getParsedResume()

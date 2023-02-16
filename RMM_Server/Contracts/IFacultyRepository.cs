@@ -12,6 +12,5 @@ namespace RMM_Server.Contracts
         public List<Faculty> GetAllFaculty();
         public Faculty CreateFaculty(Faculty f);
         public Faculty EditFaculty(Faculty f);
-        public void DeleteFacultyByID(string id);
     }
 }
