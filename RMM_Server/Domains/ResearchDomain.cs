@@ -12,14 +12,14 @@ namespace RMM_Server.Domains
     public class ResearchDomain : IResearchDomain
     {
         private readonly IResearchRepository irr;
-        private readonly IStudentRepository isr;
-        private readonly IDepartmentRepository idr;
+        private readonly IStudentDomain isd;
+        private readonly IDepartmentDomain idd;
 
-        public ResearchDomain(IResearchRepository irr, IStudentRepository isr, IDepartmentRepository idr)
+        public ResearchDomain(IResearchRepository irr, IStudentDomain isd, IDepartmentDomain idd)
         {
             this.irr = irr;
-            this.isr = isr;
-            this.idr = idr;
+            this.isd = isd;
+            this.idd = idd;
         }
 
         public List<Research> GetResearchByFacultyId(string f_id)
@@ -103,12 +103,12 @@ namespace RMM_Server.Domains
         public List<Research> GetSortedResearchesByStudentId(string s)
         {
             List<Research> result = GetAllResearch();
-            Student student = isr.GetStudent(s);
+            Student student = isd.GetStudent(s);
 
             //Have to get each researches list
             foreach (Research r in result)
             {
-                r.ResearchDepts = idr.GetSubDeptByResearchId(r.Research_Id);
+                r.ResearchDepts = idd.GetSubDeptByResearchId(r.Research_Id);
             }
 
             var sortedByMinor = result.OrderByDescending(x => x.Research_Id).ThenByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
@@ -121,20 +121,20 @@ namespace RMM_Server.Domains
         public List<Research> GetFilteredAndSearchedResearch(Filter f)
         {
             List<Research> result;
-            if (f.keyword == "" && f.filterValue.Count > 0)
+            if (f.Keyword == "" && f.FilterValue.Count > 0)
             {
                 result = GetFilteredResearch(f);
             }
-            else if (f.keyword == "" && f.filterValue.Count == 0)
+            else if (f.Keyword == "" && f.FilterValue.Count == 0)
             {
-                if (f.psuID == "") result = irr.GetAllResearch();
-                else result = GetSortedResearchesByStudentId(f.psuID);
+                if (f.PsuID == "") result = irr.GetAllResearch();
+                else result = MatchResearchToStudent(f.PsuID);
             }
             else
             {
-                result = GetSearchedResearchByKeyword(f.keyword, f.research);
-                f.research = result;
-                if (f.filterValue.Count > 0) result = GetFilteredResearch(f);
+                result = GetSearchedResearchByKeyword(f.Keyword, f.Research);
+                f.Research = result;
+                if (f.FilterValue.Count > 0) result = GetFilteredResearch(f);
             }
 
             result = result.GroupBy(x => x.Research_Id).OrderByDescending(c => c.Count()).SelectMany(c => c.Select(x => x)).Distinct().ToList();
@@ -154,31 +154,142 @@ namespace RMM_Server.Domains
             List<Research> filteredResults = new List<Research>();
             List<Research> temp = new List<Research>();
             
-            foreach(FilterValue fv in f.filterValue)
+            foreach(FilterValue fv in f.FilterValue)
             {
-                if(fv.categoryValue == "Department")
+                if(fv.CategoryValue == "Department")
                 {
-                    temp = f.research.Where(x => x.ResearchDepts[0] == fv.checkedValue || x.ResearchDepts[1] == fv.checkedValue || x.ResearchDepts[2] == fv.checkedValue).ToList();
+                    List<Research> departmentFilterList = new List<Research>();                   
+                    foreach(Research r in f.Research)
+                    {
+                        foreach(string s in r.ResearchDepts)
+                        {
+                            if(s == fv.CheckedValue)
+                            {
+                                departmentFilterList.Add(r);
+                                break;
+                            }
+                        }
+                    }
+                    temp = departmentFilterList;
                 }
-                if(fv.categoryValue == "Status")
+                if(fv.CategoryValue == "Status")
                 {
-                    bool value = Convert.ToBoolean(fv.checkedValue);
-                    temp = f.research.Where(x => x.Active == value).ToList();
+                    bool value = Convert.ToBoolean(fv.CheckedValue);
+                    temp = f.Research.Where(x => x.Active == value).ToList();
                 }
-                if (fv.categoryValue == "Location")
+                if (fv.CategoryValue == "Location")
                 {
-                    temp = f.research.Where(x => x.Location == fv.checkedValue).ToList();
+                    temp = f.Research.Where(x => x.Location == fv.CheckedValue).ToList();
                 }
-                if (fv.categoryValue == "Incentive")
+                if (fv.CategoryValue == "Incentive")
                 {
-                    if (fv.checkedValue == "Paid") temp = f.research.Where(x => x.IsPaid == true).ToList();
-                    if (fv.checkedValue == "Nonpaid") temp = f.research.Where(x => x.IsNonpaid == true).ToList();
-                    if (fv.checkedValue == "Credit") temp = f.research.Where(x => x.IsCredit == true).ToList();
+                    if (fv.CheckedValue == "Paid") temp = f.Research.Where(x => x.IsPaid == true).ToList();
+                    if (fv.CheckedValue == "Nonpaid") temp = f.Research.Where(x => x.IsNonpaid == true).ToList();
+                    if (fv.CheckedValue == "Credit") temp = f.Research.Where(x => x.IsCredit == true).ToList();
                 }
                 filteredResults.AddRange(temp);
             }
 
                 return filteredResults;
+        }
+
+        public List<Research> MatchResearchToStudent(string student_id)
+        {
+            MatchService ms = new MatchService();
+            List<Research> research = GetAllResearch();
+            List<Research> result = new List<Research>();
+            Student s = isd.GetStudent(student_id);
+            string[] tokenized_StudentSkills = s.Skills.Split(';');
+            s.Skills = s.Skills.Trim();
+            float match_score = 0;
+
+            // get all research by student's major, major2, and minor
+            foreach (Research r in research)
+            {
+                foreach(string dept in r.ResearchDepts)
+                {
+                    if(dept == s.Major || (dept == s.Major2 && s.Major2 != null) || (dept == s.Minor && s.Minor != null))
+                    {
+                        result.Add(r);
+                        break;
+                    }
+                }
+            }
+
+            foreach(Research r in result)
+            {
+                match_score = 0;
+                // if research_location == student's preferred location, match_score +0.1
+                if(r.Location == s.PreferLocation)
+                {
+                    match_score += (float)0.1;
+                }
+                // if research isCredit, isPaid, isNonpaid == student's, foreach match_score +0.1
+                if (r.IsPaid == s.PreferPaid && s.PreferPaid == true)
+                {
+                    match_score += (float)0.05;
+                }
+                if (r.IsNonpaid == s.PreferNonpaid && s.PreferNonpaid == true)
+                {
+                    match_score += (float)0.05;
+                }
+                if (r.IsCredit == s.PreferCredit && s.PreferCredit == true)
+                {
+                    match_score += (float)0.05;
+                }
+
+                // get list of required skills, if matches student +0.2 and remove from student skill list 
+                r.Required_Skills = r.Required_Skills.Trim();
+                if (r.Required_Skills != ";" && s.Skills != ";")
+                {
+                    // if skills not empty, get list of student skill, noramlize, and tokenize 
+                    tokenized_StudentSkills = ms.TokenizeString(s.Skills);
+                    string[] required_skills = ms.TokenizeString(r.Required_Skills);
+                    foreach (string rs in required_skills)
+                    {
+                        int counter = 0;
+                        foreach (string ss in tokenized_StudentSkills)
+                        {
+                            if (rs == ss)
+                            {
+                                match_score += (float)0.2;
+                                tokenized_StudentSkills = tokenized_StudentSkills.Where(x => x != tokenized_StudentSkills[counter]).ToArray();
+                            }
+                            counter++;
+                        }
+                    }
+                }
+
+                // get list of encouraged skills, if matches student +0.1, and remove from list 
+                r.Encouraged_Skills = r.Encouraged_Skills.Trim();
+                if (r.Encouraged_Skills != ";" && s.Skills != ";")
+                {
+                    // if skills not empty, get list of student skill, noramlize, and tokenize 
+                    tokenized_StudentSkills = ms.TokenizeString(s.Skills);
+                    string[] encouraged_skills = ms.TokenizeString(r.Encouraged_Skills);
+                    foreach (string es in encouraged_skills)
+                    {
+                        int counter = 0;
+                        foreach (string ss in tokenized_StudentSkills)
+                        {
+                            if (es == ss)
+                            {
+                                match_score += (float)0.1;
+                                tokenized_StudentSkills = tokenized_StudentSkills.Where(x => x != tokenized_StudentSkills[counter]).ToArray();
+                            }
+                            counter++;
+                        }
+                    }
+                }
+                
+
+                r.MatchScore = match_score;
+            }
+
+            // sort list by match_score
+            result = result.OrderByDescending(x => x.MatchScore).ToList();
+
+            return result;
         }
 
         public List<Research> ConvertDateTimeToDate(List<Research> research)

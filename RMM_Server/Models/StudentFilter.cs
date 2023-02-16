@@ -7,15 +7,15 @@ namespace RMM_Server.Models
 {
     public class StudentFilter
     {
-        public List<Student> student { get; set; }
-        public List<StudentFilterValue> studentFilterValue { get; set; }
-        public string psuID { get; set; }
-        public string keyword { get; set; }
+        public List<Student> Student { get; set; }
+        public List<StudentFilterValue> StudentFilterValue { get; set; }
+        public string PsuID { get; set; }
+        public string Keyword { get; set; }
     }
 
     public class StudentFilterValue
     {
-        public string checkedValue { get; set; }
-        public string categoryValue { get; set; }
+        public string CheckedValue { get; set; }
+        public string CategoryValue { get; set; }
     }
 }

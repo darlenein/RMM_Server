@@ -26,9 +26,10 @@ namespace RMM_Server.Models
         public bool IsCredit { get; set; }
         public string[] ResearchDepts { get; set; }
         public float SearchScore { get; set; }
+        public float MatchScore { get; set; }
         public string GUID { get; set; }
 
-        public int Counter { get; set; }
-
+        public string RequiredSkillLevel { get; set; }
+        public string EncouragedSkillLevel { get; set; }
     }
 }

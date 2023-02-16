@@ -70,20 +70,20 @@ namespace RMM_Server.Domains
         public List<Student> GetFilteredAndSearchedStudents(StudentFilter sf)
         {
             List<Student> result;
-            if (sf.keyword == "" && sf.studentFilterValue.Count > 0)
+            if (sf.Keyword == "" && sf.StudentFilterValue.Count > 0)
             {
                 result = GetFilteredStudents(sf);
             }
-            else if (sf.keyword == "" && sf.studentFilterValue.Count == 0)
+            else if (sf.Keyword == "" && sf.StudentFilterValue.Count == 0)
             {
                   result = isr.GetAllStudent();
                // else result = GetSortedStudentsByFacultyID(sf.psuID);
             }
             else
             {
-                result = GetSearchedStudentByKeyword(sf.keyword, sf.student);
-                sf.student = result;
-                if (sf.studentFilterValue.Count > 0) result = GetFilteredStudents(sf);
+                result = GetSearchedStudentByKeyword(sf.Keyword, sf.Student);
+                sf.Student = result;
+                if (sf.StudentFilterValue.Count > 0) result = GetFilteredStudents(sf);
             }
 
             result = result.GroupBy(x => x.Student_Id).OrderByDescending(c => c.Count()).SelectMany(c => c.Select(x => x)).Distinct().ToList();
@@ -96,22 +96,22 @@ namespace RMM_Server.Domains
             List<Student> filteredResults = new List<Student>();
             List<Student> temp = new List<Student>();
 
-            foreach (StudentFilterValue sfv in sf.studentFilterValue)
+            foreach (StudentFilterValue sfv in sf.StudentFilterValue)
             {
-                if (sfv.categoryValue == "Major")
+                if (sfv.CategoryValue == "Major")
                 {
-                    temp = sf.student.Where(x => x.Major == sfv.checkedValue).ToList();
+                    temp = sf.Student.Where(x => x.Major == sfv.CheckedValue).ToList();
 
                 }
-                if (sfv.categoryValue == "Location")
+                if (sfv.CategoryValue == "Location")
                 {
-                    temp = sf.student.Where(x => x.PreferLocation == sfv.checkedValue).ToList();
+                    temp = sf.Student.Where(x => x.PreferLocation == sfv.CheckedValue).ToList();
                 }
-                if (sfv.categoryValue == "Incentive")
+                if (sfv.CategoryValue == "Incentive")
                 {
-                    if (sfv.checkedValue == "Paid") temp = sf.student.Where(x => x.PreferPaid == true).ToList();
-                    if (sfv.checkedValue == "Nonpaid") temp = sf.student.Where(x => x.PreferNonpaid == true).ToList();
-                    if (sfv.checkedValue == "Credit") temp = sf.student.Where(x => x.PreferCredit == true).ToList();
+                    if (sfv.CheckedValue == "Paid") temp = sf.Student.Where(x => x.PreferPaid == true).ToList();
+                    if (sfv.CheckedValue == "Nonpaid") temp = sf.Student.Where(x => x.PreferNonpaid == true).ToList();
+                    if (sfv.CheckedValue == "Credit") temp = sf.Student.Where(x => x.PreferCredit == true).ToList();
                 }
                 filteredResults.AddRange(temp);
             }

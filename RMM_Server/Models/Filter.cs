@@ -7,14 +7,14 @@ namespace RMM_Server.Models
 {
     public class Filter
     {
-        public List<Research> research { get; set; }
-        public List<FilterValue> filterValue { get; set; }
-        public string psuID { get; set; }
-        public string keyword { get; set; }
+        public List<Research> Research { get; set; }
+        public List<FilterValue> FilterValue { get; set; }
+        public string PsuID { get; set; }
+        public string Keyword { get; set; }
     }
     public class FilterValue
     {
-        public string checkedValue { get; set; }
-        public string categoryValue { get; set; }
+        public string CheckedValue { get; set; }
+        public string CategoryValue { get; set; }
     }
 }

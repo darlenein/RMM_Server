@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Moq;
 using MySql.Data.MySqlClient;
 using RMM_Server.Contracts;
 using RMM_Server.Models;
@@ -103,6 +104,11 @@ namespace RMM_Server.Domains
             List<Faculty> temp = fs.Search(keyword, faculty);
             var searchedResults = temp.Where(x => x.SearchScore > 0).OrderByDescending(x => x.SearchScore).ToList();
             return searchedResults;
+        }
+
+        public static implicit operator Mock<object>(FacultyDomain v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

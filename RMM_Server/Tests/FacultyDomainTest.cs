@@ -5,24 +5,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Moq;
+using RMM_Server.Contracts;
 
 namespace RMM_Server.Tests
 {
     public class FacultyDomainTest
     {
-        /*private FacultyDomain fd;
+        private IFacultyDomain fd;
+        private Mock<IFacultyRepository> mfr = new Mock<IFacultyRepository>();
+        private Faculty f = new Faculty();
 
         [SetUp]
         public void SetUp()
         {
-            fd = new FacultyDomain();
-        }
+            fd = new FacultyDomain(mfr.Object);
 
-        [Test]
-        public void TestCreateFacultyCreatesFaculty()
-        {
-            //arrange
-            Faculty f = new Faculty()
+            f = new Faculty()
             {
                 Faculty_Id = "testID",
                 First_Name = "FirstName",
@@ -38,13 +37,22 @@ namespace RMM_Server.Tests
                 Research_Interest = "Research Interests",
                 Profile_Url = "pfp"
             };
+        }
+
+        [Test]
+        public void TestCreateFacultyCreatesFaculty()
+        {
+            //arrange
+            mfr.Setup(x => x.CreateFaculty(It.IsAny<Faculty>()))
+            .Returns(f);
+
 
             //act
             var result = fd.CreateFaculty(f);
 
             //assert
             Assert.NotNull(result);
-            fd.DeleteFacultyByID("testID");
-        }*/
+            mfr.Verify(x => x.CreateFaculty(It.IsAny<Faculty>()), Times.Once());
+        }
     }
 }

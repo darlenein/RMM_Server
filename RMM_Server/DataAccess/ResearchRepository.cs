@@ -2,13 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using RMM_Server.Contracts;
-using RMM_Server.Domains;
 using RMM_Server.Models;
-using System;
+using RMM_Server.Services;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace RMM_Server.DataAccess
 {
@@ -148,7 +146,7 @@ namespace RMM_Server.DataAccess
                 string query = $"INSERT into research VALUES (" +
                     $" null, '{r.Faculty_Id}', '{r.Name}', '{r.Description}', '{r.Location}', '{r.Required_Skills}'," +
                     $" '{r.Encouraged_Skills}', '{r.Start_Date}', '{r.End_Date}', '{active}', '{r.Address}', '{paid}'," +
-                    $" '{nonpaid}', '{credit}')";
+                    $" '{nonpaid}', '{credit}', '{r.RequiredSkillLevel}', '{r.EncouragedSkillLevel}')";
                 rl = connection.Query<Research>(query, null).FirstOrDefault();
             };
 
@@ -185,7 +183,7 @@ namespace RMM_Server.DataAccess
                 string query = $"UPDATE research " +
                     $"SET name = '{r.Name}', description = '{r.Description}', location = '{r.Location}, required_skills = '{r.Required_Skills}', " +
                     $"encouraged_skills = '{r.Encouraged_Skills}', start_date = '{r.Start_Date}', end_date = '{r.End_Date}', " +
-                    $"active = {active}, address = '{r.Address}', isPaid = {paid}, isNonpaid = {nonpaid}, isCredit = {credit}" +
+                    $"active = {active}, address = '{r.Address}', isPaid = {paid}, isNonpaid = {nonpaid}, isCredit = {credit}, requiredSkillLevel = '{r.RequiredSkillLevel}', encouragedSkillLevel = '{r.EncouragedSkillLevel}' " +
                     $"WHERE faculty_id = '{r.Research_Id}'";
                 rl = connection.Query<Research>(query, null).FirstOrDefault();
             };

@@ -24,7 +24,7 @@ namespace RMM_Server.Models
         public bool PreferPaid { get; set; }
         public bool PreferNonpaid { get; set; }
         public bool PreferCredit { get; set; }
-        public int Progression { get; set; }
+        public int Progress_Bar { get; set; }
         public string Research_name { get; set; }
         public string PreferLocation { get; set; }
         //added
@@ -33,6 +33,9 @@ namespace RMM_Server.Models
         public string[] StudentNames { get; set; }
 
         public string Minor { get; set; }
+
+        public string SkillLevel { get; set; }
+        public string Major2 { get; set; }
 
     }
 }
