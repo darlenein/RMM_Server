@@ -195,7 +195,7 @@ namespace RMM_Server.Tests
         }
 
         [Test]
-        public void TestCreateResearchCreatesResearch()
+        public void TestAddResearch()
         {
             //arrange
             string[] s = { "Computer", "English" };
@@ -226,6 +226,7 @@ namespace RMM_Server.Tests
 
             //assert
             Assert.NotNull(result);
+            Assert.AreEqual(result.Research_Id, 999998);
             mrr.Verify(x => x.AddResearch(It.IsAny<Research>()), Times.Once);
         }
 
@@ -291,7 +292,7 @@ namespace RMM_Server.Tests
             {
                 Research_Id = 18,
                 Faculty_Id = "oxe2",
-                Name = "test",
+                Name = "testName",
                 Description = "test",
                 Location = "test",
                 Required_Skills = "test",
@@ -315,6 +316,7 @@ namespace RMM_Server.Tests
 
             //assert
             Assert.NotNull(result);
+            Assert.AreEqual(result.Name, "testName");
             mrr.Verify(x => x.GetResearchByID(It.IsAny<int>()), Times.Once);
         }
 
@@ -349,6 +351,7 @@ namespace RMM_Server.Tests
             List<Research> result = rd.GetResearchByFacultyId(r.Faculty_Id);
 
             Assert.NotNull(result);
+            Assert.AreEqual(result.Count, 1);
             mrr.Verify(x => x.GetResearchByFacultyId(It.IsAny<string>()), Times.Once);
         }
 
@@ -947,7 +950,7 @@ namespace RMM_Server.Tests
         }
 
         [Test]
-        public void ConvertDateTimeToDate()
+        public void TestConvertDateTimeToDate()
         {
 
             List<Research> rl = new List<Research>();

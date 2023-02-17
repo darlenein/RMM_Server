@@ -129,6 +129,7 @@ namespace RMM_Server.Tests
 
             //assert
             Assert.NotNull(result);
+            Assert.AreEqual(result.Student_Id, "testID");
             msr.Verify(x => x.GetStudent(It.IsAny<string>()), Times.Once);
         }
 
@@ -144,6 +145,7 @@ namespace RMM_Server.Tests
 
             //assert
             Assert.NotNull(result);
+            Assert.AreEqual(result.Count, 2);
             msr.Verify(x => x.GetAllStudentsByResearch(It.IsAny<int>()), Times.Once);
         }
 

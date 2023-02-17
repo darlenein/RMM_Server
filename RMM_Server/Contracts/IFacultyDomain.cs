@@ -8,9 +8,9 @@ namespace RMM_Server.Contracts
 {
     public interface IFacultyDomain
     {
-        public Faculty GetFaculty(string id);
-        public List<Faculty> GetAllFaculty();
-        public Faculty CreateFaculty(Faculty f);
+        public Faculty GetFaculty(string id); //[x]
+        public List<Faculty> GetAllFaculty(); //[x]
+        public Faculty CreateFaculty(Faculty f); //[x]
         public Faculty EditFaculty(Faculty f);
 
         // new 

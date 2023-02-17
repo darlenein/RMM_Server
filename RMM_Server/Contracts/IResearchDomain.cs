@@ -8,25 +8,25 @@ namespace RMM_Server.Contracts
 {
     public interface IResearchDomain
     {
-        public List<Research> GetResearchByFacultyId(string f_id);
-        public Research GetResearchByID(int id);
-        public List<Research> GetAllResearch();
-        public List<Research> GetAllResearchByStudentId(string s_id);
-        public Participant AddResearchApplicant(Participant p);
+        public List<Research> GetResearchByFacultyId(string f_id); //[x], means documented test
+        public Research GetResearchByID(int id); //[x]
+        public List<Research> GetAllResearch(); //[x]
+        public List<Research> GetAllResearchByStudentId(string s_id); //[x]
+        public Participant AddResearchApplicant(Participant p); //[x]
         public void DeleteResearchApplicant(int rID, string sID);
-        public void UpdateApplicantProgress(int p, int rID, string sID);
+        public void UpdateApplicantProgress(int p, int rID, string sID); //[x]
         public Participant GetAppProgression(int rID, string sID);
-        public Research AddResearch(Research r);
+        public Research AddResearch(Research r); //[x]
         public Research EditResearch(Research r);
-        public void DeleteResearchDeptByResearchID(int ID);
-        public int GetLastIDFromResearch();
-        public List<Research> GetSortedResearchesByStudentId(string s);
-        public List<Research> GetFilteredAndSearchedResearch(Filter f);
-        public List<Research> GetSearchedResearchByKeyword(string keyword, List<Research> research);
-        public List<Research> GetFilteredResearch(Filter f);
+        public void DeleteResearchDeptByResearchID(int ID); //[x]
+        public int GetLastIDFromResearch(); //[x]
+        public List<Research> GetSortedResearchesByStudentId(string s); // incomplete method
+        public List<Research> GetFilteredAndSearchedResearch(Filter f); //[x][x][x]
+        public List<Research> GetSearchedResearchByKeyword(string keyword, List<Research> research); //[x]
+        public List<Research> GetFilteredResearch(Filter f); //[x]
 
-        public List<Research> MatchResearchToStudent(string student_id);
-        public List<Research> ConvertDateTimeToDate(List<Research> research);
-        public int ConvertBoolToInt(bool b);
+        public List<Research> MatchResearchToStudent(string student_id); //[x][x]
+        public List<Research> ConvertDateTimeToDate(List<Research> research); //[x][x]
+        public int ConvertBoolToInt(bool b); //[x][x]
     }
 }

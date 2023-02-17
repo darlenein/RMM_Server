@@ -105,6 +105,7 @@ namespace RMM_Server.Tests
 
             //assert
             Assert.NotNull(result);
+            Assert.AreEqual(result.Faculty_Id, "testID3");
             mfr.Verify(x => x.GetFaculty(It.IsAny<string>()), Times.Once());
         }
 
