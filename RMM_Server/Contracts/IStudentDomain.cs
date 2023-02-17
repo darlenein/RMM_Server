@@ -19,7 +19,7 @@ namespace RMM_Server.Contracts
         public List<Student> GetFilteredAndSearchedStudents(StudentFilter sf);
         public List<Student> GetFilteredStudents(StudentFilter sf);
         public List<Student> GetSearchedStudentByKeyword(string keyword, List<Student> student);
-        public List<Student> GetSortedStudentsByFacultyID(string s);
+        //public List<Student> GetSortedStudentsByFacultyID(string s);
 
     }
 }

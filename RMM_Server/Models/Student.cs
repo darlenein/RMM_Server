@@ -30,7 +30,7 @@ namespace RMM_Server.Models
         //added
         public float SearchScore { get; set; }
         public string GUID { get; set; }
-        public string[] StudentNames { get; set; }
+        public string[] StudentIDs { get; set; }
 
         public string Minor { get; set; }
 
