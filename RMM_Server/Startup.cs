@@ -30,6 +30,7 @@ namespace RMM_Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
 
             // tells program, any time it sees a IDeptRepo, make it a DeptRepo 
@@ -74,9 +75,13 @@ namespace RMM_Server
             app.UseCors(x => x
             .AllowAnyOrigin()
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            );
+
           
             app.UseHttpsRedirection();
+
+
             // end
 
             app.UseEndpoints(endpoints =>

@@ -20,12 +20,13 @@ namespace RMM_Server.Contracts
         public Research EditResearch(Research r);
         public void DeleteResearchDeptByResearchID(int ID);
         public int GetLastIDFromResearch();
-        public void DeleteResearchByID(int id);
         public List<Research> GetSortedResearchesByStudentId(string s);
         public List<Research> GetFilteredAndSearchedResearch(Filter f);
         public List<Research> GetSearchedResearchByKeyword(string keyword, List<Research> research);
         public List<Research> GetFilteredResearch(Filter f);
 
         public List<Research> MatchResearchToStudent(string student_id);
+        public List<Research> ConvertDateTimeToDate(List<Research> research);
+        public int ConvertBoolToInt(bool b);
     }
 }

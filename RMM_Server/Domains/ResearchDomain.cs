@@ -95,11 +95,6 @@ namespace RMM_Server.Domains
             return result;
         }
 
-        public void DeleteResearchByID(int id)
-        {
-            irr.DeleteResearchByID(id);
-        }
-
         public List<Research> GetSortedResearchesByStudentId(string s)
         {
             List<Research> result = GetAllResearch();
@@ -111,6 +106,7 @@ namespace RMM_Server.Domains
                 r.ResearchDepts = idd.GetSubDeptByResearchId(r.Research_Id);
             }
 
+            // METHOD INCOMPLETE
             var sortedByMinor = result.OrderByDescending(x => x.Research_Id).ThenByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
             var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
             var sortedByStatus = sortedByMajor.OrderByDescending(x => x.Active == true).ToList();
@@ -128,7 +124,7 @@ namespace RMM_Server.Domains
             else if (f.Keyword == "" && f.FilterValue.Count == 0)
             {
                 if (f.PsuID == "") result = irr.GetAllResearch();
-                else result = MatchResearchToStudent(f.PsuID);
+                else result = GetSortedResearchesByStudentId(f.PsuID);
             }
             else
             {
@@ -281,8 +277,6 @@ namespace RMM_Server.Domains
                         }
                     }
                 }
-                
-
                 r.MatchScore = match_score;
             }
 

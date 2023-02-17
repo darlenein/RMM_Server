@@ -47,7 +47,13 @@ namespace RMM_Server.Controllers
         [HttpGet("getAllResearchSorted/{student_id}")]
         public List<Research> GetAllResearchSorted(string student_id)
         {
-            //List<Research> result = ird.GetSortedResearchesByStudentId(student_id);
+            List<Research> result = ird.GetSortedResearchesByStudentId(student_id);
+            return result;
+        }
+
+        [HttpGet("getMatchedResearches/{student_id}")]
+        public List<Research> GetMarchedResearchesByStudent(string student_id)
+        {
             List<Research> result = ird.MatchResearchToStudent(student_id);
             return result;
         }

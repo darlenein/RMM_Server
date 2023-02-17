@@ -228,15 +228,6 @@ namespace RMM_Server.DataAccess
             return ID;
         }
 
-        public void DeleteResearchByID(int id)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                string query = $"DELETE from research WHERE research_id = '{id}'";
-                connection.Execute(query, null);
-            };
-        }
-
         public int ConvertBoolToInt(bool b)
         {
             if (b == true) return 1;

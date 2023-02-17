@@ -16,9 +16,9 @@ namespace RMM_Server.Tests
     public class StudentDomainTest
     {
         private StudentDomain sd;
-        private readonly Mock<IStudentRepository> msr = new Mock<IStudentRepository>();
-        private readonly Mock<IFacultyDomain> mfd = new Mock<IFacultyDomain>();
-        private readonly Mock<IResearchDomain> mrd = new Mock<IResearchDomain>();
+        private Mock<IStudentRepository> msr;
+        private Mock<IFacultyDomain> mfd;
+        private Mock<IResearchDomain> mrd;
         private Student s = new Student();
         private List<Student> sl = new List<Student>();
 
@@ -26,6 +26,10 @@ namespace RMM_Server.Tests
         [SetUp]
         public void SetUp()
         {
+            mfd = new Mock<IFacultyDomain>();
+            msr = new Mock<IStudentRepository>();
+            mrd = new Mock<IResearchDomain>();
+            sl = new List<Student>();
             sd = new StudentDomain(msr.Object, mfd.Object);
             s = new Student()
             {
@@ -128,74 +132,9 @@ namespace RMM_Server.Tests
             msr.Verify(x => x.GetStudent(It.IsAny<string>()), Times.Once);
         }
 
-        /*[Test]
+        [Test]
         public void TestGetAllStudentsByResearch()
         {
-            List<Research> rl = new List<Research>();
-            Research r = new Research()
-            {
-                Research_Id = 18,
-                Faculty_Id = "oxe2",
-                Name = "test",
-                Description = "test",
-                Location = "test",
-                Required_Skills = "Python ;",
-                Encouraged_Skills = " ;",
-                Start_Date = "11/19/2023",
-                End_Date = "11/19/2023",
-                Active = false,
-                Address = "test",
-                IsPaid = false,
-                IsNonpaid = false,
-                IsCredit = false,
-                First_Name = "Ola",
-                Last_Name = "El-Rashiedy"
-            };
-            rl.Add(r);
-            r = new Research()
-            {
-                Research_Id = 19,
-                Faculty_Id = "nii1",
-                Name = "test2",
-                Description = "test2",
-                Location = "test2",
-                Required_Skills = "Python ;",
-                Encouraged_Skills = "SQL ;",
-                Start_Date = "11/19/2023",
-                End_Date = "11/19/2023",
-                Active = false,
-                Address = "test2",
-                IsPaid = false,
-                IsNonpaid = false,
-                IsCredit = false,
-                First_Name = "Nassem",
-                Last_Name = "Ibrahim"
-            };
-            rl.Add(r);
-            r = new Research()
-            {
-                Research_Id = 20,
-                Faculty_Id = "oxe2",
-                Name = "test3",
-                Description = "test3",
-                Location = "test3",
-                Required_Skills = "Python ; SQL",
-                Encouraged_Skills = "test3",
-                Start_Date = "11/19/2023",
-                End_Date = "11/19/2023",
-                Active = false,
-                Address = "test3",
-                IsPaid = false,
-                IsNonpaid = false,
-                IsCredit = false,
-                First_Name = "Ola",
-                Last_Name = "El-Rashiedy"
-            };
-            rl.Add(r);
-
-            Participant p;
-
-
             //arrange
             msr.Setup(x => x.GetAllStudentsByResearch(It.IsAny<int>()))
                 .Returns(sl);
@@ -206,7 +145,23 @@ namespace RMM_Server.Tests
             //assert
             Assert.NotNull(result);
             msr.Verify(x => x.GetAllStudentsByResearch(It.IsAny<int>()), Times.Once);
-        }*/
+        }
+
+        [Test]
+        public void TestGetAllStudentsByResearch_NoStudentsApplied_ReturnsNothing()
+        {
+            //arrange
+            msr.Setup(x => x.GetAllStudentsByResearch(It.IsAny<int>()))
+                .Returns(new List<Student>());
+
+            //act
+            var result = sd.GetAllStudentsByResearch(19);
+
+            //assert
+            Assert.NotNull(result);
+            Assert.AreEqual(result.Count, 0);
+            msr.Verify(x => x.GetAllStudentsByResearch(It.IsAny<int>()), Times.Once);
+        }
 
         [Test]
         public void TestGetAllStudent()

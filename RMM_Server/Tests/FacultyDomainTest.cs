@@ -13,13 +13,15 @@ namespace RMM_Server.Tests
     public class FacultyDomainTest
     {
         private IFacultyDomain fd;
-        private Mock<IFacultyRepository> mfr = new Mock<IFacultyRepository>();
+        private Mock<IFacultyRepository> mfr;
         private Faculty f = new Faculty();
         private List<Faculty> fl = new List<Faculty>();
 
         [SetUp]
         public void SetUp()
         {
+            fl = new List<Faculty>();
+            mfr = new Mock<IFacultyRepository>();
             fd = new FacultyDomain(mfr.Object);
 
             f = new Faculty()

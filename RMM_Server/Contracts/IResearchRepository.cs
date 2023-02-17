@@ -20,6 +20,5 @@ namespace RMM_Server.Contracts
         public Research EditResearch(Research r);
         public void DeleteResearchDeptByResearchID(int ID);
         public int GetLastIDFromResearch();
-        public void DeleteResearchByID(int id);
     }
 }
