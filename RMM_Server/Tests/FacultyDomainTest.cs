@@ -178,28 +178,7 @@ namespace RMM_Server.Tests
         {
             //no filters currently for faculty list
 
-            Student s = new Student()
-            {
-                Student_Id = "testID",
-                First_Name = "FirstName",
-                Last_Name = "LastName",
-                GPA = 2.98,
-                Graduation_Month = "May",
-                Graduation_Year = "2025",
-                Major = "Biology",
-                Skills = "Can use Centrifuge",
-                Link1 = null,
-                Link2 = null,
-                Link3 = null,
-                Research_Interest = "Bio Interest",
-                Research_Project = "Bio Projects",
-                Email = "Student@gmail.com",
-                PreferPaid = true,
-                PreferNonpaid = false,
-                PreferCredit = true,
-                PreferLocation = "Online",
-                Minor = "Psychology"
-            };
+
             List<Faculty> fl = new List<Faculty>();
             Faculty f = new Faculty()
             {
@@ -250,8 +229,6 @@ namespace RMM_Server.Tests
             // mocks
             mfr.Setup(x => x.GetAllFaculty())
                 .Returns(fl);
-            msd.Setup(x => x.GetStudent(It.IsAny<string>()))
-                .Returns(s);
 
 
             List<Faculty> result = fd.GetFilteredAndSearchedFaculty(ff);

@@ -341,22 +341,7 @@ namespace RMM_Server.Tests
         [Test]
         public void TestGetFilteredandSearchedStudents_NoKeyword_NoFilterValue()
         {
-           Faculty f = new Faculty()
-            {
-                Faculty_Id = "nii1",
-                First_Name = "Naseem",
-                Last_Name = "Ibrahim",
-                Title = "Title",
-                Email = "Email",
-                Office = "Office",
-                Phone = "Phone",
-                Link1 = null,
-                Link2 = null,
-                Link3 = null,
-                About_Me = "About Me",
-                Research_Interest = "Research Interests",
-                Profile_Url = "pfp"
-            };
+
             List<Student> sl = new List<Student>();
             Student s = new Student()
             {
@@ -419,8 +404,7 @@ namespace RMM_Server.Tests
             // mocks
             msr.Setup(x => x.GetAllStudent())
                 .Returns(sl);
-            mfd.Setup(x => x.GetFaculty(It.IsAny<string>()))
-                .Returns(f);
+
  
 
             List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
