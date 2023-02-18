@@ -12,7 +12,7 @@ namespace RMM_Server.Contracts
         public List<Student> GetAllStudent();
         public List<Student> GetAllStudentsByResearch(int research_id);
         public Student CreateStudent(Student s);
-        public Student EditStudent(Student s);
+        public void EditStudent(Student s);
         public void getParsedResume();
 
     }

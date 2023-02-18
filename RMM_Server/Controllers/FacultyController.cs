@@ -45,10 +45,10 @@ namespace RMM_Server.Controllers
         }
 
         [HttpPut("editFaculty")]
-        public Faculty EditFacultyProfile(Faculty f)
+        public void EditFacultyProfile(Faculty f)
         {
-            Faculty result = ifd.EditFaculty(f);
-            return result;
+           ifd.EditFaculty(f);
+            
         }
 
         [HttpPost("GetFilteredAndSearchFacultyList")]

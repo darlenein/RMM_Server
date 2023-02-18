@@ -231,6 +231,60 @@ namespace RMM_Server.Tests
         }
 
         [Test]
+        public void TestEditResearch()
+        {
+            //arrange
+            string[] s = { "Computer", "English" };
+            Research r = new Research()
+            {
+                Research_Id = 999998,
+                Faculty_Id = "dxi1017",
+                Name = "research",
+                Description = "description",
+                Location = "location",
+                Required_Skills = "required",
+                Encouraged_Skills = "encouraged",
+                Start_Date = "2022-11-19",
+                End_Date = "2023-11-19",
+                Active = true,
+                Address = "123 fake st",
+                IsPaid = true,
+                IsNonpaid = false,
+                IsCredit = true,
+                ResearchDepts = s
+            };
+
+            string[] s2 = { "Nursing", "Engineering" };
+            Research r2 = new Research()
+            {
+                Research_Id = 999998,
+                Faculty_Id = "dxi1017",
+                Name = "research",
+                Description = "description",
+                Location = "location",
+                Required_Skills = "required",
+                Encouraged_Skills = "encouraged",
+                Start_Date = "2023-10-12",
+                End_Date = "2023-12-120",
+                Active = false,
+                Address = "321 real street",
+                IsPaid = true,
+                IsNonpaid = false,
+                IsCredit = true,
+                ResearchDepts = s2
+            };
+
+            mrr.Setup(x => x.EditResearch(It.IsAny<Research>()));
+                
+
+            //act
+            rd.EditResearch(r2);
+
+            //assert
+            mrr.Verify(x => x.EditResearch(It.IsAny<Research>()), Times.Once);
+        }
+
+        [Test]
         public void TestDeleteResearchDeptByResearchID()
         {
             //arrange

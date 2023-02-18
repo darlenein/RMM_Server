@@ -17,7 +17,7 @@ namespace RMM_Server.Contracts
         public void UpdateApplicantProgress(int p, int rID, string sID);
         public Participant GetAppProgression(int rID, string sID);
         public Research AddResearch(Research r);
-        public Research EditResearch(Research r);
+        public void EditResearch(Research r);
         public void DeleteResearchDeptByResearchID(int ID);
         public int GetLastIDFromResearch();
     }

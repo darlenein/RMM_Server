@@ -12,13 +12,14 @@ using Moq;
 namespace RMM_Server.Tests
 {
     // mark class as a test
-    [TestFixture] 
+    [TestFixture]
     public class StudentDomainTest
     {
         private StudentDomain sd;
         private Mock<IStudentRepository> msr;
         private Mock<IFacultyDomain> mfd;
         private Mock<IResearchDomain> mrd;
+        private Mock<IStudentDomain> msd;
         private Student s = new Student();
         private List<Student> sl = new List<Student>();
 
@@ -53,6 +54,7 @@ namespace RMM_Server.Tests
                 PreferLocation = "Online",
                 Minor = "Psychology"
             };
+
 
             Student s_test = new Student()
             {
@@ -105,6 +107,7 @@ namespace RMM_Server.Tests
         [Test]
         public void TestCreateStudentCreatesStudent()
         {
+
             //arrange
             msr.Setup(x => x.CreateStudent(It.IsAny<Student>()))
                 .Returns(s);
@@ -116,6 +119,65 @@ namespace RMM_Server.Tests
             Assert.NotNull(result);
             msr.Verify(x => x.CreateStudent(It.IsAny<Student>()), Times.Once);
         }
+        
+        [Test]
+        public void TestEditStudentEditsStudent()
+        {
+            s = new Student()
+            {
+                Student_Id = "testID",
+                First_Name = "FirstName",
+                Last_Name = "LastName",
+                GPA = 2.98,
+                Graduation_Month = "May",
+                Graduation_Year = "2025",
+                Major = "Biology",
+                Skills = "Can use Centrifuge",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Bio Interest",
+                Research_Project = "Bio Projects",
+                Email = "Student@gmail.com",
+                PreferPaid = true,
+                PreferNonpaid = false,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Psychology"
+            };
+
+            Student s2 = new Student()
+            {
+                Student_Id = "testID",
+                First_Name = "FirstName",
+                Last_Name = "LastName",
+                GPA = 2.98,
+                Graduation_Month = "June",
+                Graduation_Year = "2027",
+                Major = "Chemistry",
+                Skills = "Can make chemicals",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Chem Interest",
+                Research_Project = "Chem Projects",
+                Email = "Student@gmail.com",
+                PreferPaid = false,
+                PreferNonpaid = true,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Psychology"
+            };
+            //arrange
+            msr.Setup(x => x.EditStudent(It.IsAny<Student>()));
+                
+
+            //act
+            sd.EditStudent(s2);
+
+            //assert
+            msr.Verify(x => x.EditStudent(It.IsAny<Student>()), Times.Once);
+        } 
 
         [Test]
         public void TestGetStudent()
@@ -196,5 +258,397 @@ namespace RMM_Server.Tests
             var result = sd.ConvertBoolToInt(value);
             Assert.AreEqual(0, result);
         }
+
+        [Test]
+        public void TestGetFilteredandSearchedStudents_NoKeyword()
+        {
+            List<Student> sl = new List<Student>();
+            Student s = new Student()
+            {
+                Student_Id = "testID",
+                First_Name = "FirstName",
+                Last_Name = "LastName",
+                GPA = 2.98,
+                Graduation_Month = "May",
+                Graduation_Year = "2025",
+                Major = "Biology",
+                Skills = "Can use Centrifuge",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Bio Interest",
+                Research_Project = "Bio Projects",
+                Email = "Student@gmail.com",
+                PreferPaid = true,
+                PreferNonpaid = false,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Psychology"
+            };
+            sl.Add(s);
+            s = new Student()
+            {
+                Student_Id = "abc123",
+                First_Name = "john",
+                Last_Name = "jimbo",
+                GPA = 3.98,
+                Graduation_Month = "June",
+                Graduation_Year = "2027",
+                Major = "Chemistry",
+                Skills = "Can make chemicals",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Chem Interest",
+                Research_Project = "Chem Projects",
+                Email = "john@gmail.com",
+                PreferPaid = false,
+                PreferNonpaid = true,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Biology"
+            };
+            sl.Add(s);
+
+            List<StudentFilterValue> sfv = new List<StudentFilterValue>();
+            StudentFilterValue sv = new StudentFilterValue()
+            {
+                CategoryValue = "GPA",
+                CheckedValue = "Ascending"
+            };
+            sfv.Add(sv);
+
+            StudentFilter sf = new StudentFilter()
+            {
+                Student = sl,
+                StudentFilterValue = sfv,
+                Keyword = "",
+                PsuID = "nii1"
+            };
+
+            // mocks
+            msr.Setup(x => x.GetAllStudent())
+                .Returns(sl);
+
+            List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
+
+            Assert.NotNull(result);
+            Assert.AreEqual(result[0].Student_Id, "testID");
+            Assert.AreEqual(result.Count, 2);
+            msr.Verify(x => x.GetAllStudent(), Times.Never);
+        }
+
+        [Test]
+        public void TestGetFilteredandSearchedStudents_NoKeyword_NoFilterValue()
+        {
+           Faculty f = new Faculty()
+            {
+                Faculty_Id = "nii1",
+                First_Name = "Naseem",
+                Last_Name = "Ibrahim",
+                Title = "Title",
+                Email = "Email",
+                Office = "Office",
+                Phone = "Phone",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                About_Me = "About Me",
+                Research_Interest = "Research Interests",
+                Profile_Url = "pfp"
+            };
+            List<Student> sl = new List<Student>();
+            Student s = new Student()
+            {
+                Student_Id = "testID",
+                First_Name = "FirstName",
+                Last_Name = "LastName",
+                GPA = 2.98,
+                Graduation_Month = "May",
+                Graduation_Year = "2025",
+                Major = "Biology",
+                Skills = "Can use Centrifuge",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Bio Interest",
+                Research_Project = "Bio Projects",
+                Email = "Student@gmail.com",
+                PreferPaid = true,
+                PreferNonpaid = false,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Psychology"
+            };
+            sl.Add(s);
+            s = new Student()
+            {
+                Student_Id = "abc123",
+                First_Name = "john",
+                Last_Name = "jimbo",
+                GPA = 3.98,
+                Graduation_Month = "June",
+                Graduation_Year = "2027",
+                Major = "Chemistry",
+                Skills = "Can make chemicals",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Chem Interest",
+                Research_Project = "Chem Projects",
+                Email = "john@gmail.com",
+                PreferPaid = false,
+                PreferNonpaid = true,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Biology"
+            };
+            sl.Add(s);
+
+            List<StudentFilterValue> sfv = new List<StudentFilterValue>();
+
+
+            StudentFilter sf = new StudentFilter()
+            {
+                Student = sl,
+                StudentFilterValue = sfv,
+                Keyword = "",
+                PsuID = "nii1"
+            };
+
+            // mocks
+            msr.Setup(x => x.GetAllStudent())
+                .Returns(sl);
+            mfd.Setup(x => x.GetFaculty(It.IsAny<string>()))
+                .Returns(f);
+ 
+
+            List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
+
+            Assert.NotNull(result);
+            Assert.AreEqual(result[0].Student_Id, "abc123");
+            Assert.AreEqual(result.Count, 2);
+            msr.Verify(x => x.GetAllStudent(), Times.Once);
+        }
+
+        [Test]
+        public void TestGetFilteredandSearchedStudents()
+        {
+            List<Student> sl = new List<Student>();
+            Student s = new Student()
+            {
+                Student_Id = "testID",
+                First_Name = "FirstName",
+                Last_Name = "LastName",
+                GPA = 2.98,
+                Graduation_Month = "May",
+                Graduation_Year = "2025",
+                Major = "Chemistry",
+                Skills = "Can use Centrifuge",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Bio Interest",
+                Research_Project = "Bio Projects",
+                Email = "Student@gmail.com",
+                PreferPaid = true,
+                PreferNonpaid = false,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Psychology"
+            };
+            sl.Add(s);
+            s = new Student()
+            {
+                Student_Id = "abc123",
+                First_Name = "john",
+                Last_Name = "jimbo",
+                GPA = 3.98,
+                Graduation_Month = "June",
+                Graduation_Year = "2027",
+                Major = "Chemistry",
+                Skills = "Can make chemicals",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Crazy stuff",
+                Research_Project = "Chem Projects",
+                Email = "john@gmail.com",
+                PreferPaid = false,
+                PreferNonpaid = true,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Biology"
+            };
+            sl.Add(s);
+
+            List<StudentFilterValue> sfv = new List<StudentFilterValue>();
+            StudentFilterValue sv = new StudentFilterValue()
+            {
+                CategoryValue = "Major",
+                CheckedValue = "Chemistry"
+            };
+            sfv.Add(sv);
+
+            StudentFilter sf = new StudentFilter()
+            {
+                Student = sl,
+                StudentFilterValue = sfv,
+                Keyword = "Crazy Stuff",
+                PsuID = "nii1"
+            };
+
+            // mocks
+            msr.Setup(x => x.GetAllStudent())
+                .Returns(sl);
+
+            List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
+
+            Assert.NotNull(result);
+            Assert.AreEqual(result[0].Student_Id, "abc123");
+            Assert.AreEqual(result.Count, 1);
+            msr.Verify(x => x.GetAllStudent(), Times.Never);
+        }
+
+        [Test]
+        public void TestGetSearchedStudentByKeyword()
+        {
+            List<Student> sl = new List<Student>();
+            Student s = new Student()
+            {
+                Student_Id = "testID",
+                First_Name = "FirstName",
+                Last_Name = "LastName",
+                GPA = 2.98,
+                Graduation_Month = "May",
+                Graduation_Year = "2025",
+                Major = "Chemistry",
+                Skills = "Can use Centrifuge",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Bio Interest",
+                Research_Project = "Bio Projects",
+                Email = "Student@gmail.com",
+                PreferPaid = true,
+                PreferNonpaid = false,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Psychology"
+            };
+            sl.Add(s);
+            s = new Student()
+            {
+                Student_Id = "abc123",
+                First_Name = "john",
+                Last_Name = "jimbo",
+                GPA = 3.98,
+                Graduation_Month = "June",
+                Graduation_Year = "2027",
+                Major = "Chemistry",
+                Skills = "Can make chemicals",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Crazy stuff",
+                Research_Project = "Chem Projects",
+                Email = "john@gmail.com",
+                PreferPaid = false,
+                PreferNonpaid = true,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Biology"
+            };
+            sl.Add(s);
+
+            msd.Setup(x => x.GetSearchedStudentByKeyword(It.IsAny<string>(), It.IsAny<List<Student>>()))
+                .Returns(sl);
+
+            //act
+            var result = sd.GetSearchedStudentByKeyword("john", sl);
+
+            //assert
+            Assert.NotNull(result);
+            Assert.AreEqual(result.Count, 1);
+        }
+
+        [Test]
+        public void TestGetFilteredStudents()
+        {
+            List<Student> sl = new List<Student>();
+            Student s = new Student()
+            {
+                Student_Id = "testID",
+                First_Name = "FirstName",
+                Last_Name = "LastName",
+                GPA = 2.98,
+                Graduation_Month = "May",
+                Graduation_Year = "2025",
+                Major = "Biology",
+                Skills = "Can use Centrifuge",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Bio Interest",
+                Research_Project = "Bio Projects",
+                Email = "Student@gmail.com",
+                PreferPaid = true,
+                PreferNonpaid = false,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Psychology"
+            };
+            sl.Add(s);
+            s = new Student()
+            {
+                Student_Id = "abc123",
+                First_Name = "john",
+                Last_Name = "jimbo",
+                GPA = 3.98,
+                Graduation_Month = "June",
+                Graduation_Year = "2027",
+                Major = "Chemistry",
+                Skills = "Can make chemicals",
+                Link1 = null,
+                Link2 = null,
+                Link3 = null,
+                Research_Interest = "Chem Interest",
+                Research_Project = "Chem Projects",
+                Email = "john@gmail.com",
+                PreferPaid = false,
+                PreferNonpaid = true,
+                PreferCredit = true,
+                PreferLocation = "Online",
+                Minor = "Biology"
+            };
+            sl.Add(s);
+
+            List<StudentFilterValue> sfv = new List<StudentFilterValue>();
+            StudentFilterValue sv = new StudentFilterValue()
+            {
+                CategoryValue = "GPA",
+                CheckedValue = "Ascending"
+            };
+            sfv.Add(sv);
+
+            StudentFilter sf = new StudentFilter()
+            {
+                Student = sl,
+                StudentFilterValue = sfv,
+                Keyword = "",
+                PsuID = "nii1"
+            };
+
+            // mocks
+            msr.Setup(x => x.GetAllStudent())
+                .Returns(sl);
+
+            var result = sd.GetFilteredAndSearchedStudents(sf);
+
+            Assert.NotNull(result);
+            Assert.AreEqual(result.Count, 2);
+            
+        }
     }
+    
 }

@@ -63,9 +63,9 @@ namespace RMM_Server.DataAccess
             return fl;
         }
 
-        public Faculty EditFaculty(Faculty f)
+        public void EditFaculty(Faculty f)
         {
-            Faculty fl;
+           
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $"UPDATE faculty " +
@@ -74,9 +74,9 @@ namespace RMM_Server.DataAccess
                     $"SET phone = {f.Phone}, SET link1 = {f.Link1}, SET link2 = {f.Link2}, " +
                     $"SET link3 = {f.Link3}, SET about_me = {f.About_Me}, SET research_interest = {f.Research_Interest}" +
                     $"WHERE faculty_id = '{f.Faculty_Id}'";
-                fl = connection.Query<Faculty>(query, null).FirstOrDefault();
+               
             };
-            return fl;
+            
         }
     }
 }

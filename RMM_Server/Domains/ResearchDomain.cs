@@ -78,10 +78,10 @@ namespace RMM_Server.Domains
             return result;
         }
 
-        public Research EditResearch(Research r)
+        public void EditResearch(Research r)
         {
-            Research result = irr.EditResearch(r);
-            return result;
+            irr.EditResearch(r);
+            
         }
 
         public void DeleteResearchDeptByResearchID(int ID)

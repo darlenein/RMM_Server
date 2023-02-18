@@ -54,10 +54,10 @@ namespace RMM_Server.Controllers
         }
 
         [HttpPut("editStudent")]
-        public Student EditStudentProfile(Student s)
+        public void EditStudentProfile(Student s)
         {
-            Student result = isd.EditStudent(s);
-            return result;
+            isd.EditStudent(s);
+            
         }
 
         // PUT api/<StudentController>/5

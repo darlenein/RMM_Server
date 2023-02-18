@@ -85,9 +85,10 @@ namespace RMM_Server.DataAccess
             return sl;
         }
 
-        public Student EditStudent(Student s)
+        public void EditStudent(Student s)
         {
-            Student sl;
+           
+    
             int paid = ConvertBoolToInt(s.PreferPaid);
             int nonpaid = ConvertBoolToInt(s.PreferNonpaid);
             int credit = ConvertBoolToInt(s.PreferCredit);
@@ -104,10 +105,10 @@ namespace RMM_Server.DataAccess
                     $"preferCredit = {credit}, minor = '{s.Minor}', skillLevel = '{s.SkillLevel}', major2 = '{s.Major2}' " +
                     $"WHERE student_id = '{s.Student_Id}'";
 
-                sl = connection.Query<Student>(query, null).FirstOrDefault();
+                
             };
 
-            return sl;  
+              
         }
 
         public void getParsedResume()

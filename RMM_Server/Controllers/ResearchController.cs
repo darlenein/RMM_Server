@@ -109,10 +109,10 @@ namespace RMM_Server.Controllers
         }
 
         [HttpPut("editResearch")]
-        public Research EditResearchPage(Research r)
+        public void EditResearchPage(Research r)
         {
-            Research result = ird.EditResearch(r);
-            return result;
+            ird.EditResearch(r);
+            
         }
 
         // DELETE api/<ResearchController>/5

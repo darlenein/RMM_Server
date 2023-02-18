@@ -41,10 +41,10 @@ namespace RMM_Server.Domains
             return result;
         }
 
-        public Student EditStudent(Student s)
+        public void EditStudent(Student s)
         {
-            Student result = isr.EditStudent(s);
-            return result;
+            isr.EditStudent(s);
+            
         }
 
         public void getParsedResume()

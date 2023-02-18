@@ -37,10 +37,10 @@ namespace RMM_Server.Domains
             return result;
         }
 
-        public Faculty EditFaculty(Faculty f)
+        public void EditFaculty(Faculty f)
         {
-            Faculty result = ifr.EditFaculty(f);
-            return result;
+            ifr.EditFaculty(f);
+            //return result;
         }
 
         public List<Faculty> GetFilteredAndSearchedFaculty(FacultyFilter ff)
