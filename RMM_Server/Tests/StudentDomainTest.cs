@@ -643,7 +643,7 @@ namespace RMM_Server.Tests
             msr.Setup(x => x.GetAllStudent())
                 .Returns(sl);
 
-            var result = sd.GetFilteredAndSearchedStudents(sf);
+            var result = sd.GetFilteredStudents(sf);
 
             Assert.NotNull(result);
             Assert.AreEqual(result.Count, 2);
