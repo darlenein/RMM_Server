@@ -295,13 +295,13 @@ namespace RMM_Server.Tests
                 GPA = 3.98,
                 Graduation_Month = "June",
                 Graduation_Year = "2027",
-                Major = "Chemistry",
-                Skills = "Can make chemicals",
+                Major = "Software Engineering",
+                Skills = "Can make computer",
                 Link1 = null,
                 Link2 = null,
                 Link3 = null,
-                Research_Interest = "Chem Interest",
-                Research_Project = "Chem Projects",
+                Research_Interest = "SWENG Interest",
+                Research_Project = "SWENG Projects",
                 Email = "john@gmail.com",
                 PreferPaid = false,
                 PreferNonpaid = true,
@@ -314,8 +314,8 @@ namespace RMM_Server.Tests
             List<StudentFilterValue> sfv = new List<StudentFilterValue>();
             StudentFilterValue sv = new StudentFilterValue()
             {
-                CategoryValue = "GPA",
-                CheckedValue = "Ascending"
+                CategoryValue = "Major",
+                CheckedValue = "Software Engineering"
             };
             sfv.Add(sv);
 
@@ -334,8 +334,8 @@ namespace RMM_Server.Tests
             List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
 
             Assert.NotNull(result);
-            Assert.AreEqual(result[0].Student_Id, "testID");
-            Assert.AreEqual(result.Count, 2);
+            Assert.AreEqual(result[0].Student_Id, "abc123");
+            Assert.AreEqual(result.Count, 1);
             msr.Verify(x => x.GetAllStudent(), Times.Never);
         }
 
@@ -428,7 +428,7 @@ namespace RMM_Server.Tests
                 GPA = 2.98,
                 Graduation_Month = "May",
                 Graduation_Year = "2025",
-                Major = "Biology",
+                Major = "Software Engineering",
                 Skills = "Can use Centrifuge",
                 Link1 = null,
                 Link2 = null,
@@ -451,13 +451,13 @@ namespace RMM_Server.Tests
                 GPA = 3.98,
                 Graduation_Month = "June",
                 Graduation_Year = "2027",
-                Major = "Chemistry",
-                Skills = "Can make chemicals",
+                Major = "Software Engineering",
+                Skills = "Can make computers",
                 Link1 = null,
                 Link2 = null,
                 Link3 = null,
                 Research_Interest = "Crazy stuff",
-                Research_Project = "Chem Projects",
+                Research_Project = "SWENG Projects",
                 Email = "john@gmail.com",
                 PreferPaid = false,
                 PreferNonpaid = true,
@@ -471,7 +471,7 @@ namespace RMM_Server.Tests
             StudentFilterValue sv = new StudentFilterValue()
             {
                 CategoryValue = "Major",
-                CheckedValue = "Chemistry"
+                CheckedValue = "Software Engineering"
             };
             sfv.Add(sv);
 
@@ -479,7 +479,7 @@ namespace RMM_Server.Tests
             {
                 Student = sl,
                 StudentFilterValue = sfv,
-                Keyword = "Crazy Stuff",
+                Keyword = "john",
                 
             };
 
@@ -592,13 +592,13 @@ namespace RMM_Server.Tests
                 GPA = 3.98,
                 Graduation_Month = "June",
                 Graduation_Year = "2027",
-                Major = "Chemistry",
-                Skills = "Can make chemicals",
+                Major = "Software Engineering",
+                Skills = "Can make omputers",
                 Link1 = null,
                 Link2 = null,
                 Link3 = null,
-                Research_Interest = "Chem Interest",
-                Research_Project = "Chem Projects",
+                Research_Interest = "SWENG Interest",
+                Research_Project = "SWENG Projects",
                 Email = "john@gmail.com",
                 PreferPaid = false,
                 PreferNonpaid = true,
@@ -611,8 +611,8 @@ namespace RMM_Server.Tests
             List<StudentFilterValue> sfv = new List<StudentFilterValue>();
             StudentFilterValue sv = new StudentFilterValue()
             {
-                CategoryValue = "GPA",
-                CheckedValue = "Ascending"
+                CategoryValue = "Major",
+                CheckedValue = "Software Engineering"
             };
             sfv.Add(sv);
 
@@ -631,7 +631,7 @@ namespace RMM_Server.Tests
             var result = sd.GetFilteredStudents(sf);
 
             Assert.NotNull(result);
-            Assert.AreEqual(result.Count, 2);
+            Assert.AreEqual(result.Count, 1);
             
         }
     }

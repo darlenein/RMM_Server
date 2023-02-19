@@ -236,7 +236,7 @@ namespace RMM_Server.Tests
             List<Faculty> result = fd.GetFilteredAndSearchedFaculty(ff);
 
             Assert.NotNull(result);
-            Assert.AreEqual(result[0].Faculty_Id, "nii1");
+            Assert.AreEqual(result[0].Faculty_Id, "testID");
             Assert.AreEqual(result.Count, 2);
             mfr.Verify(x => x.GetAllFaculty(), Times.Once);
         }
