@@ -30,6 +30,7 @@ namespace RMM_Server.Tests
             mfd = new Mock<IFacultyDomain>();
             msr = new Mock<IStudentRepository>();
             mrd = new Mock<IResearchDomain>();
+            msd = new Mock<IStudentDomain>();
             sl = new List<Student>();
             sd = new StudentDomain(msr.Object, mfd.Object);
             s = new Student()
@@ -410,7 +411,7 @@ namespace RMM_Server.Tests
             List<Student> result = sd.GetFilteredAndSearchedStudents(sf);
 
             Assert.NotNull(result);
-            Assert.AreEqual(result[0].Student_Id, "abc123");
+            Assert.AreEqual(result[0].Student_Id, "testID");
             Assert.AreEqual(result.Count, 2);
             msr.Verify(x => x.GetAllStudent(), Times.Once);
         }
@@ -427,7 +428,7 @@ namespace RMM_Server.Tests
                 GPA = 2.98,
                 Graduation_Month = "May",
                 Graduation_Year = "2025",
-                Major = "Chemistry",
+                Major = "Biology",
                 Skills = "Can use Centrifuge",
                 Link1 = null,
                 Link2 = null,
@@ -479,7 +480,7 @@ namespace RMM_Server.Tests
                 Student = sl,
                 StudentFilterValue = sfv,
                 Keyword = "Crazy Stuff",
-                PsuID = "nii1"
+                
             };
 
             // mocks
@@ -620,7 +621,7 @@ namespace RMM_Server.Tests
                 Student = sl,
                 StudentFilterValue = sfv,
                 Keyword = "",
-                PsuID = "nii1"
+                
             };
 
             // mocks

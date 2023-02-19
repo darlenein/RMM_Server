@@ -24,6 +24,7 @@ namespace RMM_Server.Tests
         {
             fl = new List<Faculty>();
             mfr = new Mock<IFacultyRepository>();
+            mfd = new Mock<IFacultyDomain>();
             fd = new FacultyDomain(mfr.Object);
 
             f = new Faculty()
@@ -174,6 +175,7 @@ namespace RMM_Server.Tests
             mfr.Verify(x => x.GetAllFaculty(), Times.Once());
         }
 
+        [Test]
         public void TestGetFilteredandSearchedFaculty_NoKeyword()
         {
             //no filters currently for faculty list
@@ -223,7 +225,7 @@ namespace RMM_Server.Tests
                 faculty = fl,
                 facultyFilterValue = ffv,
                 keyword = "",
-                psuID = "nii1"
+               // psuID = "testID"
             };
 
             // mocks
@@ -239,6 +241,7 @@ namespace RMM_Server.Tests
             mfr.Verify(x => x.GetAllFaculty(), Times.Once);
         }
 
+        [Test]
         public void TestGetFilteredandSearchedFaculty()
         {
             //no filters currently for faculty list
@@ -264,7 +267,7 @@ namespace RMM_Server.Tests
             f = new Faculty()
             {
                 Faculty_Id = "nii1",
-                First_Name = "Nassem",
+                First_Name = "Naseem",
                 Last_Name = "Ibrahim",
                 Title = "Title",
                 Email = "Email",
@@ -287,7 +290,7 @@ namespace RMM_Server.Tests
                 faculty = fl,
                 facultyFilterValue = ffv,
                 keyword = "Naseem",
-                psuID = "nii1"
+              //  psuID = "nii1"
             };
 
             // mocks
@@ -302,7 +305,7 @@ namespace RMM_Server.Tests
             Assert.AreEqual(result.Count, 1);
             mfr.Verify(x => x.GetAllFaculty(), Times.Never);
         }
-
+        [Test]
         public void TestGetSearchedFacultyByKeyword()
         {
           
@@ -328,7 +331,7 @@ namespace RMM_Server.Tests
             f = new Faculty()
             {
                 Faculty_Id = "nii1",
-                First_Name = "Nassem",
+                First_Name = "Naseem",
                 Last_Name = "Ibrahim",
                 Title = "Title",
                 Email = "Email",
