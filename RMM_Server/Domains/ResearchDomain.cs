@@ -25,6 +25,7 @@ namespace RMM_Server.Domains
         public List<Research> GetResearchByFacultyId(string f_id)
         {
             List<Research> result = irr.GetResearchByFacultyId(f_id);
+            result = ConvertDateTimeToDate(result);
             return result;
         }
 
