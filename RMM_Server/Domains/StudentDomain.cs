@@ -49,7 +49,7 @@ namespace RMM_Server.Domains
 
         public void getParsedResume()
         {
-            isr.getParsedResume();
+            isr.GetParsedResume();
         }
 
 
@@ -120,6 +120,21 @@ namespace RMM_Server.Domains
             List<Student> temp = ss.Search(keyword, student);
             var searchedResults = temp.Where(x => x.SearchScore > 0).OrderByDescending(x => x.SearchScore).ToList();
             return searchedResults;
+        }
+
+        public void InsertIntoStudentResearchExclusions(string student_id, int research_id)
+        {
+            isr.InsertIntoStudentResearchExclusions(student_id, research_id);
+        }
+
+        public List<int> GetExcludedResearches(string student_id)
+        {
+            return isr.GetExcludedResearches(student_id);
+        }
+
+        public void DeleteExcludedResearches(string student_id)
+        {
+            isr.DeleteExcludedResearches(student_id);
         }
 
         //sort by faculty id

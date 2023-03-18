@@ -20,6 +20,8 @@ namespace RMM_Server.Contracts
         public List<Student> GetFilteredStudents(StudentFilter sf);
         public List<Student> GetSearchedStudentByKeyword(string keyword, List<Student> student);
         //public List<Student> GetSortedStudentsByFacultyID(string s);
-
+        public void InsertIntoStudentResearchExclusions(string student_id, int research_id);
+        public List<int> GetExcludedResearches(string student_id);
+        public void DeleteExcludedResearches(string student_id);
     }
 }

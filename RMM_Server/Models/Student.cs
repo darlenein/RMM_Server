@@ -27,7 +27,6 @@ namespace RMM_Server.Models
         public int Progress_Bar { get; set; }
         public string Research_name { get; set; }
         public string PreferLocation { get; set; }
-        //added
         public float SearchScore { get; set; }
         public string GUID { get; set; }
         public string[] StudentIDs { get; set; }
@@ -36,6 +35,7 @@ namespace RMM_Server.Models
 
         public string SkillLevel { get; set; }
         public string Major2 { get; set; }
+        public float MatchScore { get; set; }
 
     }
 }
