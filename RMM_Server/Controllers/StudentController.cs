@@ -95,18 +95,18 @@ namespace RMM_Server.Controllers
             return result;
         }
 
-        [HttpPost("insertIntoStudentResearchExclusions")]
-        public IActionResult InsertIntoStudentResearchExclusions(string student_id, int research_id)
+        [HttpPost("insertIntoStudentHiddenResearch")]
+        public IActionResult InsertIntoStudentHiddenResearch(string student_id, int research_id)
         {
-            isd.InsertIntoStudentResearchExclusions(student_id, research_id);
+            isd.InsertIntoStudentHiddenResearch(student_id, research_id);
             return Ok();
         }
 
-        [HttpPost("deleteExcludedResearches")]
-        public IActionResult DeleteExcludedResearches(string student_id)
+        [HttpGet("getAllRankedStudentsByResearch/{research_id}")]
+        public List<Student> GetAllRankedStudentsByResearch(int research_id)
         {
-            isd.DeleteExcludedResearches(student_id);
-            return Ok();
+            List<Student> result = isd.GetAllRankedStudentsByResearch(research_id);
+            return result;
         }
 
         /*[HttpGet("getAllStudentSorted/{faculty_id}")]

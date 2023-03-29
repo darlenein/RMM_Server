@@ -10,11 +10,13 @@ namespace RMM_Server.Domains
     {
         private readonly IStudentRepository isr;
         private readonly IFacultyDomain ifr;
+        private readonly IResearchRepository irr;
 
-        public StudentDomain(IStudentRepository isr, IFacultyDomain ifr)
+        public StudentDomain(IStudentRepository isr, IFacultyDomain ifr, IResearchRepository irr)
         {
             this.isr = isr;
             this.ifr = ifr;
+            this.irr = irr;
         }
 
         public Student GetStudent(string id)
@@ -122,19 +124,123 @@ namespace RMM_Server.Domains
             return searchedResults;
         }
 
-        public void InsertIntoStudentResearchExclusions(string student_id, int research_id)
+        public void InsertIntoStudentHiddenResearch(string student_id, int research_id)
         {
-            isr.InsertIntoStudentResearchExclusions(student_id, research_id);
+            isr.InsertIntoStudentHiddenResearch(student_id, research_id);
         }
 
-        public List<int> GetExcludedResearches(string student_id)
+        public List<Student> GetAllRankedStudentsByResearch(int research_id)
         {
-            return isr.GetExcludedResearches(student_id);
+            var result = RankStudentToResearch(research_id);
+            return result;
         }
 
-        public void DeleteExcludedResearches(string student_id)
+        public List<Student> RankStudentToResearch(int research_id)
         {
-            isr.DeleteExcludedResearches(student_id);
+            MatchService ms = new MatchService();
+
+            // get all students by research id 
+            List<Student> result = GetAllStudentsByResearch(research_id);
+            Research r = irr.GetResearchByID(research_id);
+
+            r.Required_Skills = r.Required_Skills.Trim();
+            r.Encouraged_Skills = r.Encouraged_Skills.Trim();
+
+            float match_score = 0;
+
+
+            foreach (Student s in result)
+            {
+                match_score = 0;
+                // for each: majors, minors, double major match (+0.3, +0.1, +0.3) 
+                foreach (string dept in r.ResearchDepts)
+                {
+                    if (dept == s.Major || (dept == s.Major2 && s.Major2 != null))
+                    {
+                        match_score += (float)0.3;
+                    }
+                    if (dept == s.Minor && s.Minor != null)
+                    {
+                        match_score += (float)0.1;
+                    }
+                }
+
+                // if research_location == student's preferred location, match_score +0.1
+                if (r.Location == s.PreferLocation)
+                {
+                    match_score += (float)0.1;
+                }
+
+                // if research isCredit, isPaid, isNonpaid == student's, foreach match_score +0.05
+                if (r.IsPaid == s.PreferPaid && s.PreferPaid == true)
+                {
+                    match_score += (float)0.05;
+                }
+                if (r.IsNonpaid == s.PreferNonpaid && s.PreferNonpaid == true)
+                {
+                    match_score += (float)0.05;
+                }
+                if (r.IsCredit == s.PreferCredit && s.PreferCredit == true)
+                {
+                    match_score += (float)0.05;
+                }
+
+                // get list of required skills, if matches student +0.2 and remove from student skill list 
+                s.Skills = s.Skills.Trim();
+                string[] tokenized_StudentSkills = ms.TokenizeString(s.Skills);
+
+                if (r.Required_Skills != ";" && s.Skills != ";")
+                {
+                    // if skills not empty, get list of student skill, noramlize, and tokenize 
+                    string[] tokenized_RequiredSkill = ms.TokenizeString(r.Required_Skills);
+
+                    // for each required skill, see if it matches for each student skill
+                    foreach (string rs in tokenized_RequiredSkill)
+                    {
+                        int counter = 0;
+                        foreach (string ss in tokenized_StudentSkills)
+                        {
+                            if (rs == ss)
+                            {
+                                match_score += (float)0.5;
+
+                                // remove fromt list 
+                                tokenized_StudentSkills = tokenized_StudentSkills.Where(x => x != tokenized_StudentSkills[counter]).ToArray();
+                                break;
+                            }
+                            counter++;
+                        }
+                    }
+                }
+
+                // get list of encouraged skills, if matches student +0.1, and remove from list 
+                if (r.Encouraged_Skills != ";" && s.Skills != ";")
+                {
+                    // if skills not empty, get list of student skill, noramlize, and tokenize 
+                    string[] tokenized_EncouragedSkill = ms.TokenizeString(r.Encouraged_Skills);
+                    foreach (string es in tokenized_EncouragedSkill)
+                    {
+                        int counter = 0;
+                        foreach (string ss in tokenized_StudentSkills)
+                        {
+                            if (es == ss)
+                            {
+                                match_score += (float)0.1;
+                                tokenized_StudentSkills = tokenized_StudentSkills.Where(x => x != tokenized_StudentSkills[counter]).ToArray();
+                                break;
+                            }
+                            counter++;
+                        }
+                    }
+                }
+                s.MatchScore = match_score;
+
+            }
+
+            // sort list by match_score
+            result = result.OrderByDescending(x => x.MatchScore).ToList();
+
+            return result;
         }
 
         //sort by faculty id

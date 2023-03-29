@@ -41,14 +41,16 @@ namespace RMM_Server.DataAccess
 
         public Research GetResearchByID(int id)
         {
-            Research rl;
+            Research r;
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $"SELECT a.*, b.first_name, b.last_name FROM research AS a " +
                     $"JOIN faculty as B ON a.faculty_id = b.faculty_id WHERE research_id = '{id}'";
-                rl = connection.Query<Research>(query, null).FirstOrDefault();
+                r = connection.Query<Research>(query, null).FirstOrDefault();
+
+                r.ResearchDepts = idd.GetSubDeptByResearchId(r.Research_Id);
             };
-            return rl;
+            return r;
         }
 
         public List<Research> GetAllResearch()
@@ -226,6 +228,41 @@ namespace RMM_Server.DataAccess
                 ID = connection.Query<int>(query, null).FirstOrDefault();
             };
             return ID;
+        }
+
+        public List<int> GetHiddenResearchesId(string student_id)
+        {
+            List<int> exclusions = new List<int>();
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = $"SELECT research_id from hidden_research WHERE student_id = '{student_id}'";
+                exclusions = connection.Query<int>(query, null).ToList();
+            };
+
+            return exclusions;
+        }
+
+        public List<Research> GetHiddenResearchesByStudentId(string student_id)
+        {
+            var hiddenResearches = new List<Research>();
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = $"SELECT a.*, c.first_name, c.last_name FROM research a " +
+                    $"JOIN hidden_research b ON a.research_id = b.research_id " +
+                    $"JOIN faculty c ON a.faculty_id = c.faculty_id where b.student_id = '{student_id}'";
+                hiddenResearches = connection.Query<Research>(query, null).ToList();
+            };
+
+            return hiddenResearches;
+        }
+
+        public void DeleteHiddenResearch(int research_id, string student_id)
+        {
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = $"DELETE from hidden_research WHERE research_id = {research_id} AND student_id = '{student_id}'";
+                connection.Execute(query, null);
+            };
         }
 
         public int ConvertBoolToInt(bool b)

@@ -14,9 +14,7 @@ namespace RMM_Server.Contracts
         public Student CreateStudent(Student s);
         public void EditStudent(Student s);
         public void GetParsedResume();
-        public void InsertIntoStudentResearchExclusions(string student_id, int research_id);
-        public List<int> GetExcludedResearches(string student_id);
-        public void DeleteExcludedResearches(string student_id);
+        public void InsertIntoStudentHiddenResearch(string student_id, int research_id);
 
     }
 }

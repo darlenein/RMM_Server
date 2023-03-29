@@ -36,6 +36,7 @@ namespace RMM_Server.Models
         public string SkillLevel { get; set; }
         public string Major2 { get; set; }
         public float MatchScore { get; set; }
+        public string Name { get; set; } // research name
 
     }
 }

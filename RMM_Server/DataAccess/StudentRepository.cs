@@ -111,34 +111,15 @@ namespace RMM_Server.DataAccess
               
         }
 
-        public void InsertIntoStudentResearchExclusions(string student_id, int research_id)
+        public void InsertIntoStudentHiddenResearch(string student_id, int research_id)
         {
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
-                string query = $"INSERT into excluded_research VALUES ( null, '{student_id}', {research_id})";
+                string query = $"INSERT into hidden_research VALUES ( null, '{student_id}', {research_id})";
                 connection.Execute(query, null);
             };
         }
 
-        public List<int> GetExcludedResearches(string student_id)
-        {
-            List<int> exclusions = new List<int>();
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                string query = $"SELECT research_id from excluded_research WHERE student_id = '{student_id}'";
-                exclusions = connection.Query<int>(query, null).ToList();
-            };
-
-            return exclusions;
-        }
-        public void DeleteExcludedResearches(string student_id)
-        {
-            using (IDbConnection connection = new MySqlConnection(connectionString))
-            {
-                string query = $"DELETE from excluded_research WHERE student_id = '{student_id}'";
-                connection.Execute(query, null);
-            };
-        }
 
         public void GetParsedResume()
         {

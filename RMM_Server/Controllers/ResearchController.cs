@@ -52,7 +52,7 @@ namespace RMM_Server.Controllers
         }
 
         [HttpGet("getMatchedResearches/{student_id}")]
-        public List<Research> GetMarchedResearchesByStudent(string student_id)
+        public List<Research> GetMatchedResearchesByStudent(string student_id)
         {
             List<Research> result = ird.MatchResearchToStudent(student_id);
             return result;
@@ -120,6 +120,20 @@ namespace RMM_Server.Controllers
         public void DeleteResearchApp(Participant p)
         {
             ird.DeleteResearchApplicant(p.Research_id, p.Student_id);
+        }
+
+        [HttpGet("getHiddenResearchByStudentId/{student_id}")]
+        public List<Research> GetHiddenResearchByStudentId(string student_id)
+        {
+            var result = ird.GetHiddenResearchesByStudentId(student_id);
+            return result;
+        }
+
+        [HttpDelete("deleteHiddenResearch")]
+        public IActionResult DeleteHiddenResearches(int research_id, string student_id)
+        {
+            ird.DeleteHiddenResearch(research_id, student_id);
+            return Ok();
         }
     }
 }

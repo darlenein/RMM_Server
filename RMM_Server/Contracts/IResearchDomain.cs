@@ -28,5 +28,8 @@ namespace RMM_Server.Contracts
         public List<Research> MatchResearchToStudent(string student_id); //[x][x]
         public List<Research> ConvertDateTimeToDate(List<Research> research); //[x][x]
         public int ConvertBoolToInt(bool b); //[x][x]
+        List<int> GetHiddenResearchesId(string student_id);
+        List<Research> GetHiddenResearchesByStudentId(string student_id);
+        void DeleteHiddenResearch(int research_id, string student_id);
     }
 }

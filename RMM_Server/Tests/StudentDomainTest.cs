@@ -17,6 +17,7 @@ namespace RMM_Server.Tests
     {
         private StudentDomain sd;
         private Mock<IStudentRepository> msr;
+        private Mock<IResearchRepository> mrr;
         private Mock<IFacultyDomain> mfd;
         private Mock<IResearchDomain> mrd;
         private Mock<IStudentDomain> msd;
@@ -32,7 +33,7 @@ namespace RMM_Server.Tests
             mrd = new Mock<IResearchDomain>();
             msd = new Mock<IStudentDomain>();
             sl = new List<Student>();
-            sd = new StudentDomain(msr.Object, mfd.Object);
+            sd = new StudentDomain(msr.Object, mfd.Object, mrr.Object);
             s = new Student()
             {
                 Student_Id = "testID",
