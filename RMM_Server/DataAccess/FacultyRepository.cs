@@ -69,10 +69,10 @@ namespace RMM_Server.DataAccess
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $"UPDATE faculty " +
-                    $"SET first_name = {f.First_Name}, SET last_name = {f.Last_Name}, " +
-                    $"SET title = {f.Title}, SET email = {f.Email}, SET office = {f.Office}, " +
-                    $"SET phone = {f.Phone}, SET link1 = {f.Link1}, SET link2 = {f.Link2}, " +
-                    $"SET link3 = {f.Link3}, SET about_me = {f.About_Me}, SET research_interest = {f.Research_Interest}" +
+                    $"SET first_name = '{f.First_Name}', last_name = '{f.Last_Name}', " +
+                    $"title = '{f.Title}', email = '{f.Email}', office = '{f.Office}', " +
+                    $"phone = '{f.Phone}', link1 = '{f.Link1}', link2 = '{f.Link2}', " +
+                    $"link3 = '{f.Link3}', about_me = '{f.About_Me}', research_interest = '{f.Research_Interest}'" +
                     $"WHERE faculty_id = '{f.Faculty_Id}'";
                 connection.Execute(query, null);
             };
