@@ -74,7 +74,7 @@ namespace RMM_Server.DataAccess
                     $"SET phone = {f.Phone}, SET link1 = {f.Link1}, SET link2 = {f.Link2}, " +
                     $"SET link3 = {f.Link3}, SET about_me = {f.About_Me}, SET research_interest = {f.Research_Interest}" +
                     $"WHERE faculty_id = '{f.Faculty_Id}'";
-               
+                connection.Execute(query, null);
             };
             
         }
