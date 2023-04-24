@@ -183,7 +183,7 @@ namespace RMM_Server.DataAccess
             {
                 // edit research
                 string query = $"UPDATE research " +
-                    $"SET name = '{r.Name}', description = '{r.Description}', location = '{r.Location}, required_skills = '{r.Required_Skills}', " +
+                    $"SET name = '{r.Name}', description = '{r.Description}', location = '{r.Location}', required_skills = '{r.Required_Skills}', " +
                     $"encouraged_skills = '{r.Encouraged_Skills}', start_date = '{r.Start_Date}', end_date = '{r.End_Date}', " +
                     $"active = {active}, address = '{r.Address}', isPaid = {paid}, isNonpaid = {nonpaid}, isCredit = {credit}, requiredSkillLevel = '{r.RequiredSkillLevel}', encouragedSkillLevel = '{r.EncouragedSkillLevel}' " +
                     $"WHERE faculty_id = '{r.Faculty_Id}'";
