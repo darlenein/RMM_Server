@@ -87,8 +87,6 @@ namespace RMM_Server.DataAccess
 
         public void EditStudent(Student s)
         {
-           
-    
             int paid = ConvertBoolToInt(s.PreferPaid);
             int nonpaid = ConvertBoolToInt(s.PreferNonpaid);
             int credit = ConvertBoolToInt(s.PreferCredit);
@@ -104,8 +102,7 @@ namespace RMM_Server.DataAccess
                     $"email = '{s.Email}', preferPaid = {paid}, preferNonPaid = {nonpaid}, " +
                     $"preferCredit = {credit}, minor = '{s.Minor}', skillLevel = '{s.SkillLevel}', major2 = '{s.Major2}' " +
                     $"WHERE student_id = '{s.Student_Id}'";
-
-                
+                connection.Execute(query, null);
             };
 
               

@@ -67,5 +67,20 @@ namespace RMM_Server.DataAccess
             return l1;
         }
 
+        public string[] GetAllSubDeptByResearchId(int rID)
+        {
+            string[] sdl;
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = $"SELECT b.name FROM researchdept a" +
+                    $" JOIN subdepartment b" +
+                    $" ON a.subdepartment_id = b.subdepartment_id" +
+                    $" WHERE research_id = {rID}";
+                sdl = connection.Query<string>(query, null).ToArray();
+            };
+
+            return sdl;
+        }
+
     }
 }

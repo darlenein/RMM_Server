@@ -222,7 +222,7 @@ namespace RMM_Server.Domains
                 {
                     match_score += (float)0.1;
                 }
-                // if research isCredit, isPaid, isNonpaid == student's, foreach match_score +0.1
+                // if research isCredit, isPaid, isNonpaid == student's, foreach match_score +0.05
                 if (r.IsPaid == s.PreferPaid && s.PreferPaid == true)
                 {
                     match_score += (float)0.05;
@@ -236,7 +236,7 @@ namespace RMM_Server.Domains
                     match_score += (float)0.05;
                 }
 
-                // get list of required skills, if matches student +0.2 and remove from student skill list 
+                // get list of required skills, if matches student +0.5 and remove from student skill list 
                 r.Required_Skills = r.Required_Skills.Trim();
                 if (r.Required_Skills != ";" && s.Skills != ";")
                 {

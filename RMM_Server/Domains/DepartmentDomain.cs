@@ -36,5 +36,11 @@ namespace RMM_Server.Domains
             return result;
         }
 
+        public string[] GetAllSubDeptByResearchId(int rID)
+        {
+            string[] result = idr.GetAllSubDeptByResearchId(rID);
+            return result;
+        }
+
     }
 }

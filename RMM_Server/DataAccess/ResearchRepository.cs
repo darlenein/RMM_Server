@@ -187,7 +187,7 @@ namespace RMM_Server.DataAccess
                     $"encouraged_skills = '{r.Encouraged_Skills}', start_date = '{r.Start_Date}', end_date = '{r.End_Date}', " +
                     $"active = {active}, address = '{r.Address}', isPaid = {paid}, isNonpaid = {nonpaid}, isCredit = {credit}, requiredSkillLevel = '{r.RequiredSkillLevel}', encouragedSkillLevel = '{r.EncouragedSkillLevel}' " +
                     $"WHERE faculty_id = '{r.Research_Id}'";
-               ;
+                connection.Execute(query, null);
             };
 
             // delete all depts associated to research ID

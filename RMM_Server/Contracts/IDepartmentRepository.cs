@@ -11,5 +11,6 @@ namespace RMM_Server.Contracts
         public List<Department> GetAllDepartments();
         public List<SubDepartment> GetSubDeptByDeptId(int dID);
         public string[] GetSubDeptByResearchId(int rID);
+        public string[] GetAllSubDeptByResearchId(int rID);
     }
 }
