@@ -72,7 +72,7 @@ namespace RMM_Server.DataAccess
                     $"SET first_name = '{f.First_Name}', last_name = '{f.Last_Name}', " +
                     $"title = '{f.Title}', email = '{f.Email}', office = '{f.Office}', " +
                     $"phone = '{f.Phone}', link1 = '{f.Link1}', link2 = '{f.Link2}', " +
-                    $"link3 = '{f.Link3}', about_me = '{f.About_Me}', research_interest = '{f.Research_Interest}'" +
+                    $"link3 = '{f.Link3}', about_me = '{f.About_Me}', research_interest = '{f.Research_Interest}' " +
                     $"WHERE faculty_id = '{f.Faculty_Id}'";
                 connection.Execute(query, null);
             };
