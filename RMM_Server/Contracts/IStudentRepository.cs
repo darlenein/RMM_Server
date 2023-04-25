@@ -15,6 +15,7 @@ namespace RMM_Server.Contracts
         public void EditStudent(Student s);
         public void GetParsedResume();
         public void InsertIntoStudentHiddenResearch(string student_id, int research_id);
+        public void UpdateStudentProfileImage(string student_id, string profile_url);
 
     }
 }

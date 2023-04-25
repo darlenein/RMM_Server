@@ -23,5 +23,6 @@ namespace RMM_Server.Contracts
         public void InsertIntoStudentHiddenResearch(string student_id, int research_id);
         public List<Student> GetAllRankedStudentsByResearch(int research_id);
         public List<Student> RankStudentToResearch(int research_id);
+        public void UpdateStudentProfileImage(string student_id, string profile_url);
     }
 }

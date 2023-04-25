@@ -243,6 +243,11 @@ namespace RMM_Server.Domains
             return result;
         }
 
+        public void UpdateStudentProfileImage(string student_id, string profile_url)
+        {
+            isr.UpdateStudentProfileImage(student_id, profile_url);
+        }
+
         //sort by faculty id
         /*
         public List<Student> GetSortedStudentsByFacultyID(string s)
