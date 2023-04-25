@@ -17,6 +17,7 @@ namespace RMM_Server.Contracts
         public List<Faculty> GetFilteredAndSearchedFaculty(FacultyFilter ff);
        // public List<Faculty> GetFilteredFaculty(FacultyFilter ff);
         public List<Faculty> GetSearchedFacultyByKeyword(string keyword, List<Faculty> faculty);
+        public void UpdateFacultyProfileImage(string faculty_id, string profile_url);
        // public List<Faculty> GetSortedFacultyByFacultyID(string f);
     }
 }

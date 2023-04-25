@@ -123,6 +123,7 @@ namespace RMM_Server.Controllers
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var rmmPath = Path.Combine("https://rmm.bd.psu.edu:8083/studentImages/", fileName);
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
@@ -130,7 +131,7 @@ namespace RMM_Server.Controllers
                         file.CopyTo(stream);
                     }
 
-                    isd.UpdateStudentProfileImage(student_id, fullPath);
+                    isd.UpdateStudentProfileImage(student_id, rmmPath);
                     return Ok(new { dbPath });
                 }
                 else

@@ -101,9 +101,9 @@ namespace RMM_Server.Domains
             return searchedResults;
         }
 
-        public static implicit operator Mock<object>(FacultyDomain v)
+        public void UpdateFacultyProfileImage(string faculty_id, string profile_url)
         {
-            throw new NotImplementedException();
+            ifr.UpdateFacultyProfileImage(faculty_id, profile_url);
         }
     }
 }

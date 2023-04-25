@@ -12,5 +12,6 @@ namespace RMM_Server.Contracts
         public List<Faculty> GetAllFaculty();
         public Faculty CreateFaculty(Faculty f);
         public void EditFaculty(Faculty f);
+        public void UpdateFacultyProfileImage(string faculty_id, string profile_url);
     }
 }

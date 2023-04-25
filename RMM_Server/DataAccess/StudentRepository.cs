@@ -133,7 +133,6 @@ namespace RMM_Server.DataAccess
 
         public void UpdateStudentProfileImage(string student_id, string profile_url)
         {
-            profile_url = profile_url.Replace("\\","\\\\");
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $"UPDATE student SET profile_url = '{profile_url}' WHERE student_id = '{student_id}'";

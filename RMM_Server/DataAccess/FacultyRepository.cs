@@ -78,5 +78,14 @@ namespace RMM_Server.DataAccess
             };
             
         }
+
+        public void UpdateFacultyProfileImage(string faculty_id, string profile_url)
+        {
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = $"UPDATE faculty SET profile_url = '{profile_url}' WHERE faculty_id = '{faculty_id}'";
+                connection.Execute(query, null);
+            };
+        }
     }
 }
