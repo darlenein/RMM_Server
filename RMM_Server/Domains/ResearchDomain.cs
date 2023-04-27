@@ -96,10 +96,10 @@ namespace RMM_Server.Domains
             return result;
         }
 
-        public List<Research> GetSortedResearchesByStudentId(string s)
+        public List<Research> GetSortedResearchesByStudentId(string student_id)
         {
             List<Research> result = GetAllResearch();
-            Student student = isd.GetStudent(s);
+            Student student = isd.GetStudent(student_id);
 
             //Have to get each researches list
             foreach (Research r in result)
@@ -111,6 +111,15 @@ namespace RMM_Server.Domains
             var sortedByMinor = result.OrderByDescending(x => x.Research_Id).ThenByDescending(x => x.Location == student.PreferLocation).ThenBy(x => x.ResearchDepts[0] == student.Minor).ThenBy(x => x.ResearchDepts[1] == student.Minor).ThenBy(x => x.ResearchDepts[2] == student.Minor).ToList();
             var sortedByMajor = sortedByMinor.OrderByDescending(x => x.ResearchDepts[0] == student.Major).ThenBy(x => x.ResearchDepts[1] == student.Major && x.Active == true).ThenBy(x => x.ResearchDepts[2] == student.Major && x.Active == true).ToList();
             var sortedByStatus = sortedByMajor.OrderByDescending(x => x.Active == true).ToList();
+
+            List<int> appliedResearches = irr.GetAppliedResearchesByStudentId(student_id);
+            foreach (Research r in sortedByStatus.ToList())
+            {
+                if (appliedResearches.Contains(r.Research_Id))
+                {
+                    sortedByStatus.Remove(r);
+                }
+            }
 
             return sortedByStatus;
         }
@@ -286,6 +295,15 @@ namespace RMM_Server.Domains
             foreach(Research r in result.ToList())
             {
                 if(exclusions.Contains(r.Research_Id))
+                {
+                    result.Remove(r);
+                }
+            }
+
+            List<int> appliedResearches = irr.GetAppliedResearchesByStudentId(student_id);
+            foreach (Research r in result.ToList())
+            {
+                if (appliedResearches.Contains(r.Research_Id))
                 {
                     result.Remove(r);
                 }

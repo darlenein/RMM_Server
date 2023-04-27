@@ -270,6 +270,17 @@ namespace RMM_Server.DataAccess
             if (b == true) return 1;
             else return 0;
         }
+
+        public List<int> GetAppliedResearchesByStudentId(string student_id)
+        {
+            var appliedResearches = new List<int>();
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                string query = $"SELECT research_id from participant WHERE student_id = '{student_id}'";
+                appliedResearches = connection.Query<int>(query, null).ToList();
+            };
+            return appliedResearches;
+        }
     }
 
 }
