@@ -78,9 +78,11 @@ namespace RMM_Server.DataAccess
                     $" '{s.Student_Id}', '{s.First_Name}', '{s.Last_Name}', '{s.GPA}', '{s.Graduation_Month}', '{s.Graduation_Year}'," +
                     $" '{s.Major}', '{s.Skills}', '{s.Link1}', '{s.Link2}', '{s.Link3}', '{s.Research_Interest}'," +
                     $" '{s.Research_Project}', '{s.Email}', '{paid}', '{nonpaid}', '{credit}', '{s.PreferLocation}'," +
-                    $" '{s.Minor}', '{s.SkillLevel}', '{s.Major2}')";
+                    $" '{s.Minor}', '{s.SkillLevel}', '{s.Major2}', '{s.Profile_url}')";
                 sl = connection.Query<Student>(query, null).FirstOrDefault();
             };
+
+
 
             return sl;
         }
