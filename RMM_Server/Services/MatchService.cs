@@ -56,7 +56,10 @@ namespace RMM_Server.Services
 
             // Print the word vector without stop words.
             //Console.WriteLine("\nWords without stop words: " + string.Join(",", prediction.WordsWithoutStopWords));
-            
+            if (prediction.WordsWithoutStopWords == null)
+            {
+                return "";
+            }
             return string.Join(";", prediction.WordsWithoutStopWords);
         }
 
