@@ -145,6 +145,36 @@ namespace RMM_Server.Controllers
             }
         }
 
+        [HttpPost("uploadStudentPicture"), DisableRequestSizeLimit]
+        public string UploadStudentPictureWithPath()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources", "StudentImages");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                Directory.CreateDirectory(pathToSave);
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var rmmPath = Path.Combine("https://rmm.bd.psu.edu:8083/studentImages/", fileName);
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    return rmmPath;
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            return "";
+        }
+
         /*[HttpGet("getAllStudentSorted/{faculty_id}")]
         public List<Student> GetAllStudentSorted(string faculty_id)
         {
