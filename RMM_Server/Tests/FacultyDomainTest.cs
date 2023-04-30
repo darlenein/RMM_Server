@@ -356,5 +356,18 @@ namespace RMM_Server.Tests
             Assert.NotNull(result);
             Assert.AreEqual(result.Count, 1);
         }
+
+        [Test]
+        public void Test_UpdateFacultyProfileImage()
+        {
+            //arrange
+            mfr.Setup(x => x.UpdateFacultyProfileImage(It.IsAny<string>(), It.IsAny<string>()));
+
+            //act
+            fd.UpdateFacultyProfileImage("test", "testURL");
+
+            //assert
+            mfr.Verify(x => x.UpdateFacultyProfileImage(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
     }
 }

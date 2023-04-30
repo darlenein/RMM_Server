@@ -32,6 +32,7 @@ namespace RMM_Server.Tests
             msr = new Mock<IStudentRepository>();
             mrd = new Mock<IResearchDomain>();
             msd = new Mock<IStudentDomain>();
+            mrr = new Mock<IResearchRepository>();
             sl = new List<Student>();
             sd = new StudentDomain(msr.Object, mfd.Object, mrr.Object);
             s = new Student()
@@ -635,6 +636,98 @@ namespace RMM_Server.Tests
             Assert.AreEqual(result.Count, 1);
             
         }
+
+        [Test]
+        public void TestParseResume()
+        {
+            //arrange
+            msr.Setup(x => x.GetParsedResume());
+
+            //act
+            sd.getParsedResume();
+
+            //assert
+            msr.Verify(x => x.GetParsedResume(), Times.Once);
+        }
+
+        [Test]
+        public void Test_InsertIntoStudentHiddenResearch()
+        {
+            //arrange
+            msr.Setup(x => x.InsertIntoStudentHiddenResearch(It.IsAny<string>(), It.IsAny<int>()));
+
+            //act
+            sd.InsertIntoStudentHiddenResearch("test", 2);
+
+            //assert
+            msr.Verify(x => x.InsertIntoStudentHiddenResearch(It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+        }
+
+
+        [Test]
+        public void Test_GetAllRankedStudentsByResearch()
+        {
+            var mockedStudentList = new List<Student>() {
+                new Student()
+                {
+                    Student_Id = "test123",
+                    Skills = "Art; Dancing;",
+                    Major = "Undecided",
+                    PreferCredit = false,
+                    PreferLocation = "Online",
+                    PreferNonpaid = false,
+                    PreferPaid = true,
+                    
+                },
+                new Student()
+                {
+                    Student_Id = "test345",
+                    Skills = "Software; Hardware;",
+                    Major = "Software Engineering",
+                    PreferCredit = true,
+                    PreferLocation = "On-Campus",
+                    PreferNonpaid = true,
+                    PreferPaid = true,
+                }
+            };
+            var mockResearch = new Research()
+            {
+                Research_Id = 2,
+                Required_Skills = "Software; Hardware;",
+                Encouraged_Skills = "Computers, Java",
+                ResearchDepts = new string[] { "Software", "Hardware", "Computers" },
+                IsCredit = true,
+                Location = "Online",
+                IsPaid = true,
+                IsNonpaid = true,
+            };
+            //arrange
+            msr.Setup(x => x.GetAllStudentsByResearch(It.IsAny<int>()))
+                .Returns(mockedStudentList);
+            mrr.Setup(x => x.GetResearchByID(It.IsAny<int>()))
+                .Returns(mockResearch);
+            //act
+            var result = sd.GetAllRankedStudentsByResearch(2);
+
+            //assert
+            Assert.NotNull(result);
+            Assert.AreEqual(result[0].Student_Id, "test345");
+            Assert.AreEqual(result[1].Student_Id, "test123");
+        }
+
+        [Test]
+        public void Test_UpdateStudentProfileImage()
+        {
+            //arrange
+            msr.Setup(x => x.UpdateStudentProfileImage(It.IsAny<string>(), It.IsAny<string>()));
+
+            //act
+            sd.UpdateStudentProfileImage("test", "testURL");
+
+            //assert
+            msr.Verify(x => x.UpdateStudentProfileImage(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
     }
     
 }

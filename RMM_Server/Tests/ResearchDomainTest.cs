@@ -580,6 +580,10 @@ namespace RMM_Server.Tests
             mdd.Setup(x => x.GetSubDeptByResearchId(It.IsAny<int>()))
                 .Returns(depts1);
 
+            var mockAppliedResult = new List<int> { 4, 5 };
+            mrr.Setup(x => x.GetAppliedResearchesByStudentId(It.IsAny<string>()))
+                .Returns(mockAppliedResult);
+
             List<Research> result = rd.GetFilteredAndSearchedResearch(f);
 
             Assert.NotNull(result);
@@ -973,6 +977,14 @@ namespace RMM_Server.Tests
             mrr.Setup(x => x.GetAllResearch())
                 .Returns(rl);
 
+            var mockHiddenResult = new List<int>{ 1, 2, 3 };
+            mrr.Setup(x => x.GetHiddenResearchesId(It.IsAny<string>()))
+                .Returns(mockHiddenResult);
+
+            var mockAppliedResult = new List<int> { 4, 5};
+            mrr.Setup(x => x.GetAppliedResearchesByStudentId(It.IsAny<string>()))
+                .Returns(mockAppliedResult);
+
             var result = rd.MatchResearchToStudent(s.Student_Id);
 
             Assert.NotNull(result);
@@ -981,6 +993,82 @@ namespace RMM_Server.Tests
             Assert.Greater(result[1].MatchScore, result[2].MatchScore);
             msd.Verify(x => x.GetStudent(It.IsAny<string>()), Times.Once);
             mrr.Verify(x => x.GetAllResearch(), Times.Once);
+        }
+
+        [Test]
+        public void Gets_HiddenResearchesId_By_Student_Id()
+        {
+            //Arrange
+            List<int> mockReturn = new List<int>{ 1, 2, 3, 4 };
+            mrr.Setup(x => x.GetHiddenResearchesId(It.IsAny<string>()))
+                .Returns(mockReturn);
+            //Act
+            var result = rd.GetHiddenResearchesId("test");
+            //Assert
+            Assert.NotNull(result);
+            Assert.AreEqual(4, result.Count);
+            mrr.Verify(x => x.GetHiddenResearchesId(It.IsAny<string>()), Times.Once);
+        }
+
+        [Test]
+        public void Gets_HiddenResearches_By_Student_Id()
+        {
+            //Arrange
+            List<Research> mockReturn = new List<Research> {
+                new Research(){
+                Research_Id = 1,
+                Start_Date = "12-05-2023",
+                End_Date = "01-07-2024"
+                },
+                new Research(){
+                Research_Id = 2,
+                Start_Date = "05-12-2005",
+                End_Date = "06-06-2005"
+                },
+                new Research(){
+                Research_Id = 3,
+                Start_Date = "09-05-2008",
+                End_Date = "10-07-2008"
+                }
+            };
+            mrr.Setup(x => x.GetHiddenResearchesByStudentId(It.IsAny<string>()))
+                .Returns(mockReturn);
+            //Act
+            var result = rd.GetHiddenResearchesByStudentId("test");
+            //Assert
+            Assert.NotNull(result);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual("12/05/2023", result[0].Start_Date);
+            Assert.AreEqual("01/07/2024", result[0].End_Date);
+            Assert.AreEqual("05/12/2005", result[1].Start_Date);
+            Assert.AreEqual("06/06/2005", result[1].End_Date);
+            Assert.AreEqual("09/05/2008", result[2].Start_Date);
+            Assert.AreEqual("10/07/2008", result[2].End_Date);
+            mrr.Verify(x => x.GetHiddenResearchesByStudentId(It.IsAny<string>()), Times.Once);
+        }
+
+        [Test]
+        public void DeleteHiddenResearch_With_ResearchId_StudentId()
+        {
+            //Arrange
+
+            mrr.Setup(x => x.DeleteHiddenResearch(It.IsAny<int>(), It.IsAny<string>()));
+            //Act
+            rd.DeleteHiddenResearch(2, "test");
+            //Assert
+            mrr.Verify(x => x.DeleteHiddenResearch(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [Test]
+        public void DeleteResearchApplicant_With_ResearchId_StudentId()
+        {
+            //Arrange
+
+            mrr.Setup(x => x.DeleteResearchApplicant(It.IsAny<int>(), It.IsAny<string>()));
+            //Act
+            rd.DeleteResearchApplicant(2, "test");
+            //Assert
+            mrr.Verify(x => x.DeleteResearchApplicant(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
         }
 
         [Test]
