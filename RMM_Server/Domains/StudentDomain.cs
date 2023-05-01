@@ -49,10 +49,7 @@ namespace RMM_Server.Domains
             
         }
 
-        public void getParsedResume()
-        {
-            isr.GetParsedResume();
-        }
+
 
 
         public int ConvertBoolToInt(bool b)

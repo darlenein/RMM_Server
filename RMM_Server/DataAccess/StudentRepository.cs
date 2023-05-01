@@ -120,12 +120,7 @@ namespace RMM_Server.DataAccess
         }
 
 
-        public void GetParsedResume()
-        {
-            string resumePath = "path_to_file.pdf";
-            var service = new ParseService("REPLACE_TOKEN");
-            var resume = service.CreateResume(resumePath);
-        }
+
 
         public int ConvertBoolToInt(bool b)
         {

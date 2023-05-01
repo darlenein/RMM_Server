@@ -637,18 +637,8 @@ namespace RMM_Server.Tests
             
         }
 
-        [Test]
-        public void TestParseResume()
-        {
-            //arrange
-            msr.Setup(x => x.GetParsedResume());
+        
 
-            //act
-            sd.getParsedResume();
-
-            //assert
-            msr.Verify(x => x.GetParsedResume(), Times.Once);
-        }
 
         [Test]
         public void Test_InsertIntoStudentHiddenResearch()
